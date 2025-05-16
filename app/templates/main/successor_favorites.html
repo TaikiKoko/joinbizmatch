@@ -1,0 +1,457 @@
+{% extends "base.html" %}
+
+{% block title %}お気に入り企業一覧{% endblock %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --primary-color: #2c3e50;
+        --secondary-color: #34495e;
+        --accent-color: #3498db;
+        --success-color: #28a745;
+        --background-color: #f8f9fa;
+        --card-background: #ffffff;
+        --text-primary: #2c3e50;
+        --text-secondary: #7f8c8d;
+        --border-color: #ecf0f1;
+        --favorite-color: #ffc107;
+        --star-inactive: #9ca3af;
+        --star-active: #ffc107;
+    }
+
+    .company-card {
+        background: var(--card-background);
+        border-radius: 8px;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        transition: transform 0.2s ease;
+        position: relative;
+        padding: 0;
+        overflow: hidden;
+    }
+
+    .company-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .company-image-container {
+        width: 100px;
+        height: 100px;
+        background: #fff;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .company-image-container i {
+        font-size: 2.5rem;
+        color: #0d6efd;
+    }
+
+    .company-info-section {
+        display: flex;
+        align-items: stretch;
+        padding: 1rem;
+        background: #eaf4fb;
+    }
+
+    .company-details {
+        margin-left: 1rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        flex-grow: 1;
+    }
+
+    .company-meta {
+        color: var(--text-secondary);
+        font-size: 0.875rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .company-price {
+        font-weight: bold;
+        font-size: 1.25rem;
+        text-align: right;
+        margin-top: 0.5rem;
+    }
+
+    .company-content {
+        background: white;
+        padding: 1.5rem;
+    }
+
+    .company-name {
+        font-size: 1.25rem;
+        font-weight: bold;
+        margin-bottom: 1rem;
+        color: var(--text-primary);
+    }
+
+    .info-row {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0.5rem;
+    }
+
+    .info-icon {
+        width: 20px;
+        margin-right: 0.5rem;
+        color: #6c757d;
+        text-align: center;
+    }
+
+    .info-label {
+        width: 80px;
+        color: var(--text-secondary);
+        margin-right: 0.5rem;
+    }
+
+    .info-value {
+        flex: 1;
+        color: var(--text-primary);
+    }
+
+    .favorite-btn {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background: transparent;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        z-index: 2;
+        transition: transform 0.2s ease;
+    }
+
+    .favorite-btn:hover {
+        transform: scale(1.1);
+    }
+
+    .favorite-btn i {
+        font-size: 1.2rem;
+        color: var(--star-active);
+    }
+
+    .action-buttons {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 1rem;
+    }
+
+    .btn-detail {
+        color: var(--accent-color);
+        text-decoration: none;
+        background: none;
+        border: none;
+        padding: 0;
+        font-size: 0.875rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .btn-detail:hover {
+        color: var(--primary-color);
+        text-decoration: none;
+    }
+
+    .action-group {
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    .simple-btn {
+        background: #fff;
+        border: none;
+        width: 40px;
+        height: 40px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+        font-size: 1.2rem;
+        padding: 0;
+        border-radius: 8px;
+    }
+
+    .simple-btn.block-btn {
+        color: #dc3545;
+    }
+
+    .simple-btn.chat-btn {
+        color: #198754;
+    }
+
+    .simple-btn:hover {
+        background: #f8f9fa;
+        transform: translateY(-1px);
+    }
+
+    .simple-btn.blocked {
+        background-color: #95a5a6;
+        color: white;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- CSRFトークンをhidden inputとして追加 -->
+    <input type="hidden" id="csrf-token" value="{{ csrf_token() }}">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h2 mb-0">お気に入り企業一覧</h1>
+        <div>
+            <a href="{{ url_for('main.successor_mypage') }}" class="btn btn-outline-secondary me-2">
+                <i class="fas fa-user me-1"></i>マイページ
+            </a>
+            <a href="{{ url_for('main.company_list') }}" class="btn btn-outline-primary">
+                <i class="fas fa-building me-1"></i>企業一覧
+            </a>
+        </div>
+    </div>
+    
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        {% for company in companies.items %}
+        <div class="col">
+            <div class="company-card">
+                <button class="favorite-btn" data-company-id="{{ company.id }}">
+                    <i class="fas fa-star favorite-active"></i>
+                </button>
+                <!-- 上部：写真＋公開日・更新日・譲渡希望額 -->
+                <div class="company-info-section">
+                    <div class="company-image-container">
+                        {% if company.image_path %}
+                            <img src="{{ url_for('static', filename='uploads/' + company.image_path) }}" alt="{{ company.name }}" style="width:100%; height:100%; object-fit:cover;">
+                        {% else %}
+                            <i class="fas fa-building"></i>
+                        {% endif %}
+                    </div>
+                    <div class="company-details">
+                        <div class="company-meta">公開：{{ company.created_at.strftime('%Y/%m/%d') if company.created_at else '未設定' }}</div>
+                        <div class="company-meta">更新：{{ company.updated_at.strftime('%Y/%m/%d') if company.updated_at else '未設定' }}</div>
+                        <div class="company-price">
+                            譲渡希望額<br>{{ company.capital }}万円
+                        </div>
+                    </div>
+                </div>
+                <!-- 下部：企業名＋詳細情報＋ボタン -->
+                <div class="company-content">
+                    <h3 class="company-name">{{ company.name }}</h3>
+                    <div class="text-muted small mb-2">
+                        {% if company.short_description %}
+                            {{ company.short_description|truncate(40) }}
+                        {% endif %}
+                    </div>
+                    <div class="info-row">
+                        <div class="info-icon">
+                            <i class="fas fa-industry"></i>
+                        </div>
+                        <div class="info-label">業種</div>
+                        <div class="info-value">{{ company.industry|industry_name }}</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="info-label">所在地</div>
+                        <div class="info-value">{{ company.location or '未設定' }}</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-icon">
+                            <i class="fas fa-yen-sign"></i>
+                        </div>
+                        <div class="info-label">売上高</div>
+                        <div class="info-value">{{ company.revenue }}万円</div>
+                    </div>
+                    <div class="action-buttons">
+                        <a href="{{ url_for('profile.view_company_profile', id=company.id) }}" class="btn-detail">
+                            <i class="fas fa-search me-1"></i>詳細を見る
+                        </a>
+                        <div class="action-group">
+                            {% if current_user.is_authenticated and current_user.id != company.user_id %}
+                            <button class="simple-btn block-btn {% if current_user.is_blocking(company.user) %}blocked{% endif %}"
+                                    data-user-id="{{ company.user_id }}"
+                                    title="{% if current_user.is_blocking(company.user) %}ブロック解除{% else %}ブロック{% endif %}">
+                                <i class="fas fa-ban"></i>
+                            </button>
+                            {% endif %}
+                            <button class="simple-btn chat-btn" onclick="location.href='{{ url_for('chat.start', user_id=company.user_id) }}'" title="チャットを開始">
+                                <i class="fas fa-comments"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="col-12">
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle me-2"></i>お気に入りに登録された企業はありません。
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% if companies.pages > 1 %}
+    <nav aria-label="Page navigation" class="mt-4">
+        <ul class="pagination justify-content-center">
+            {% for page in companies.iter_pages() %}
+                {% if page %}
+                    <li class="page-item {% if page == companies.page %}active{% endif %}">
+                        <a class="page-link" href="{{ url_for('main.successor_favorites', page=page) }}">{{ page }}</a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">...</span>
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </nav>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const favoriteButtons = document.querySelectorAll('.favorite-btn');
+    const blockButtons = document.querySelectorAll('.simple-btn.block-btn');
+    const csrfToken = document.querySelector('#csrf-token').value;
+
+    // ブロックボタンの処理
+    blockButtons.forEach(button => {
+        button.addEventListener('click', handleBlockButtonClick);
+    });
+
+    // お気に入りボタンの処理
+    favoriteButtons.forEach(button => {
+        button.addEventListener('click', async function() {
+            const companyId = this.dataset.companyId;
+            
+            try {
+                const response = await fetch(`/api/favorites/companies/${companyId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrfToken
+                    }
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.message || 'エラーが発生しました');
+                }
+
+                if (data.status === 'success') {
+                    const icon = this.querySelector('i');
+                    if (data.action === 'removed') {
+                        icon.classList.remove('favorite-active');
+                        // カードを非表示にするアニメーション
+                        const card = this.closest('.col');
+                        card.style.transition = 'opacity 0.3s ease-out';
+                        card.style.opacity = '0';
+                        setTimeout(() => {
+                            card.remove();
+                            // カードが全てなくなった場合
+                            if (document.querySelectorAll('.col').length === 0) {
+                                const container = document.querySelector('.row');
+                                container.innerHTML = `
+                                    <div class="col-12">
+                                        <div class="alert alert-info">
+                                            お気に入りに登録された企業はありません。
+                                        </div>
+                                    </div>
+                                `;
+                            }
+                        }, 300);
+                    }
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showMessage(error.message || 'お気に入り処理中にエラーが発生しました', 'error');
+            }
+        });
+    });
+});
+
+function openChat(companyId) {
+    window.location.href = "{{ url_for('chat.start', user_id=0) }}".replace('0', companyId);
+}
+
+function handleBlockButtonClick(event) {
+    event.preventDefault();
+    const button = event.currentTarget;
+    const userId = button.dataset.userId;
+    const isBlocked = button.classList.contains('blocked');
+    const method = isBlocked ? 'DELETE' : 'POST';
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+
+    fetch(`/api/block/${userId}`, {
+        method: method,
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRFToken': csrfToken
+        },
+        credentials: 'same-origin'
+    })
+    .then(response => {
+        if (!response.ok) {
+            return response.json().then(data => {
+                throw new Error(data.message || 'ブロック操作に失敗しました');
+            });
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            button.classList.toggle('blocked');
+            showMessage(data.message, 'success');
+        } else {
+            showMessage(data.message || 'ブロック操作に失敗しました', 'error');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showMessage(error.message || 'ブロック操作に失敗しました', 'error');
+    });
+}
+
+function showMessage(message, type) {
+    const messageDiv = document.getElementById('message-container');
+    if (!messageDiv) {
+        const div = document.createElement('div');
+        div.id = 'message-container';
+        div.style.position = 'fixed';
+        div.style.top = '20px';
+        div.style.right = '20px';
+        div.style.zIndex = '1000';
+        document.body.appendChild(div);
+    }
+    
+    const alert = document.createElement('div');
+    alert.className = `alert alert-${type === 'success' ? 'success' : 'danger'} alert-dismissible fade show`;
+    alert.role = 'alert';
+    alert.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    `;
+    
+    document.getElementById('message-container').appendChild(alert);
+    
+    setTimeout(() => {
+        alert.classList.remove('show');
+        setTimeout(() => alert.remove(), 150);
+    }, 3000);
+}
+</script>
+{% endblock %} 

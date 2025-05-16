@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>企業一覧</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .company-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .company-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .company-name {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        .company-info {
+            margin-bottom: 15px;
+        }
+        .info-item {
+            margin-bottom: 8px;
+        }
+        .info-label {
+            font-weight: bold;
+            color: #666;
+        }
+        .btn {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            text-align: center;
+        }
+        .btn:hover {
+            background-color: #2980b9;
+        }
+        .no-companies {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>企業一覧</h1>
+        
+        <div class="company-grid">
+            {% for company in companies %}
+                <div class="company-card">
+                    <div class="company-name">{{ company.company_name }}</div>
+                    <div class="company-info">
+                        <div class="info-item">
+                            <span class="info-label">代表者名:</span>
+                            <span>{{ company.representative_name }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">設立年:</span>
+                            <span>{{ company.establishment_year }}年</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">資本金:</span>
+                            <span>{{ company.capital }}万円</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">従業員数:</span>
+                            <span>{{ company.employees }}名</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">年間売上:</span>
+                            <span>{{ company.annual_sales }}万円</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">希望価格:</span>
+                            <span>{{ company.asking_price }}万円</span>
+                        </div>
+                    </div>
+                    <a href="{{ url_for('seller.profile') }}" class="btn">詳細を見る</a>
+                </div>
+            {% else %}
+                <div class="no-companies">
+                    <p>表示できる企業がありません。</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html> 

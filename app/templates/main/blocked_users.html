@@ -1,0 +1,250 @@
+{% extends "base.html" %}
+
+{% block title %}ブロックリスト{% endblock %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --primary-color: #2c3e50;
+        --secondary-color: #34495e;
+        --accent-color: #3498db;
+        --danger-color: #e74c3c;
+        --background-color: #f8f9fa;
+        --card-background: #ffffff;
+        --text-primary: #2c3e50;
+        --text-secondary: #7f8c8d;
+        --border-color: #ecf0f1;
+    }
+
+    .blocked-user-card {
+        background: var(--card-background);
+        border-radius: 10px;
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+    }
+
+    .blocked-user-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    .blocked-user-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .user-details {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .user-avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-color: var(--background-color);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .user-avatar i {
+        font-size: 1.5rem;
+        color: var(--text-secondary);
+    }
+
+    .user-name {
+        font-size: 1.1rem;
+        font-weight: 500;
+        color: var(--text-primary);
+    }
+
+    .blocked-date {
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+    }
+
+    .unblock-btn {
+        background-color: var(--danger-color);
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .unblock-btn:hover {
+        opacity: 0.9;
+        transform: translateY(-1px);
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 3rem;
+        background: var(--card-background);
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .empty-state i {
+        font-size: 3rem;
+        color: var(--text-secondary);
+        margin-bottom: 1rem;
+    }
+
+    .empty-state h3 {
+        color: var(--text-primary);
+        margin-bottom: 0.5rem;
+    }
+
+    .empty-state p {
+        color: var(--text-secondary);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- CSRFトークンを追加 -->
+    <input type="hidden" id="csrf-token" value="{{ csrf_token() }}">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h2 mb-0">ブロックリスト</h1>
+        <a href="{{ url_for('main.successor_mypage') }}" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-2"></i>マイページに戻る
+        </a>
+    </div>
+
+    <div id="blocked-users-list">
+        <!-- ブロックされたユーザーのリストがここに動的に表示されます -->
+    </div>
+
+    <template id="blocked-user-template">
+        <div class="blocked-user-card">
+            <div class="blocked-user-info">
+                <div class="user-details">
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div>
+                        <div class="user-name"></div>
+                        <div class="blocked-date"></div>
+                    </div>
+                </div>
+                <button class="unblock-btn" onclick="unblockUser(this)" data-user-id="">
+                    <i class="fas fa-ban"></i>
+                    ブロック解除
+                </button>
+            </div>
+        </div>
+    </template>
+
+    <div id="empty-state" class="empty-state" style="display: none;">
+        <i class="fas fa-ban"></i>
+        <h3>ブロック中のユーザーはいません</h3>
+        <p>現在ブロックしているユーザーはいません。</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    loadBlockedUsers();
+});
+
+function loadBlockedUsers() {
+    fetch('/api/blocks')
+        .then(response => response.json())
+        .then(data => {
+            const blockedUsersList = document.getElementById('blocked-users-list');
+            const emptyState = document.getElementById('empty-state');
+            
+            if (data.blocked_users.length === 0) {
+                blockedUsersList.innerHTML = '';
+                emptyState.style.display = 'block';
+                return;
+            }
+
+            emptyState.style.display = 'none';
+            blockedUsersList.innerHTML = '';
+            
+            data.blocked_users.forEach(user => {
+                const template = document.getElementById('blocked-user-template');
+                const clone = template.content.cloneNode(true);
+                
+                clone.querySelector('.user-name').textContent = user.username;
+                clone.querySelector('.blocked-date').textContent = `ブロック日: ${new Date(user.blocked_at).toLocaleDateString()}`;
+                clone.querySelector('.unblock-btn').dataset.userId = user.id;
+                
+                blockedUsersList.appendChild(clone);
+            });
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('ブロックリストの読み込み中にエラーが発生しました。');
+        });
+}
+
+function unblockUser(button) {
+    const userId = button.dataset.userId;
+    const csrfToken = document.querySelector('#csrf-token').value;
+    
+    fetch(`/api/block/${userId}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrfToken,
+            'Accept': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest'
+        },
+        credentials: 'include',
+        mode: 'same-origin'
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('ブロック解除に失敗しました');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            loadBlockedUsers();  // リストを再読み込み
+            // 成功メッセージを表示
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'alert alert-success position-fixed top-0 start-50 translate-middle-x mt-3';
+            messageDiv.style.zIndex = '1050';
+            messageDiv.textContent = data.message || 'ブロックを解除しました';
+            document.body.appendChild(messageDiv);
+            
+            // 3秒後にメッセージを消す
+            setTimeout(() => {
+                messageDiv.remove();
+            }, 3000);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        // エラーメッセージを表示
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'alert alert-danger position-fixed top-0 start-50 translate-middle-x mt-3';
+        errorDiv.style.zIndex = '1050';
+        errorDiv.textContent = error.message || 'ブロック解除中にエラーが発生しました';
+        document.body.appendChild(errorDiv);
+        
+        // 3秒後にエラーメッセージを消す
+        setTimeout(() => {
+            errorDiv.remove();
+        }, 3000);
+    });
+}
+</script>
+{% endblock %} 

@@ -1,0 +1,327 @@
+{% extends "base.html" %}
+
+{% block title %}{{ company.name }} - 企業詳細{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Company Header */
+    .company-header {
+        background: var(--white);
+        padding: var(--spacing-xl) 0;
+        margin-bottom: var(--spacing-xl);
+        box-shadow: var(--shadow-sm);
+    }
+
+    .company-header-content {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xl);
+    }
+
+    .company-logo {
+        width: 120px;
+        height: 120px;
+        border-radius: var(--border-radius-lg);
+        background: var(--gray-200);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: var(--font-size-4xl);
+        color: var(--gray-600);
+    }
+
+    .company-info h1 {
+        font-size: var(--font-size-3xl);
+        margin-bottom: var(--spacing-sm);
+        color: var(--text-primary);
+    }
+
+    .company-meta {
+        display: flex;
+        gap: var(--spacing-lg);
+        margin-bottom: var(--spacing-md);
+        color: var(--text-secondary);
+    }
+
+    .company-meta-item {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xs);
+    }
+
+    .company-tags {
+        display: flex;
+        gap: var(--spacing-xs);
+        margin-bottom: var(--spacing-md);
+    }
+
+    .tag {
+        background: var(--gray-100);
+        color: var(--text-secondary);
+        padding: var(--spacing-xs) var(--spacing-sm);
+        border-radius: var(--border-radius-full);
+        font-size: var(--font-size-sm);
+    }
+
+    /* Company Content */
+    .company-content {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: var(--spacing-xl);
+    }
+
+    .company-main {
+        background: var(--white);
+        border-radius: var(--border-radius-lg);
+        padding: var(--spacing-xl);
+        box-shadow: var(--shadow-sm);
+    }
+
+    .company-sidebar {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-lg);
+    }
+
+    .info-card {
+        background: var(--white);
+        border-radius: var(--border-radius-lg);
+        padding: var(--spacing-lg);
+        box-shadow: var(--shadow-sm);
+    }
+
+    .info-card h3 {
+        font-size: var(--font-size-lg);
+        margin-bottom: var(--spacing-md);
+        color: var(--text-primary);
+        padding-bottom: var(--spacing-sm);
+        border-bottom: 2px solid var(--gray-200);
+    }
+
+    .info-list {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-md);
+    }
+
+    .info-item {
+        display: flex;
+        justify-content: space-between;
+        padding: var(--spacing-sm) 0;
+        border-bottom: 1px solid var(--gray-200);
+    }
+
+    .info-label {
+        color: var(--text-secondary);
+        font-weight: 500;
+    }
+
+    .info-value {
+        color: var(--text-primary);
+    }
+
+    /* Company Description */
+    .company-description {
+        margin-bottom: var(--spacing-xl);
+    }
+
+    .company-description h2 {
+        font-size: var(--font-size-2xl);
+        margin-bottom: var(--spacing-md);
+        color: var(--text-primary);
+    }
+
+    .company-description p {
+        color: var(--text-secondary);
+        line-height: 1.6;
+    }
+
+    /* Company Stats */
+    .company-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: var(--spacing-lg);
+        margin-bottom: var(--spacing-xl);
+    }
+
+    .stat-card {
+        background: var(--gray-100);
+        padding: var(--spacing-lg);
+        border-radius: var(--border-radius-md);
+        text-align: center;
+    }
+
+    .stat-number {
+        font-size: var(--font-size-3xl);
+        font-weight: 700;
+        color: var(--primary);
+        margin-bottom: var(--spacing-xs);
+    }
+
+    .stat-label {
+        color: var(--text-secondary);
+        font-size: var(--font-size-sm);
+    }
+
+    /* Contact Section */
+    .contact-section {
+        background: var(--gray-100);
+        padding: var(--spacing-xl);
+        border-radius: var(--border-radius-lg);
+    }
+
+    .contact-section h2 {
+        font-size: var(--font-size-2xl);
+        margin-bottom: var(--spacing-md);
+        color: var(--text-primary);
+    }
+
+    .contact-section p {
+        color: var(--text-secondary);
+        margin-bottom: var(--spacing-lg);
+    }
+
+    .contact-actions {
+        display: flex;
+        gap: var(--spacing-md);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .company-content {
+            grid-template-columns: 1fr;
+        }
+
+        .company-header-content {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .company-meta {
+            justify-content: center;
+        }
+
+        .company-tags {
+            justify-content: center;
+        }
+
+        .contact-actions {
+            flex-direction: column;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="company-header">
+    <div class="container">
+        <div class="company-header-content">
+            <div class="company-logo">
+                <i class="fas fa-building"></i>
+            </div>
+            <div class="company-info">
+                <h1>{{ company.name }}</h1>
+                <div class="company-meta">
+                    <div class="company-meta-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        {{ company.location }}
+                    </div>
+                    <div class="company-meta-item">
+                        <i class="fas fa-users"></i>
+                        {{ company.employees }}名
+                    </div>
+                    <div class="company-meta-item">
+                        <i class="fas fa-yen-sign"></i>
+                        {{ company.revenue }}
+                    </div>
+                </div>
+                <div class="company-tags">
+                    <span class="tag">{{ company.industry }}</span>
+                    <span class="tag">{{ company.business_type }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container">
+    <div class="company-content">
+        <div class="company-main">
+            <div class="company-description">
+                <h2>企業概要</h2>
+                <p>{{ company.description }}</p>
+            </div>
+
+            <div class="company-stats">
+                <div class="stat-card">
+                    <div class="stat-number">{{ company.establishment_year }}</div>
+                    <div class="stat-label">設立年</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">{{ company.capital }}万円</div>
+                    <div class="stat-label">売却希望額</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">{{ company.avg_age }}</div>
+                    <div class="stat-label">平均年齢</div>
+                </div>
+            </div>
+
+            <div class="contact-section">
+                <h2>お問い合わせ</h2>
+                <p>この企業について詳しく知りたい方は、お気軽にお問い合わせください。</p>
+                <div class="contact-actions">
+                    <a href="{{ url_for('main.contact', company_id=company.id) }}" class="btn btn-primary">
+                        <i class="fas fa-envelope"></i> メッセージを送る
+                    </a>
+                    <button class="btn btn-outline">
+                        <i class="fas fa-heart"></i> お気に入りに追加
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="company-sidebar">
+            <div class="info-card">
+                <h3>基本情報</h3>
+                <div class="info-list">
+                    <div class="info-item">
+                        <span class="info-label">業種</span>
+                        <span class="info-value">{{ company.industry }}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">事業形態</span>
+                        <span class="info-value">{{ company.business_type }}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">従業員数</span>
+                        <span class="info-value">{{ company.employees }}名</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">年商</span>
+                        <span class="info-value">{{ company.revenue }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <h3>事業承継情報</h3>
+                <div class="info-list">
+                    <div class="info-item">
+                        <span class="info-label">承継希望時期</span>
+                        <span class="info-value">{{ company.succession_timing }}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">承継形態</span>
+                        <span class="info-value">{{ company.succession_type }}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">希望条件</span>
+                        <span class="info-value">{{ company.succession_requirements }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

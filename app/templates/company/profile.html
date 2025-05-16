@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}企業プロフィール{% endblock %}
+
+{% block content %}
+<div class="container profile-container company-theme">
+    <div class="profile-header">
+        <div class="profile-image-container">
+            {% if company.profile_image %}
+                <img src="{{ url_for('static', filename='uploads/' + company.profile_image) }}" alt="{{ company.name }}" class="profile-image">
+            {% else %}
+                <img src="{{ url_for('static', filename='images/default-company.png') }}" alt="{{ company.name }}" class="profile-image">
+            {% endif %}
+        </div>
+        <div class="profile-info">
+            <h1>{{ company.name }}</h1>
+            {% if company.industry %}
+                <div class="profile-detail">
+                    <i class="fas fa-industry"></i> {{ company.industry }}
+                </div>
+            {% endif %}
+            {% if company.address %}
+                <div class="profile-detail">
+                    <i class="fas fa-map-marker-alt"></i> {{ company.address }}
+                </div>
+            {% endif %}
+            <div class="profile-completion">
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" style="width: {{ company.profile_completion_percentage }}%;" aria-valuenow="{{ company.profile_completion_percentage }}" aria-valuemin="0" aria-valuemax="100">{{ company.profile_completion_percentage }}%</div>
+                </div>
+                <p>プロフィール完成度: {{ company.profile_completion_percentage }}%</p>
+            </div>
+            <div class="profile-actions">
+                <a href="{{ url_for('edit_company_profile') }}" class="btn btn-primary"><i class="fas fa-edit"></i> プロフィールを編集</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="profile-sections">
+        <!-- 基本情報 -->
+        <div class="profile-section">
+            <h2><i class="fas fa-building"></i> 基本情報</h2>
+            <div class="card">
+                <div class="card-body">
+                    <div class="profile-details">
+                        {% if company.representative %}
+                            <div class="profile-detail-item">
+                                <div class="detail-label">代表者</div>
+                                <div class="detail-value">{{ company.representative }}</div>
+                            </div>
+                        {% endif %}
+
+                        {% if company.founded_year %}
+                            <div class="profile-detail-item">
+                                <div class="detail-label">創業年</div>
+                                <div class="detail-value">{{ company.founded_year }}年</div>
+                            </div>
+                        {% endif %}
+
+                        {% if company.established_year %}
+                            <div class="profile-detail-item">
+                                <div class="detail-label">設立年</div>
+                                <div class="detail-value">{{ company.established_year }}年</div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

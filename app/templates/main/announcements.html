@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}お知らせ{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="mb-4">お知らせ</h1>
+            
+            {% if announcements %}
+                <div class="list-group">
+                    {% for announcement in announcements %}
+                        <div class="list-group-item">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">{{ announcement.title }}</h5>
+                                <small class="text-muted">{{ announcement.created_at.strftime('%Y-%m-%d') }}</small>
+                            </div>
+                            <p class="mb-1">{{ announcement.content }}</p>
+                            {% if announcement.link %}
+                                <a href="{{ announcement.link }}" class="btn btn-sm btn-outline-primary">
+                                    詳細を見る
+                                </a>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="alert alert-info">
+                    お知らせはありません。
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %} 

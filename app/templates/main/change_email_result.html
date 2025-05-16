@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}メールアドレス変更結果{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="form-container" style="max-width:600px;margin:2rem auto;padding:2rem;background:white;border-radius:12px;box-shadow:0 2px 4px rgba(0,0,0,.05);text-align:center;">
+    <h1 class="form-title">メールアドレス変更</h1>
+    {% if result == 'success' %}
+      <div class="alert alert-success mb-4">確認メールを送信しました。新しいメールアドレスでご確認ください。</div>
+    {% else %}
+      <div class="alert alert-danger mb-4">メールアドレス変更に失敗しました。</div>
+    {% endif %}
+    <a href="{{ url_for('main.settings') }}" class="btn btn-primary">設定画面に戻る</a>
+  </div>
+</div>
+{% endblock %} 

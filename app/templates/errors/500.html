@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>サーバーエラー</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .error-container {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 40px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #dc3545;
+            margin-bottom: 20px;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #007bff;
+            text-decoration: none;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        .error-details {
+            margin-top: 20px;
+            padding: 15px;
+            background: #fff;
+            border-radius: 4px;
+            border-left: 4px solid #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <div class="error-container">
+        <h1>サーバーエラーが発生しました</h1>
+        <p>申し訳ありませんが、サーバーで問題が発生しました。</p>
+        <div class="error-details">
+            <p>エラーの詳細はサーバーのログに記録されています。</p>
+            {% if config['DEBUG'] %}
+            <p>デバッグ情報:</p>
+            <pre>{{ error }}</pre>
+            {% endif %}
+        </div>
+        <a href="{{ url_for('main.index') }}" class="back-link">ホームページに戻る</a>
+    </div>
+</body>
+</html> 

@@ -1,0 +1,33 @@
+<!-- 画像プレビューモーダル -->
+<div class="modal fade" id="imagePreviewModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">画像プレビュー</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-0">
+                <div class="image-preview-container">
+                    <img id="previewImage" src="" alt="プレビュー画像" class="img-fluid">
+                    <div class="image-preview-controls">
+                        <button class="btn btn-light" id="zoomIn">
+                            <i class="bi bi-zoom-in"></i>
+                        </button>
+                        <button class="btn btn-light" id="zoomOut">
+                            <i class="bi bi-zoom-out"></i>
+                        </button>
+                        <button class="btn btn-light" id="rotateLeft">
+                            <i class="bi bi-arrow-counterclockwise"></i>
+                        </button>
+                        <button class="btn btn-light" id="rotateRight">
+                            <i class="bi bi-arrow-clockwise"></i>
+                        </button>
+                        <a href="#" class="btn btn-light" id="downloadImage" download>
+                            <i class="bi bi-download"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

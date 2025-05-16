@@ -1,0 +1,598 @@
+{% extends "base.html" %}
+
+{% block title %}チャット - {{ chat_room.get_other_user(current_user.id).username }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --primary-color: #2c3e50;
+        --secondary-color: #34495e;
+        --accent-color: #3498db;
+        --success-color: #28a745;
+        --danger-color: #dc3545;
+        --background-color: #f8f9fa;
+        --card-background: #ffffff;
+        --text-primary: #2c3e50;
+        --text-secondary: #7f8c8d;
+        --border-color: #ecf0f1;
+        --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+        --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+        --transition-base: all 0.2s ease;
+        --spacing-xs: 0.5rem;
+        --spacing-sm: 1rem;
+        --spacing-md: 1.5rem;
+        --spacing-lg: 2rem;
+        --border-radius: 0.5rem;
+    }
+
+    .chat-container {
+        max-width: 800px;
+        margin: var(--spacing-lg) auto;
+        background: var(--card-background);
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow-md);
+        height: calc(100vh - 200px);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+    .chat-header {
+        padding: var(--spacing-md);
+        background: var(--card-background);
+        border-bottom: 1px solid var(--border-color);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .chat-header-user {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-sm);
+    }
+
+    .user-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+    .username {
+        font-size: 1.1rem;
+        font-weight: 500;
+        color: var(--text-primary);
+    }
+
+    .btn-outline-secondary {
+        color: var(--text-secondary);
+        border: 1px solid var(--border-color);
+        padding: var(--spacing-xs) var(--spacing-sm);
+        border-radius: var(--border-radius);
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xs);
+        text-decoration: none;
+        transition: var(--transition-base);
+        background: transparent;
+    }
+
+    .btn-outline-secondary:hover {
+        background-color: var(--background-color);
+        color: var(--text-primary);
+    }
+
+    .chat-messages {
+        flex: 1;
+        overflow-y: auto;
+        padding: var(--spacing-md);
+        background-color: var(--background-color);
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-sm);
+    }
+
+    .message {
+        display: flex;
+        align-items: flex-start;
+        gap: var(--spacing-sm);
+        max-width: 80%;
+    }
+
+    .message.sent {
+        flex-direction: row-reverse;
+        align-self: flex-end;
+    }
+
+    .message-avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        overflow: hidden;
+        flex-shrink: 0;
+    }
+
+    .message-avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .message-content {
+        background: var(--card-background);
+        padding: var(--spacing-sm) var(--spacing-md);
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow-sm);
+    }
+
+    .message.sent .message-content {
+        background: var(--accent-color);
+        color: white;
+    }
+
+    .message-text {
+        margin-bottom: var(--spacing-xs);
+        word-break: break-word;
+    }
+
+    .message-time {
+        font-size: 0.8rem;
+        color: var(--text-secondary);
+    }
+
+    .message.sent .message-time {
+        color: rgba(255, 255, 255, 0.8);
+    }
+
+    .chat-input {
+        padding: var(--spacing-md);
+        background: var(--card-background);
+        border-top: 1px solid var(--border-color);
+    }
+
+    .chat-input form {
+        display: flex;
+        gap: var(--spacing-sm);
+    }
+
+    .chat-input input {
+        flex: 1;
+        padding: var(--spacing-sm) var(--spacing-md);
+        border: 1px solid var(--border-color);
+        border-radius: var(--border-radius);
+        font-size: 1rem;
+        transition: var(--transition-base);
+    }
+
+    .chat-input input:focus {
+        outline: none;
+        border-color: var(--accent-color);
+        box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+    }
+
+    .chat-input button {
+        background: var(--accent-color);
+        color: white;
+        border: none;
+        padding: var(--spacing-sm) var(--spacing-lg);
+        border-radius: var(--border-radius);
+        font-weight: 500;
+        cursor: pointer;
+        transition: var(--transition-base);
+    }
+
+    .chat-input button:hover {
+        background: var(--primary-color);
+    }
+
+    @media (max-width: 768px) {
+        .chat-container {
+            margin: 0;
+            height: calc(100vh - 120px);
+            border-radius: 0;
+        }
+
+        .message {
+            max-width: 90%;
+        }
+
+        .chat-input {
+            padding: var(--spacing-sm);
+        }
+    }
+
+    .message-meta {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 5px;
+        margin-top: 4px;
+        font-size: 0.8rem;
+        color: var(--text-secondary);
+    }
+
+    .read-status {
+        display: inline-flex;
+        align-items: center;
+        margin-left: 5px;
+    }
+
+    .read-status i {
+        font-size: 0.9rem;
+    }
+
+    .message.sent .read-status[data-read="true"] i {
+        color: var(--accent-color);
+    }
+
+    .message.sent .read-status[data-read="false"] i {
+        color: var(--text-secondary);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="chat-container">
+    <div class="chat-header">
+        <div class="chat-header-user">
+          {% set other_user = chat_room.get_other_user(current_user.id) %}
+          {% if other_user is mapping %}
+            {% if other_user.avatar_url and 'default_avatar.png' not in other_user.avatar_url %}
+              <img src="{{ other_user.avatar_url }}" alt="{{ other_user.username }}" class="user-avatar">
+            {% else %}
+              <i class="fas fa-user user-avatar" style="font-size:40px; color:#3498db;"></i>
+            {% endif %}
+            {% if other_user.user_type == 'company' and other_user.company and other_user.company.name %}
+              <span class="username">{{ other_user.company.name }}</span>
+            {% elif other_user.user_type == 'successor' and other_user.successor and other_user.successor.name %}
+              <span class="username">{{ other_user.successor.name }}</span>
+            {% else %}
+              <span class="username">{{ other_user.username }}</span>
+            {% endif %}
+          {% else %}
+            {% set avatar_url = other_user.get_avatar_url() %}
+            {% if avatar_url and 'default_avatar.png' not in avatar_url %}
+              <img src="{{ avatar_url }}" alt="{{ other_user.username }}" class="user-avatar">
+            {% else %}
+              <i class="fas fa-user user-avatar" style="font-size:40px; color:#3498db;"></i>
+            {% endif %}
+            {% if other_user.is_company and other_user.company and other_user.company.name %}
+              <span class="username">{{ other_user.company.name }}</span>
+            {% elif other_user.is_successor and other_user.successor and other_user.successor.name %}
+              <span class="username">{{ other_user.successor.name }}</span>
+            {% else %}
+              <span class="username">{{ other_user.username }}</span>
+            {% endif %}
+          {% endif %}
+        </div>
+        <div class="chat-header-actions">
+            <a href="{{ url_for('chat.chat_list') }}" class="btn-outline-secondary">
+                <i class="fas fa-arrow-left"></i>
+                戻る
+            </a>
+        </div>
+    </div>
+
+    <div class="chat-messages" id="chat-messages">
+        {% for message in messages %}
+        <div class="message {% if message.sender_id == current_user.id %}sent{% else %}received{% endif %}" data-message-id="{{ message.id }}">
+            {% if message.sender_id != current_user.id %}
+            <div class="message-avatar">
+                {% if message.sender is mapping %}
+                  {% if message.sender.avatar_url and 'default_avatar.png' not in message.sender.avatar_url %}
+                    <img src="{{ message.sender.avatar_url }}" alt="{{ message.sender.username }}" style="color: #3498db;">
+                  {% else %}
+                    <i class="fas fa-user" style="color: #3498db; font-size: 1.5em;"></i>
+                  {% endif %}
+                {% else %}
+                  {% set avatar_url = message.sender.get_avatar_url() %}
+                  {% if avatar_url and 'default_avatar.png' not in avatar_url %}
+                    <img src="{{ avatar_url }}" alt="{{ message.sender.username }}" style="color: #3498db;">
+                  {% else %}
+                    <i class="fas fa-user" style="color: #3498db; font-size: 1.5em;"></i>
+                  {% endif %}
+                {% endif %}
+            </div>
+            {% endif %}
+            <div class="message-content">
+                <div class="message-text">{{ message.content }}</div>
+                <div class="message-meta">
+                    <span class="message-time">
+                        {{ message.created_at.strftime('%Y-%m-%d %H:%M') }}
+                    </span>
+                    {% if message.sender_id == current_user.id %}
+                    <span class="read-status" data-read="{{ message.is_read|lower }}">
+                        {% if message.is_read %}
+                        <i class="fas fa-check-double"></i> <span class="text-white">既読</span>
+                        {% else %}
+                        <i class="fas fa-check"></i> <span class="text-white">未読</span>
+                        {% endif %}
+                    </span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="chat-input">
+        <form id="message-form" method="POST">
+            <input type="text" id="message-input" name="content" placeholder="メッセージを入力..." required>
+            <button type="submit">送信</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+{{ super() }}
+<!-- Socket.IOクライアントをCDNから先に読み込む -->
+<script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const roomId = '{{ chat_room.id }}';
+        const currentUserId = '{{ current_user.id }}';
+        const messagesContainer = document.getElementById('chat-messages');
+        const messageForm = document.getElementById('message-form');
+        const messageInput = document.getElementById('message-input');
+        
+        // WebSocket接続の初期化
+        const socket = io({
+            transports: ['websocket'],
+            reconnection: true,
+            reconnectionAttempts: 5,
+            reconnectionDelay: 1000
+        });
+        
+        // デバッグ用の変数
+        const DEBUG = true;
+        function debugLog(event, data) {
+            if (DEBUG) {
+                console.log(`[${new Date().toISOString()}] [${event}]`, data);
+            }
+        }
+        
+        // 接続イベントのリスナー
+        socket.on('connect', function() {
+            debugLog('接続', 'ソケット接続完了');
+            joinRoom(roomId);
+        });
+        
+        // 接続エラーのリスナー
+        socket.on('connect_error', function(error) {
+            debugLog('エラー', `接続エラー: ${error}`);
+            // 5秒後に再接続を試みる
+            setTimeout(() => {
+                debugLog('再接続試行', '再接続を試みています...');
+                socket.connect();
+            }, 5000);
+        });
+
+        // 再接続成功時のリスナー
+        socket.on('reconnect', function(attemptNumber) {
+            debugLog('再接続成功', { '試行回数': attemptNumber });
+            joinRoom(roomId);
+        });
+
+        // 再接続失敗時のリスナー
+        socket.on('reconnect_failed', function() {
+            debugLog('再接続失敗', '全ての再接続試行が失敗しました');
+        });
+        
+        // チャットルームに参加
+        function joinRoom(roomId) {
+            debugLog('ルーム参加試行', { 'ルームID': roomId });
+            socket.emit('join_chat', {
+                room_id: roomId
+            });
+        }
+        
+        // join_chat成功後のリスナー
+        socket.on('join_chat_success', function(data) {
+            debugLog('ルーム参加成功', data);
+            
+            // チャットページを開いたことを通知
+            const pageOpenedData = {
+                room_id: roomId,
+                user_id: currentUserId,
+                timestamp: new Date().toISOString()
+            };
+            debugLog('ページ開封通知送信中', pageOpenedData);
+            
+            // 少し遅延を入れて確実にルーム参加後に送信
+            setTimeout(() => {
+                socket.emit('chat_page_opened', pageOpenedData);
+                debugLog('ページ開封通知送信完了', pageOpenedData);
+
+                // 未読メッセージを全て既読にする
+                const unreadMessages = document.querySelectorAll('.message.received');
+                const unreadMessageIds = Array.from(unreadMessages).map(msg => msg.dataset.messageId);
+                
+                if (unreadMessageIds.length > 0) {
+                    debugLog('未読メッセージを既読にします', { 'メッセージID一覧': unreadMessageIds });
+                    unreadMessageIds.forEach(messageId => {
+                        socket.emit('mark_as_read', {
+                            message_id: messageId,
+                            chat_room_id: roomId
+                        });
+                    });
+                }
+            }, 500);
+        });
+        
+        // 既読状態更新のリスナー
+        socket.on('messages_read', function(data) {
+            debugLog('既読状態更新受信', data);
+            try {
+                if (!data.message_ids) {
+                    debugLog('既読状態更新エラー', 'メッセージIDが含まれていません');
+                    return;
+                }
+                
+                debugLog('メッセージ更新中', {
+                    '更新数': data.message_ids.length,
+                    'メッセージID': data.message_ids,
+                    '既読者': data.reader_id
+                });
+                
+                data.message_ids.forEach(function(messageId) {
+                    const messageElement = document.querySelector(`.message[data-message-id="${messageId}"]`);
+                    debugLog('メッセージ更新', { 'メッセージID': messageId, '要素発見': !!messageElement });
+                    
+                    if (messageElement) {
+                        const readStatus = messageElement.querySelector('.read-status');
+                        if (readStatus) {
+                            const wasRead = readStatus.getAttribute('data-read') === 'true';
+                            if (!wasRead) {
+                                readStatus.setAttribute('data-read', 'true');
+                                readStatus.innerHTML = '<i class="fas fa-check-double"></i> <span class="text-white">既読</span>';
+                                debugLog('メッセージ状態更新完了', { 'メッセージID': messageId, '前の状態': '未読', '新しい状態': '既読' });
+                            } else {
+                                debugLog('メッセージ既読済み', { 'メッセージID': messageId });
+                            }
+                        } else {
+                            debugLog('既読状態要素未発見', { 'メッセージID': messageId, '要素HTML': messageElement.innerHTML });
+                        }
+                    } else {
+                        debugLog('メッセージ要素未発見', { 'メッセージID': messageId });
+                    }
+                });
+            } catch (error) {
+                debugLog('既読状態更新エラー', {
+                    'エラー': error.toString(),
+                    'スタックトレース': error.stack
+                });
+            }
+        });
+        
+        // メッセージ既読状態の管理
+        let lastReadTimestamp = null;
+        let isPageVisible = true;
+
+        // ページの可視性変更を監視
+        document.addEventListener('visibilitychange', function() {
+            isPageVisible = document.visibilityState === 'visible';
+            debugLog('VISIBILITY_CHANGE', { isPageVisible });
+            
+            if (isPageVisible && socket.connected) {
+                sendReadStatus();
+            }
+        });
+
+        // 既読状態を送信
+        function sendReadStatus() {
+            const currentTimestamp = new Date().toISOString();
+            if (!lastReadTimestamp || currentTimestamp > lastReadTimestamp) {
+                const readData = {
+                    room_id: roomId,
+                    user_id: currentUserId,
+                    timestamp: currentTimestamp
+                };
+                debugLog('SEND_READ_STATUS', readData);
+                socket.emit('chat_page_opened', readData);
+                lastReadTimestamp = currentTimestamp;
+            }
+        }
+
+        // 定期的な既読状態の更新（5分ごと）
+        setInterval(() => {
+            if (isPageVisible && socket.connected) {
+                sendReadStatus();
+            }
+        }, 300000);
+
+        // 新しいメッセージのリスナー
+        socket.on('new_message', function(data) {
+            debugLog('新規メッセージ受信', data);
+            try {
+                const messageDiv = document.createElement('div');
+                const isSelf = data.sender_id === parseInt(currentUserId);
+                messageDiv.className = `message ${isSelf ? 'sent' : 'received'}`;
+                messageDiv.dataset.messageId = data.id;
+                
+                let avatarHtml = '';
+                if (!isSelf) {
+                    if (data.sender.avatar_url && !data.sender.avatar_url.includes('default_avatar.png')) {
+                        avatarHtml = `<img src="${data.sender.avatar_url}" alt="${data.sender.username}" style="color: #3498db;">`;
+                    } else {
+                        avatarHtml = `<i class="fas fa-user" style="color: #3498db; font-size: 1.5em;"></i>`;
+                    }
+                }
+                
+                const messageDate = new Date(data.created_at);
+                const formattedDate = messageDate.toLocaleString('ja-JP', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: false
+                });
+                
+                const readStatus = data.sender_id === parseInt(currentUserId) ? 
+                    `<span class="read-status" data-read="${data.is_read}">
+                        ${data.is_read ? '<i class="fas fa-check-double"></i> <span class="text-white">既読</span>' : '<i class="fas fa-check"></i> <span class="text-white">未読</span>'}
+                    </span>` : '';
+                
+                messageDiv.innerHTML = `
+                    ${!isSelf ? `<div class=\"message-avatar\">${avatarHtml}</div>` : ''}
+                    <div class=\"message-content\">
+                        <div class=\"message-text\">${data.content}</div>
+                        <div class=\"message-meta\">
+                            <span class=\"message-time\">${formattedDate}</span>
+                            ${readStatus}
+                        </div>
+                    </div>`;
+                
+                messagesContainer.appendChild(messageDiv);
+                scrollToBottom();
+                debugLog('新規メッセージ追加完了', { 'メッセージID': data.id });
+
+                // 受信したメッセージが自分宛ての場合、既読にする
+                if (data.recipient_id === parseInt(currentUserId)) {
+                    debugLog('メッセージを既読にします', { 'メッセージID': data.id });
+                    socket.emit('mark_as_read', {
+                        message_id: data.id,
+                        chat_room_id: roomId
+                    });
+                }
+
+                // メッセージ表示後に既読状態を更新
+                if (isPageVisible && socket.connected) {
+                    setTimeout(sendReadStatus, 1000);
+                }
+            } catch (error) {
+                debugLog('新規メッセージエラー', {
+                    'エラー': error.toString(),
+                    'スタックトレース': error.stack,
+                    'データ': data
+                });
+            }
+        });
+        
+        // メッセージ送信処理
+        messageForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const content = messageInput.value.trim();
+            if (!content) return;
+            
+            console.log('[送信] メッセージ送信を試みます:', content);
+            socket.emit('send_message', {
+                room_id: roomId,
+                content: content
+            });
+            
+            messageInput.value = '';
+        });
+        
+        // スクロール処理
+        function scrollToBottom() {
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+        
+        // 初期スクロール
+        scrollToBottom();
+    });
+</script>
+{% endblock %} 

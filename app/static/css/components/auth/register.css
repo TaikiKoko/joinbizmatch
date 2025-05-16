@@ -1,0 +1,103 @@
+/* Register Page Styles */
+.register-container {
+    max-width: 580px;
+    margin: calc(var(--spacing-unit) * 4) auto;
+    padding: 0 var(--container-padding);
+}
+
+.register-header {
+    text-align: center;
+    margin-bottom: calc(var(--spacing-unit) * 3);
+}
+
+.register-title {
+    font-size: calc(var(--font-size-base) * 2);
+    color: var(--dark-color);
+    margin-bottom: var(--spacing-unit);
+}
+
+.register-subtitle {
+    color: var(--secondary-color);
+    font-size: var(--font-size-base);
+}
+
+.register-card {
+    background: #fff;
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow);
+    padding: calc(var(--spacing-unit) * 3);
+}
+
+.register-form {
+    margin-bottom: calc(var(--spacing-unit) * 2);
+}
+
+.register-terms {
+    margin: calc(var(--spacing-unit) * 2) 0;
+    padding: var(--spacing-unit);
+    background-color: var(--light-color);
+    border-radius: var(--border-radius);
+}
+
+.register-terms .form-check {
+    margin-bottom: 0;
+}
+
+.register-submit {
+    margin-top: calc(var(--spacing-unit) * 2);
+}
+
+.register-footer {
+    text-align: center;
+    margin-top: calc(var(--spacing-unit) * 2);
+}
+
+.register-footer p {
+    margin-bottom: calc(var(--spacing-unit) * 0.5);
+}
+
+.register-footer a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.register-footer a:hover {
+    text-decoration: underline;
+}
+
+/* User Type Specific Styles */
+.register-company .register-title {
+    color: var(--primary-color);
+}
+
+.register-successor .register-title {
+    color: var(--info-color);
+}
+
+/* Form Section */
+.register-section {
+    margin-bottom: calc(var(--spacing-unit) * 3);
+}
+
+.register-section-title {
+    font-size: var(--font-size-lg);
+    color: var(--dark-color);
+    margin-bottom: calc(var(--spacing-unit) * 2);
+    padding-bottom: var(--spacing-unit);
+    border-bottom: 1px solid var(--border-color);
+}
+
+/* Responsive Design */
+@media (max-width: var(--breakpoint-sm)) {
+    .register-container {
+        margin: var(--spacing-unit) auto;
+    }
+
+    .register-card {
+        padding: calc(var(--spacing-unit) * 2);
+    }
+
+    .register-title {
+        font-size: calc(var(--font-size-base) * 1.5);
+    }
+} 

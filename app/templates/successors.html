@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>後継者一覧</h2>
+    <div class="row">
+        {% for successor in successors %}
+        <div class="col-md-4 mb-4">
+            <div class="company-card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ successor.username }}</h5>
+                    <p class="card-text">
+                        メールアドレス: {{ successor.email }}<br>
+                        登録日: {{ successor.created_at.strftime('%Y-%m-%d') }}
+                    </p>
+                    <div class="text-center">
+                        <a href="{{ url_for('successor_detail', id=successor.id) }}" class="btn btn-outline-primary">詳細を見る</a>
+                        <button class="btn btn-outline-success ms-2 chat-btn" onclick="startChat('{{ successor.user_id }}', '{{ successor.username }}')" title="チャットを開始">
+                            <i class="fas fa-comments"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.company-card {
+    background: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.chat-btn {
+    border: 2px solid #dc3545 !important;
+    color: #dc3545 !important;
+}
+
+.chat-btn:hover {
+    background-color: #dc3545 !important;
+    color: white !important;
+}
+
+.chat-btn i {
+    color: #dc3545;
+}
+
+.chat-btn:hover i {
+    color: white;
+}
+</style>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function startChat(successorId, successorName) {
+    window.location.href = "{{ url_for('chat.start', user_id=0) }}".replace('0', successorId);
+}
+</script>
+{% endblock %} 

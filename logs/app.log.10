@@ -1,0 +1,112 @@
+2025-04-06 18:03:34,426 INFO: アプリケーション初期化開始 [in c:\Users\Takey\OneDrive\Desktop\Cursor\intoppy_time_ok\app\__init__.py:68]
+2025-04-06 18:03:34,429 DEBUG: 拡張機能の初期化を開始 [in c:\Users\Takey\OneDrive\Desktop\Cursor\intoppy_time_ok\app\__init__.py:72]
+2025-04-06 18:03:34,510 DEBUG: 拡張機能の初期化が完了 [in c:\Users\Takey\OneDrive\Desktop\Cursor\intoppy_time_ok\app\__init__.py:82]
+2025-04-06 18:03:34,510 DEBUG: モデルのインポートを開始 [in c:\Users\Takey\OneDrive\Desktop\Cursor\intoppy_time_ok\app\__init__.py:85]
+2025-04-06 18:03:34,562 DEBUG: モデルのインポートが完了 [in c:\Users\Takey\OneDrive\Desktop\Cursor\intoppy_time_ok\app\__init__.py:96]
+2025-04-06 18:03:34,562 DEBUG: Blueprintの登録を開始 [in c:\Users\Takey\OneDrive\Desktop\Cursor\intoppy_time_ok\app\__init__.py:99]
+2025-04-06 18:03:34,638 DEBUG: Blueprintの登録が完了 [in c:\Users\Takey\OneDrive\Desktop\Cursor\intoppy_time_ok\app\__init__.py:119]
+2025-04-06 18:03:34,664 INFO: アプリケーション初期化完了 [in c:\Users\Takey\OneDrive\Desktop\Cursor\intoppy_time_ok\app\__init__.py:142]
+2025-04-06 18:03:36,570 INFO: アプリケーション初期化開始 [in c:\Users\Takey\OneDrive\Desktop\Cursor\intoppy_time_ok\app\__init__.py:68]
+2025-04-06 18:03:36,572 DEBUG: 拡張機能の初期化を開始 [in c:\Users\Takey\OneDrive\Desktop\Cursor\intoppy_time_ok\app\__init__.py:72]
+2025-04-06 18:03:36,644 DEBUG: 拡張機能の初期化が完了 [in c:\Users\Takey\OneDrive\Desktop\Cursor\intoppy_time_ok\app\__init__.py:82]
+2025-04-06 18:03:36,647 DEBUG: モデルのインポートを開始 [in c:\Users\Takey\OneDrive\Desktop\Cursor\intoppy_time_ok\app\__init__.py:85]
+2025-04-06 18:03:36,694 DEBUG: モデルのインポートが完了 [in c:\Users\Takey\OneDrive\Desktop\Cursor\intoppy_time_ok\app\__init__.py:96]
+2025-04-06 18:03:36,694 DEBUG: Blueprintの登録を開始 [in c:\Users\Takey\OneDrive\Desktop\Cursor\intoppy_time_ok\app\__init__.py:99]
+2025-04-06 18:03:36,775 DEBUG: Blueprintの登録が完了 [in c:\Users\Takey\OneDrive\Desktop\Cursor\intoppy_time_ok\app\__init__.py:119]
+2025-04-06 18:03:36,802 INFO: アプリケーション初期化完了 [in c:\Users\Takey\OneDrive\Desktop\Cursor\intoppy_time_ok\app\__init__.py:142]
+2025-04-06 18:03:44,124 ERROR: 未処理の例外: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again. [in C:\Users\Takey\OneDrive\Desktop\Cursor\intoppy_time_ok\app\__init__.py:137]
+Traceback (most recent call last):
+  File "C:\Users\Takey\AppData\Local\Programs\Python\Python312\Lib\site-packages\flask\app.py", line 1484, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Takey\AppData\Local\Programs\Python\Python312\Lib\site-packages\flask\app.py", line 1458, in dispatch_request
+    self.raise_routing_exception(req)
+  File "C:\Users\Takey\AppData\Local\Programs\Python\Python312\Lib\site-packages\flask\app.py", line 1440, in raise_routing_exception
+    raise request.routing_exception  # type: ignore
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Takey\AppData\Local\Programs\Python\Python312\Lib\site-packages\flask\ctx.py", line 353, in match_request
+    result = self.url_adapter.match(return_rule=True)  # type: ignore
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Takey\AppData\Local\Programs\Python\Python312\Lib\site-packages\werkzeug\routing\map.py", line 629, in match
+    raise NotFound() from None
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2025-04-06 18:03:46,528 ERROR: 未処理の例外: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again. [in C:\Users\Takey\OneDrive\Desktop\Cursor\intoppy_time_ok\app\__init__.py:137]
+Traceback (most recent call last):
+  File "C:\Users\Takey\AppData\Local\Programs\Python\Python312\Lib\site-packages\flask\app.py", line 1484, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Takey\AppData\Local\Programs\Python\Python312\Lib\site-packages\flask\app.py", line 1458, in dispatch_request
+    self.raise_routing_exception(req)
+  File "C:\Users\Takey\AppData\Local\Programs\Python\Python312\Lib\site-packages\flask\app.py", line 1440, in raise_routing_exception
+    raise request.routing_exception  # type: ignore
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Takey\AppData\Local\Programs\Python\Python312\Lib\site-packages\flask\ctx.py", line 353, in match_request
+    result = self.url_adapter.match(return_rule=True)  # type: ignore
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Takey\AppData\Local\Programs\Python\Python312\Lib\site-packages\werkzeug\routing\map.py", line 629, in match
+    raise NotFound() from None
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2025-04-06 18:03:47,687 ERROR: 未処理の例外: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again. [in C:\Users\Takey\OneDrive\Desktop\Cursor\intoppy_time_ok\app\__init__.py:137]
+Traceback (most recent call last):
+  File "C:\Users\Takey\AppData\Local\Programs\Python\Python312\Lib\site-packages\flask\app.py", line 1484, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Takey\AppData\Local\Programs\Python\Python312\Lib\site-packages\flask\app.py", line 1458, in dispatch_request
+    self.raise_routing_exception(req)
+  File "C:\Users\Takey\AppData\Local\Programs\Python\Python312\Lib\site-packages\flask\app.py", line 1440, in raise_routing_exception
+    raise request.routing_exception  # type: ignore
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Takey\AppData\Local\Programs\Python\Python312\Lib\site-packages\flask\ctx.py", line 353, in match_request
+    result = self.url_adapter.match(return_rule=True)  # type: ignore
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Takey\AppData\Local\Programs\Python\Python312\Lib\site-packages\werkzeug\routing\map.py", line 629, in match
+    raise NotFound() from None
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2025-04-06 18:03:49,026 ERROR: 未処理の例外: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again. [in C:\Users\Takey\OneDrive\Desktop\Cursor\intoppy_time_ok\app\__init__.py:137]
+Traceback (most recent call last):
+  File "C:\Users\Takey\AppData\Local\Programs\Python\Python312\Lib\site-packages\flask\app.py", line 1484, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Takey\AppData\Local\Programs\Python\Python312\Lib\site-packages\flask\app.py", line 1458, in dispatch_request
+    self.raise_routing_exception(req)
+  File "C:\Users\Takey\AppData\Local\Programs\Python\Python312\Lib\site-packages\flask\app.py", line 1440, in raise_routing_exception
+    raise request.routing_exception  # type: ignore
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Takey\AppData\Local\Programs\Python\Python312\Lib\site-packages\flask\ctx.py", line 353, in match_request
+    result = self.url_adapter.match(return_rule=True)  # type: ignore
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Takey\AppData\Local\Programs\Python\Python312\Lib\site-packages\werkzeug\routing\map.py", line 629, in match
+    raise NotFound() from None
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2025-04-06 18:03:51,447 ERROR: 未処理の例外: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again. [in C:\Users\Takey\OneDrive\Desktop\Cursor\intoppy_time_ok\app\__init__.py:137]
+Traceback (most recent call last):
+  File "C:\Users\Takey\AppData\Local\Programs\Python\Python312\Lib\site-packages\flask\app.py", line 1484, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Takey\AppData\Local\Programs\Python\Python312\Lib\site-packages\flask\app.py", line 1458, in dispatch_request
+    self.raise_routing_exception(req)
+  File "C:\Users\Takey\AppData\Local\Programs\Python\Python312\Lib\site-packages\flask\app.py", line 1440, in raise_routing_exception
+    raise request.routing_exception  # type: ignore
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Takey\AppData\Local\Programs\Python\Python312\Lib\site-packages\flask\ctx.py", line 353, in match_request
+    result = self.url_adapter.match(return_rule=True)  # type: ignore
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Takey\AppData\Local\Programs\Python\Python312\Lib\site-packages\werkzeug\routing\map.py", line 629, in match
+    raise NotFound() from None
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+2025-04-06 18:13:38,062 ERROR: 未処理の例外: 400 Bad Request: The browser (or proxy) sent a request that this server could not understand. [in c:\Users\Takey\OneDrive\Desktop\Cursor\intoppy_time_ok\app\__init__.py:137]
+Traceback (most recent call last):
+  File "C:\Users\Takey\AppData\Local\Programs\Python\Python312\Lib\site-packages\flask\app.py", line 1484, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Takey\AppData\Local\Programs\Python\Python312\Lib\site-packages\flask\app.py", line 1458, in dispatch_request
+    self.raise_routing_exception(req)
+  File "C:\Users\Takey\AppData\Local\Programs\Python\Python312\Lib\site-packages\flask\app.py", line 1440, in raise_routing_exception
+    raise request.routing_exception  # type: ignore
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Takey\AppData\Local\Programs\Python\Python312\Lib\site-packages\flask\ctx.py", line 353, in match_request
+    result = self.url_adapter.match(return_rule=True)  # type: ignore
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Takey\AppData\Local\Programs\Python\Python312\Lib\site-packages\werkzeug\routing\map.py", line 627, in match
+    raise WebsocketMismatch() from None
+werkzeug.routing.exceptions.WebsocketMismatch: 400 Bad Request: The browser (or proxy) sent a request that this server could not understand.

@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}企業プロフィール編集{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mb-4">企業プロフィール編集</h1>
+    
+    <form method="post" enctype="multipart/form-data">
+        <!-- 基本情報 -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h2><i class="fas fa-building"></i> 基本情報</h2>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <label for="name" class="form-label">企業名 <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="name" name="name" value="{{ company.name }}" required>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="industry" class="form-label">業種</label>
+                    <select class="form-select" id="industry" name="industry">
+                        <option value="">選択してください</option>
+                        {% for value, label in industry_choices.items() %}
+                            <option value="{{ value }}" {% if company.industry == value %}selected{% endif %}>{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="representative" class="form-label">代表者名</label>
+                    <input type="text" class="form-control" id="representative" name="representative" value="{{ company.representative }}">
+                </div>
+                
+                <div class="mb-3">
+                    <label for="established_year" class="form-label">設立年</label>
+                    <input type="number" class="form-control" id="established_year" name="established_year" value="{{ company.established_year }}">
+                </div>
+                
+                <div class="mb-3">
+                    <label for="address" class="form-label">所在地</label>
+                    <input type="text" class="form-control" id="address" name="address" value="{{ company.address }}">
+                </div>
+            </div>
+        </div>
+        
+        <!-- 送信ボタン -->
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary btn-lg">
+                <i class="fas fa-save"></i> 変更を保存する
+            </button>
+            <a href="{{ url_for('company_profile') }}" class="btn btn-outline-secondary btn-lg ms-2">
+                キャンセル
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %} 

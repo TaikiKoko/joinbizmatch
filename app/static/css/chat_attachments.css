@@ -1,0 +1,138 @@
+/* メッセージ内の添付ファイルのスタイル */
+.message-attachments {
+    margin-top: 0.5rem;
+}
+
+.attachment {
+    margin-bottom: 0.5rem;
+}
+
+.attachment:last-child {
+    margin-bottom: 0;
+}
+
+/* 画像添付ファイルのスタイル */
+.attachment-image {
+    max-width: 300px;
+}
+
+.attachment-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* ファイル添付のスタイル */
+.attachment-file {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem;
+    background-color: var(--light-color);
+    border-radius: 0.5rem;
+    border: 1px solid var(--border-color);
+}
+
+.attachment-file i {
+    font-size: 1.5rem;
+    margin-right: 0.75rem;
+    color: var(--primary-color);
+}
+
+.attachment-info {
+    flex: 1;
+}
+
+.attachment-name {
+    font-size: 0.875rem;
+    color: var(--text-color);
+    margin-bottom: 0.25rem;
+    word-break: break-all;
+}
+
+.attachment-size {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+/* ファイルプレビューのスタイル */
+.file-preview {
+    background-color: var(--light-color);
+    border-radius: 0.5rem;
+    padding: 0.75rem;
+}
+
+.selected-files {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.selected-file {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem;
+    background-color: white;
+    border-radius: 0.25rem;
+    border: 1px solid var(--border-color);
+}
+
+.selected-file i {
+    font-size: 1.25rem;
+    margin-right: 0.5rem;
+    color: var(--primary-color);
+}
+
+.selected-file-info {
+    flex: 1;
+}
+
+.selected-file-name {
+    font-size: 0.875rem;
+    color: var(--text-color);
+}
+
+.selected-file-size {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.selected-file-remove {
+    margin-left: 0.5rem;
+    color: var(--danger-color);
+    cursor: pointer;
+}
+
+/* プログレスバーのスタイル */
+.progress {
+    height: 0.5rem;
+    background-color: var(--border-color);
+    border-radius: 0.25rem;
+    overflow: hidden;
+}
+
+.progress-bar {
+    background-color: var(--primary-color);
+    transition: width 0.3s ease;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 576px) {
+    .attachment-image {
+        max-width: 100%;
+    }
+    
+    .attachment-file {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .attachment-file i {
+        margin-right: 0;
+        margin-bottom: 0.5rem;
+    }
+    
+    .attachment-file .btn {
+        margin-top: 0.5rem;
+    }
+} 

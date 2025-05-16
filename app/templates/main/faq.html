@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% block title %}よくある質問{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="mb-4">よくある質問</h1>
+            
+            <div class="accordion" id="faqAccordion">
+                <!-- アカウント関連 -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#accountFaq">
+                            アカウント関連
+                        </button>
+                    </h2>
+                    <div id="accountFaq" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            <div class="faq-item mb-4">
+                                <h5>Q: アカウントの登録方法を教えてください</h5>
+                                <p>A: トップページの「新規登録」ボタンをクリックし、必要な情報を入力してください。企業アカウントと後継者アカウントのいずれかを選択できます。</p>
+                            </div>
+                            <div class="faq-item mb-4">
+                                <h5>Q: パスワードを忘れてしまいました</h5>
+                                <p>A: ログインページの「パスワードをお忘れの方」をクリックし、登録済みのメールアドレスにパスワードリセット用のリンクを送信します。</p>
+                            </div>
+                            <div class="faq-item">
+                                <h5>Q: アカウントを削除するにはどうすればよいですか？</h5>
+                                <p>A: マイページの「アカウント設定」から削除手続きを行うことができます。削除後はデータの復元ができませんのでご注意ください。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- サービス利用関連 -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#serviceFaq">
+                            サービス利用関連
+                        </button>
+                    </h2>
+                    <div id="serviceFaq" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            <div class="faq-item mb-4">
+                                <h5>Q: メッセージの送信方法を教えてください</h5>
+                                <p>A: 相手のプロフィールページから「メッセージを送る」ボタンをクリックするか、マイページの「メッセージ」から送信できます。</p>
+                            </div>
+                            <div class="faq-item mb-4">
+                                <h5>Q: お気に入り登録は何件までできますか？</h5>
+                                <p>A: お気に入り登録の制限はありません。必要な数だけ登録できます。</p>
+                            </div>
+                            <div class="faq-item">
+                                <h5>Q: ブロック機能の使い方を教えてください</h5>
+                                <p>A: 相手のプロフィールページから「ブロック」ボタンをクリックすることで、そのユーザーとのやり取りを制限できます。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- プライバシー・セキュリティ -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#privacyFaq">
+                            プライバシー・セキュリティ
+                        </button>
+                    </h2>
+                    <div id="privacyFaq" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            <div class="faq-item mb-4">
+                                <h5>Q: 個人情報は安全に管理されていますか？</h5>
+                                <p>A: はい、SSL暗号化通信を使用し、個人情報は厳重に管理されています。詳しくは<a href="{{ url_for('main.privacy_policy') }}">プライバシーポリシー</a>をご確認ください。</p>
+                            </div>
+                            <div class="faq-item mb-4">
+                                <h5>Q: メッセージの内容は暗号化されていますか？</h5>
+                                <p>A: はい、すべてのメッセージは暗号化されて保存・送信されます。</p>
+                            </div>
+                            <div class="faq-item">
+                                <h5>Q: アカウントのセキュリティを強化するには？</h5>
+                                <p>A: 強力なパスワードの使用、二段階認証の有効化、定期的なパスワード変更をお勧めします。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- その他 -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#otherFaq">
+                            その他
+                        </button>
+                    </h2>
+                    <div id="otherFaq" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            <div class="faq-item mb-4">
+                                <h5>Q: お問い合わせの対応時間を教えてください</h5>
+                                <p>A: 平日9:00-18:00（土日祝日を除く）に対応いたします。</p>
+                            </div>
+                            <div class="faq-item mb-4">
+                                <h5>Q: サービス利用料金はかかりますか？</h5>
+                                <p>A: 基本的な機能は無料でご利用いただけます。一部の機能は有料プランでのご利用となります。</p>
+                            </div>
+                            <div class="faq-item">
+                                <h5>Q: よくある質問に載っていない質問があります</h5>
+                                <p>A: <a href="{{ url_for('main.contact') }}">お問い合わせフォーム</a>からご質問ください。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+
+{% block title %}通知一覧{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/notifications.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="notifications-container">
+    <div class="notifications-header">
+        <h1>通知一覧</h1>
+        <div class="notifications-actions">
+            <button id="mark-all-read" class="btn btn-outline-primary">
+                <i class="fas fa-check-double"></i> すべて既読にする
+            </button>
+        </div>
+    </div>
+
+    <div class="notifications-list">
+        {% for notification in notifications.items %}
+            <div class="notification-item {% if not notification.is_read %}unread{% endif %}" data-id="{{ notification.id }}">
+                <div class="notification-content">
+                    <div class="notification-icon">
+                        {% if notification.type == 'message' %}
+                            <i class="fas fa-envelope"></i>
+                        {% elif notification.type == 'favorite' %}
+                            <i class="fas fa-heart"></i>
+                        {% else %}
+                            <i class="fas fa-bell"></i>
+                        {% endif %}
+                    </div>
+                    <div class="notification-text">
+                        <h3>{{ notification.title }}</h3>
+                        <p>{{ notification.message }}</p>
+                        <span class="notification-time">{{ notification.created_at.strftime('%Y/%m/%d %H:%M') }}</span>
+                    </div>
+                </div>
+                {% if not notification.is_read %}
+                    <button class="btn btn-sm btn-outline-secondary mark-read">
+                        <i class="fas fa-check"></i> 既読にする
+                    </button>
+                {% endif %}
+            </div>
+        {% else %}
+            <div class="no-notifications">
+                <i class="fas fa-bell-slash"></i>
+                <p>通知はありません</p>
+            </div>
+        {% endfor %}
+    </div>
+
+    {% if notifications.pages > 1 %}
+        <nav class="notifications-pagination">
+            <ul class="pagination justify-content-center">
+                {% for page in notifications.iter_pages() %}
+                    {% if page %}
+                        <li class="page-item {% if page == notifications.page %}active{% endif %}">
+                            <a class="page-link" href="{{ url_for('notification.list_notifications', page=page) }}">
+                                {{ page }}
+                            </a>
+                        </li>
+                    {% else %}
+                        <li class="page-item disabled">
+                            <span class="page-link">...</span>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </nav>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // 個別の通知を既読にする
+    document.querySelectorAll('.mark-read').forEach(button => {
+        button.addEventListener('click', function() {
+            const notificationItem = this.closest('.notification-item');
+            const notificationId = notificationItem.dataset.id;
+            
+            fetch(`/notifications/mark-read/${notificationId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token() }}'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                notificationItem.classList.remove('unread');
+                this.remove();
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    });
+
+    // すべての通知を既読にする
+    document.getElementById('mark-all-read').addEventListener('click', function() {
+        fetch('/notifications/mark-all-read', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token() }}'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.querySelectorAll('.notification-item').forEach(item => {
+                item.classList.remove('unread');
+            });
+            document.querySelectorAll('.mark-read').forEach(button => {
+                button.remove();
+            });
+        })
+        .catch(error => console.error('Error:', error));
+    });
+});
+</script>
+{% endblock %} 

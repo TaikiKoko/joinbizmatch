@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="事業承継マッチングプラットフォーム - 後継者ログイン">
+    <title>後継者ログイン - M&A Succeed</title>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #1a5276;
+            --primary-light: #2980b9;
+            --primary-dark: #154360;
+            --secondary: #e74c3c;
+            --secondary-light: #ec7063;
+            --secondary-dark: #c0392b;
+            --accent: #f39c12;
+            --accent-light: #f1c40f;
+            --light: #f5f5f5;
+            --light-gray: #ecf0f1;
+            --medium-gray: #bdc3c7;
+            --dark: #2c3e50;
+            --text: #333333;
+            --text-light: #7f8c8d;
+            --success: #27ae60;
+            --danger: #c0392b;
+            --shadow: 0 4px 6px rgba(0,0,0,0.1);
+            --shadow-large: 0 8px 16px rgba(0,0,0,0.1);
+            --border-radius: 8px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Helvetica Neue", "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+            color: var(--text);
+            background-color: var(--light);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            width: 100%;
+        }
+
+        /* Header */
+        .site-header {
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow);
+            padding: 15px 0;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 22px;
+            gap: 8px;
+        }
+
+        .logo-icon {
+            font-size: 28px;
+            color: var(--primary);
+            margin-right: 8px;
+        }
+
+        .logo-text {
+            font-weight: 700;
+            font-size: 22px;
+            color: var(--primary);
+        }
+
+        .logo-tagline {
+            font-size: 12px;
+            color: var(--text-light);
+            display: block;
+            margin-top: -2px;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .nav-button {
+            text-decoration: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-weight: 500;
+            font-size: 13px;
+            transition: var(--transition);
+        }
+
+        .btn-login {
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+
+        .btn-login:hover {
+            background-color: rgba(26, 82, 118, 0.1);
+        }
+
+        .btn-register {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-register:hover {
+            background-color: var(--primary-dark);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 50px 0;
+        }
+
+        .auth-card {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .auth-card-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .auth-card-header h1 {
+            font-size: 24px;
+            color: var(--text);
+            margin: 0;
+        }
+
+        .auth-card-body {
+            padding: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text);
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid var(--medium-gray);
+            border-radius: 4px;
+            font-size: 16px;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .invalid-feedback {
+            color: var(--danger);
+            font-size: 14px;
+            margin-top: 4px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 8px 24px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .auth-links {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .auth-links a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .auth-links a:hover {
+            text-decoration: underline;
+        }
+
+        /* Password Toggle */
+        .password-field {
+            position: relative;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: var(--gray-600);
+        }
+
+        .toggle-password:hover {
+            color: var(--gray-800);
+        }
+
+        /* Footer */
+        .site-footer {
+            background-color: var(--dark);
+            color: var(--white);
+            padding: var(--spacing-xl) 0;
+            margin-top: auto;
+        }
+
+        .footer-content {
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .auth-card {
+                margin: 0 var(--spacing-md);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="site-header">
+        <div class="container header-container">
+            <a href="{{ url_for('main.index') }}" class="logo">
+                <i class="fas fa-handshake logo-icon"></i>
+                <div>
+                    <span class="logo-text">Succeed</span>
+                    <span class="logo-tagline">事業承継マッチング</span>
+                </div>
+            </a>
+            <nav class="nav-menu">
+                <a href="{{ url_for('main.index') }}" class="nav-link">ホーム</a>
+                <a href="{{ url_for('auth.register_successor') }}" class="btn">会員登録</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <div class="auth-card">
+                <div class="auth-card-header">
+                    <h1>後継者ログイン</h1>
+                </div>
+                <div class="auth-card-body">
+                    <form method="POST">
+                        {{ form.csrf_token }}
+                        
+                        <div class="form-group">
+                            {{ form.email.label(class="form-label") }}
+                            {{ form.email(class="form-control") }}
+                            {% if form.email.errors %}
+                            <div class="invalid-feedback">
+                                {% for error in form.email.errors %}
+                                <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form.password.label(class="form-label") }}
+                            <div class="password-field">
+                                {{ form.password(class="form-control") }}
+                                <i class="fas fa-eye-slash toggle-password" onclick="togglePassword(this)"></i>
+                            </div>
+                            {% if form.password.errors %}
+                            <div class="invalid-feedback">
+                                {% for error in form.password.errors %}
+                                <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form.submit(class="btn") }}
+                        </div>
+                    </form>
+
+                    <div class="auth-links">
+                        <p>アカウントをお持ちでない方は<a href="{{ url_for('auth.register_successor') }}">こちら</a></p>
+                        <p>企業としてログインする方は<a href="{{ url_for('auth.login_company') }}">こちら</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2024 M&A Succeed. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+    function togglePassword(icon) {
+        const input = icon.parentElement.querySelector('input');
+        if (input.type === 'password') {
+            input.type = 'text';
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        } else {
+            input.type = 'password';
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        }
+    }
+    </script>
+</body>
+</html> 

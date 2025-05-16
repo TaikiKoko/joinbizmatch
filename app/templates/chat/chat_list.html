@@ -1,0 +1,305 @@
+{% extends "base.html" %}
+
+{% block title %}チャット一覧{% endblock %}
+
+{% block extra_css %}
+<style>
+    .chat-list-container {
+        max-width: 800px;
+        margin: var(--spacing-xl) auto;
+        background: var(--white);
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+    }
+    
+    .chat-list-header {
+        padding: var(--spacing-lg) var(--spacing-xl);
+        border-bottom: 1px solid var(--gray-200);
+        background: var(--white);
+    }
+    
+    .chat-list-header h1 {
+        margin: 0;
+        font-size: 1.5rem;
+        color: var(--text-primary);
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-sm);
+    }
+
+    .chat-list-header h1 i {
+        font-size: 1.25rem;
+        color: var(--primary);
+        background: rgba(74, 144, 226, 0.1);
+        padding: 0.5rem;
+        border-radius: 8px;
+    }
+    
+    .chat-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        background: var(--white);
+    }
+    
+    .chat-item {
+        padding: var(--spacing-lg) var(--spacing-xl);
+        border-bottom: 1px solid var(--gray-200);
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-lg);
+        transition: all 0.2s ease;
+        text-decoration: none;
+        color: inherit;
+        background: var(--white);
+        position: relative;
+    }
+    
+    .chat-item:hover {
+        background-color: var(--gray-100);
+    }
+
+    .chat-item::after {
+        content: '';
+        position: absolute;
+        right: var(--spacing-lg);
+        top: 50%;
+        transform: translateY(-50%);
+        width: 6px;
+        height: 6px;
+        border-top: 2px solid var(--gray-400);
+        border-right: 2px solid var(--gray-400);
+        transform: translateY(-50%) rotate(45deg);
+        opacity: 0;
+        transition: all 0.2s ease;
+    }
+
+    .chat-item:hover::after {
+        opacity: 1;
+        right: var(--spacing-md);
+    }
+    
+    .chat-item:last-child {
+        border-bottom: none;
+    }
+    
+    .user-avatar {
+        width: 52px;
+        height: 52px;
+        border-radius: 50%;
+        background: var(--gray-100);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        overflow: hidden;
+        border: 2px solid var(--gray-200);
+        transition: all 0.2s ease;
+    }
+
+    .chat-item:hover .user-avatar {
+        border-color: var(--primary);
+    }
+    
+    .user-avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    
+    .user-avatar i {
+        font-size: 1.5rem;
+        color: var(--gray-400);
+    }
+    
+    .chat-item-content {
+        flex: 1;
+        min-width: 0;
+        padding-right: var(--spacing-lg);
+    }
+    
+    .chat-item-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: var(--spacing-xs);
+    }
+    
+    .chat-item-name {
+        font-weight: 600;
+        color: var(--text-primary);
+        font-size: 1.1rem;
+    }
+    
+    .chat-item-time {
+        font-size: 0.75rem;
+        color: var(--gray-500);
+        white-space: nowrap;
+    }
+    
+    .chat-item-message {
+        color: var(--text-secondary);
+        font-size: 0.875rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
+    }
+    
+    .chat-item-badge {
+        background-color: var(--primary);
+        color: var(--white);
+        border-radius: 12px;
+        padding: 0.25rem 0.75rem;
+        font-size: 0.75rem;
+        font-weight: 500;
+        margin-left: var(--spacing-sm);
+        box-shadow: 0 2px 4px rgba(74, 144, 226, 0.2);
+    }
+    
+    .no-chats {
+        padding: var(--spacing-xl);
+        text-align: center;
+        background: var(--white);
+    }
+    
+    .no-chats i {
+        font-size: 3rem;
+        color: var(--gray-300);
+        margin-bottom: var(--spacing-md);
+        display: block;
+        background: var(--gray-100);
+        width: 80px;
+        height: 80px;
+        line-height: 80px;
+        border-radius: 50%;
+        margin: 0 auto var(--spacing-lg);
+    }
+    
+    .no-chats p {
+        margin: 0;
+        color: var(--text-secondary);
+        font-size: 1rem;
+    }
+
+    @media (max-width: 768px) {
+        .chat-list-container {
+            margin: 0;
+            border-radius: 0;
+            height: calc(100vh - 60px);
+            box-shadow: none;
+        }
+        
+        .chat-list-header {
+            padding: var(--spacing-lg);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        .chat-item {
+            padding: var(--spacing-lg);
+            gap: var(--spacing-md);
+        }
+        
+        .user-avatar {
+            width: 44px;
+            height: 44px;
+        }
+
+        .chat-item-name {
+            font-size: 1rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="chat-list-container">
+    <div class="chat-list-header">
+        <h1>
+            <i class="fas fa-comments"></i>
+            チャット一覧
+        </h1>
+    </div>
+    
+    {% if chat_rooms %}
+    <ul class="chat-list">
+        {% for room in chat_rooms %}
+            {% set other_user = room.get_other_user(current_user.id) %}
+            <li>
+                <a href="{{ url_for('chat.room', room_id=room.id) }}" class="chat-item">
+                    <div class="user-avatar">
+                        {% if other_user.avatar_url %}
+                            <img src="{{ other_user.get_avatar_url() }}" alt="{{ other_user.username }}">
+                        {% else %}
+                            <i class="fas fa-user"></i>
+                        {% endif %}
+                    </div>
+                    <div class="chat-item-content">
+                        <div class="chat-item-header">
+                            <span class="chat-item-name">{{ other_user.username }}</span>
+                            {% if room.last_message %}
+                            <span class="chat-item-time">
+                                {{ room.last_message.created_at.strftime('%Y/%m/%d %H:%M') }}
+                            </span>
+                            {% endif %}
+                        </div>
+                        <div class="chat-item-message">
+                            {% if room.last_message %}
+                                {{ room.last_message.content }}
+                            {% else %}
+                                <span>まだメッセージはありません</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% set unread_count = room.messages|selectattr('sender_id', 'ne', current_user.id)|selectattr('is_read', 'eq', false)|list|length %}
+                    <span class="chat-item-badge" data-room-id="{{ room.id }}"{% if unread_count == 0 %} style="display:none;"{% endif %}>{{ unread_count if unread_count > 0 else '' }}</span>
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <div class="no-chats">
+        <i class="fas fa-comments"></i>
+        <p>チャットルームがありません</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function updateUnreadBadges() {
+    fetch('/api/chat/unread_counts')
+        .then(response => response.json())
+        .then(unreadCounts => {
+            document.querySelectorAll('.chat-item-badge').forEach(badge => {
+                const roomId = badge.dataset.roomId;
+                const count = unreadCounts[roomId] || 0;
+                if (count > 0) {
+                    badge.textContent = count;
+                    badge.style.display = '';
+                } else {
+                    badge.style.display = 'none';
+                }
+            });
+        });
+}
+setInterval(updateUnreadBadges, 5000); // 5秒ごとに更新
+window.onload = updateUnreadBadges;
+</script>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+window.chatConfig = {
+    currentUserId: {{ current_user.id|tojson }}
+};
+</script>
+<script src="{{ url_for('static', filename='js/socket.io.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/chat_rooms.js') }}"></script>
+{% endblock %} 

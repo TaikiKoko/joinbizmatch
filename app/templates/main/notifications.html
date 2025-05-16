@@ -1,0 +1,410 @@
+{% extends "base.html" %}
+
+{% block title %}通知{% endblock %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --primary-color: #2c3e50;
+        --secondary-color: #34495e;
+        --accent-color: #3498db;
+        --success-color: #28a745;
+        --background-color: #f8f9fa;
+        --card-background: #ffffff;
+        --text-primary: #2c3e50;
+        --text-secondary: #7f8c8d;
+        --border-color: #ecf0f1;
+        --gray-100: #f8f9fa;
+        --gray-300: #dee2e6;
+        --gray-400: #ced4da;
+        --white: #ffffff;
+        --primary: #3498db;
+        --spacing-xs: 0.25rem;
+        --spacing-sm: 0.5rem;
+        --spacing-md: 1rem;
+        --spacing-lg: 1.5rem;
+        --spacing-xl: 2rem;
+        --font-size-sm: 0.875rem;
+        --font-size-lg: 1.125rem;
+        --font-size-xl: 1.25rem;
+        --font-size-2xl: 1.5rem;
+        --font-size-3xl: 1.875rem;
+        --font-size-4xl: 2.25rem;
+        --border-radius-lg: 0.5rem;
+        --border-radius-full: 9999px;
+        --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+        --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+        --transition-base: all 0.2s ease;
+    }
+
+    /* Notifications Header */
+    .notifications-header {
+        background: var(--white);
+        padding: var(--spacing-xl) 0;
+        margin-bottom: var(--spacing-xl);
+        box-shadow: var(--shadow-sm);
+    }
+
+    .notifications-header-content {
+        max-width: 800px;
+        margin: 0 auto;
+        text-align: center;
+    }
+
+    .notifications-header h1 {
+        font-size: var(--font-size-3xl);
+        margin-bottom: var(--spacing-md);
+        color: var(--text-primary);
+        font-weight: 600;
+    }
+
+    .notifications-header p {
+        color: var(--text-secondary);
+        font-size: var(--font-size-lg);
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    /* Notifications List */
+    .notifications-list {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .notification-item {
+        background: var(--white);
+        border-radius: var(--border-radius-lg);
+        padding: var(--spacing-lg);
+        margin-bottom: var(--spacing-md);
+        box-shadow: var(--shadow-sm);
+        transition: var(--transition-base);
+        border: 1px solid var(--border-color);
+    }
+
+    .notification-item:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-md);
+    }
+
+    .notification-item.unread {
+        border-left: 4px solid var(--primary);
+        background-color: var(--gray-100);
+    }
+
+    .notification-header {
+        display: flex;
+        align-items: flex-start;
+        gap: var(--spacing-md);
+        margin-bottom: var(--spacing-sm);
+    }
+
+    .notification-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: var(--gray-100);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: var(--font-size-lg);
+        color: var(--primary);
+        flex-shrink: 0;
+    }
+
+    .notification-title {
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: var(--spacing-xs);
+        font-size: var(--font-size-lg);
+    }
+
+    .notification-meta {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-md);
+        color: var(--text-secondary);
+        font-size: var(--font-size-sm);
+        flex-wrap: wrap;
+    }
+
+    .notification-content {
+        color: var(--text-secondary);
+        margin: var(--spacing-md) 0;
+        line-height: 1.6;
+    }
+
+    .notification-actions {
+        display: flex;
+        gap: var(--spacing-sm);
+        margin-top: var(--spacing-md);
+    }
+
+    .notification-actions .btn {
+        padding: var(--spacing-sm) var(--spacing-lg);
+        border-radius: var(--border-radius-full);
+        font-size: var(--font-size-sm);
+        transition: var(--transition-base);
+    }
+
+    /* Empty State */
+    .empty-state {
+        text-align: center;
+        padding: var(--spacing-xl);
+        background: var(--white);
+        border-radius: var(--border-radius-lg);
+        box-shadow: var(--shadow-sm);
+        margin-top: var(--spacing-xl);
+    }
+
+    .empty-state i {
+        font-size: var(--font-size-4xl);
+        color: var(--gray-400);
+        margin-bottom: var(--spacing-md);
+    }
+
+    .empty-state h3 {
+        font-size: var(--font-size-xl);
+        color: var(--text-primary);
+        margin-bottom: var(--spacing-sm);
+        font-weight: 600;
+    }
+
+    .empty-state p {
+        color: var(--text-secondary);
+        margin-bottom: var(--spacing-lg);
+        max-width: 400px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    /* Notification Filters */
+    .notification-filters {
+        display: flex;
+        gap: var(--spacing-md);
+        margin-bottom: var(--spacing-xl);
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .filter-button {
+        padding: var(--spacing-sm) var(--spacing-md);
+        border: 1px solid var(--gray-300);
+        border-radius: var(--border-radius-full);
+        color: var(--text-secondary);
+        background: var(--white);
+        cursor: pointer;
+        transition: var(--transition-base);
+        font-size: var(--font-size-sm);
+        min-width: 100px;
+    }
+
+    .filter-button:hover {
+        border-color: var(--primary);
+        color: var(--primary);
+        transform: translateY(-1px);
+    }
+
+    .filter-button.active {
+        background: var(--primary);
+        border-color: var(--primary);
+        color: var(--white);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .notifications-header h1 {
+            font-size: var(--font-size-2xl);
+        }
+
+        .notifications-header p {
+            font-size: var(--font-size-sm);
+        }
+
+        .notification-filters {
+            padding: 0 var(--spacing-md);
+        }
+
+        .filter-button {
+            flex: 1;
+            min-width: auto;
+            text-align: center;
+        }
+
+        .notification-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .notification-meta {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: var(--spacing-xs);
+        }
+
+        .notification-actions {
+            flex-direction: column;
+            width: 100%;
+        }
+
+        .notification-actions .btn {
+            width: 100%;
+            text-align: center;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="notifications-header">
+    <div class="container">
+        <div class="notifications-header-content">
+            <h1>通知</h1>
+            <p>最新の通知やメッセージを確認できます</p>
+        </div>
+    </div>
+</section>
+
+<div class="container">
+    <div class="notification-filters">
+        <button class="filter-button active" data-filter="all">
+            <i class="fas fa-inbox me-2"></i>すべて
+        </button>
+        <button class="filter-button" data-filter="unread">
+            <i class="fas fa-envelope me-2"></i>未読
+        </button>
+        <button class="filter-button" data-filter="message">
+            <i class="fas fa-comment me-2"></i>メッセージ
+        </button>
+        <button class="filter-button" data-filter="system">
+            <i class="fas fa-bell me-2"></i>システム
+        </button>
+    </div>
+
+    {% if notifications %}
+    <div class="notifications-list">
+        {% for notification in notifications %}
+        <div class="notification-item {% if not notification.read %}unread{% endif %}" data-type="{{ notification.type }}">
+            <div class="notification-header">
+                <div class="notification-icon">
+                    {% if notification.type == 'message' %}
+                        <i class="fas fa-envelope"></i>
+                    {% elif notification.type == 'system' %}
+                        <i class="fas fa-bell"></i>
+                    {% else %}
+                        <i class="fas fa-info-circle"></i>
+                    {% endif %}
+                </div>
+                <div>
+                    <h3 class="notification-title">
+                        {% if notification.type == 'system' %}
+                            システム通知
+                        {% elif notification.type == 'message' %}
+                            メッセージ通知
+                        {% else %}
+                            通知
+                        {% endif %}
+                    </h3>
+                    <div class="notification-meta">
+                        <span><i class="fas fa-clock me-1"></i>{{ notification.created_at|format_datetime }}</span>
+                        {% if not notification.read %}
+                        <span class="badge bg-primary">未読</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="notification-content">
+                {% if notification.link %}
+                    <a href="{{ notification.link }}" style="text-decoration: underline; color: inherit;">
+                        {{ notification.message }}
+                    </a>
+                {% else %}
+                    {{ notification.message }}
+                {% endif %}
+            </div>
+            <div class="notification-actions">
+                {% if notification.type == 'message' %}
+                <a href="{{ url_for('main.chat_room', room_id=notification.chat_room_id) }}" class="btn btn-primary">
+                    <i class="fas fa-reply me-1"></i>返信する
+                </a>
+                {% endif %}
+                {% if not notification.read %}
+                <button class="btn btn-outline-secondary mark-as-read" data-id="{{ notification.id }}">
+                    <i class="fas fa-check me-1"></i>既読にする
+                </button>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <i class="fas fa-bell"></i>
+        <h3>通知はありません</h3>
+        <p>新しい通知やメッセージが届くと、ここに表示されます。</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // フィルターボタンの処理
+    const filterButtons = document.querySelectorAll('.filter-button');
+    const notificationItems = document.querySelectorAll('.notification-item');
+
+    filterButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const filter = this.dataset.filter;
+            
+            // ボタンのアクティブ状態を更新
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
+
+            // 通知の表示/非表示を切り替え
+            notificationItems.forEach(item => {
+                if (filter === 'all') {
+                    item.style.display = 'block';
+                } else if (filter === 'unread') {
+                    item.style.display = item.classList.contains('unread') ? 'block' : 'none';
+                } else {
+                    item.style.display = item.dataset.type === filter ? 'block' : 'none';
+                }
+            });
+        });
+    });
+
+    // 既読ボタンの処理
+    const markAsReadButtons = document.querySelectorAll('.mark-as-read');
+    
+    markAsReadButtons.forEach(button => {
+        button.addEventListener('click', async function() {
+            const notificationId = this.dataset.id;
+            const notificationItem = this.closest('.notification-item');
+            
+            try {
+                const response = await fetch(`/api/notifications/${notificationId}/read`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    credentials: 'same-origin'
+                });
+                
+                if (response.ok) {
+                    // 通知の見た目を更新
+                    notificationItem.classList.remove('unread');
+                    this.remove(); // 既読ボタンを削除
+                    
+                    // 未読バッジを削除
+                    const badge = notificationItem.querySelector('.badge');
+                    if (badge) badge.remove();
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        });
+    });
+});
+</script>
+{% endblock %} 

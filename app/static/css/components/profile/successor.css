@@ -1,0 +1,23 @@
+/* 後継者プロフィールのスタイル */
+.successor-profile {
+    padding: 2rem;
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+}
+
+.successor-header {
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.successor-title {
+    font-size: 2rem;
+    color: var(--primary);
+    margin-bottom: 1rem;
+}
+
+.successor-description {
+    color: var(--text-light);
+    line-height: 1.6;
+} 

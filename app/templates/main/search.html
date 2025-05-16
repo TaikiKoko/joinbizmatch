@@ -1,0 +1,361 @@
+{% extends "base.html" %}
+
+{% block title %}後継者検索{% endblock %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --primary-color: #2c3e50;
+        --secondary-color: #34495e;
+        --accent-color: #3498db;
+        --background-color: #f8f9fa;
+        --card-background: #ffffff;
+        --text-primary: #2c3e50;
+        --text-secondary: #7f8c8d;
+        --border-color: #ecf0f1;
+        --star-inactive: #6c757d;
+        --star-active: #ffc107;
+    }
+
+    .main-content {
+        max-width: 1200px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+    }
+
+    .page-title {
+        font-size: 1.5rem;
+        font-weight: normal;
+        color: #333;
+        margin-bottom: 1.5rem;
+    }
+
+    .search-form {
+        background: white;
+        border-radius: 4px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .search-row {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .form-group {
+        flex: 1;
+    }
+
+    .form-label {
+        font-size: 0.9rem;
+        color: #333;
+        margin-bottom: 0.5rem;
+    }
+
+    .form-control, .form-select {
+        width: 100%;
+        padding: 0.5rem;
+        border: 1px solid #dee2e6;
+        border-radius: 4px;
+        font-size: 0.9rem;
+    }
+
+    .search-button {
+        width: 100%;
+        padding: 0.75rem;
+        background-color: #0d6efd;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-size: 0.9rem;
+        cursor: pointer;
+    }
+
+    .company-card {
+        background: white;
+        border-radius: 10px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        transition: transform 0.2s;
+        height: 100%;
+    }
+
+    .company-card:hover {
+        transform: translateY(-3px);
+    }
+
+    .company-name {
+        font-size: 1.25rem;
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+        color: var(--primary-color);
+    }
+
+    .company-info {
+        color: var(--text-secondary);
+        margin-bottom: 1rem;
+        font-size: 0.9rem;
+    }
+
+    .company-info-item {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 0.5rem;
+    }
+
+    .info-label {
+        color: var(--text-secondary);
+    }
+
+    .info-value {
+        color: var(--text-primary);
+        font-weight: 500;
+    }
+
+    .favorite-btn {
+        cursor: pointer;
+        border: none;
+        background: transparent;
+        padding: 0;
+        margin-right: 0.5rem;
+    }
+
+    .favorite-btn i {
+        font-size: 1.2rem;
+        transition: color 0.3s ease;
+        color: var(--star-inactive) !important;
+    }
+
+    .favorite-btn i.favorite-active {
+        color: var(--star-active) !important;
+    }
+
+    .header-buttons {
+        display: flex;
+        justify-content: flex-end;
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .header-btn {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.5rem 1rem;
+        border: 1px solid #dee2e6;
+        border-radius: 4px;
+        background-color: white;
+        color: #333;
+        text-decoration: none;
+        font-size: 0.9rem;
+    }
+
+    .header-btn i {
+        margin-right: 0.5rem;
+    }
+
+    .header-btn:hover {
+        background-color: #f8f9fa;
+        text-decoration: none;
+        color: #333;
+    }
+
+    @media (max-width: 768px) {
+        .search-row {
+            flex-direction: column;
+        }
+        
+        .header-buttons {
+            flex-direction: column;
+        }
+        
+        .header-btn {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="header-buttons">
+        <a href="{{ url_for('main.company_mypage') }}" class="header-btn">
+            <i class="fas fa-user"></i>マイページ
+        </a>
+    </div>
+
+    <div class="search-form">
+        <form method="GET" action="{{ url_for('main.search') }}">
+            <div class="search-row">
+                <div class="form-group">
+                    <label class="form-label" for="keyword">キーワード</label>
+                    <input type="text" class="form-control" id="keyword" name="keyword" 
+                           value="{{ request.args.get('keyword', '') }}" 
+                           placeholder="企業名、業種、地域など">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="industry">業種</label>
+                    <select class="form-select" id="industry" name="industry">
+                        <option value="">すべて</option>
+                        {% for industry in industries %}
+                        <option value="{{ industry }}" 
+                                {% if request.args.get('industry') == industry %}selected{% endif %}>
+                            {{ industry }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="search-row">
+                <div class="form-group">
+                    <label class="form-label" for="location">地域</label>
+                    <select class="form-select" id="location" name="location">
+                        <option value="">すべて</option>
+                        {% for location in locations %}
+                        <option value="{{ location }}" 
+                                {% if request.args.get('location') == location %}selected{% endif %}>
+                            {{ location }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="investment">投資額</label>
+                    <select class="form-select" id="investment" name="investment">
+                        <option value="">すべて</option>
+                        {% for investment in investments %}
+                        <option value="{{ investment }}" 
+                                {% if request.args.get('investment') == investment %}selected{% endif %}>
+                            {{ investment }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <button type="submit" class="search-button">検索</button>
+        </form>
+    </div>
+
+    <div class="row">
+        {% for company in companies %}
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="company-card">
+                <div class="d-flex justify-content-between align-items-start">
+                    <h3 class="company-name">{{ company.name }}</h3>
+                    {% if current_user.is_authenticated %}
+                    <button class="favorite-btn" data-company-id="{{ company.id }}">
+                        <i class="fas fa-star {% if company.id in favorite_companies %}favorite-active{% endif %}"></i>
+                    </button>
+                    {% endif %}
+                </div>
+                <div class="company-info">
+                    <div class="company-info-item">
+                        <span class="info-label">業種:</span>
+                        <span class="info-value">{{ company.industry }}</span>
+                    </div>
+                    <div class="company-info-item">
+                        <span class="info-label">地域:</span>
+                        <span class="info-value">{{ company.location }}</span>
+                    </div>
+                    <div class="company-info-item">
+                        <span class="info-label">投資額:</span>
+                        <span class="info-value">{{ company.investment }}万円</span>
+                    </div>
+                </div>
+                <a href="{{ url_for('main.company_detail', id=company.id) }}" class="btn btn-primary w-100">
+                    詳細を見る
+                </a>
+            </div>
+        </div>
+        {% else %}
+        <div class="col-12">
+            <div class="alert alert-info">
+                該当する企業が見つかりませんでした。
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% if companies.pages > 1 %}
+    <nav aria-label="Page navigation" class="mt-4">
+        <ul class="pagination justify-content-center">
+            {% if companies.has_prev %}
+            <li class="page-item">
+                <a class="page-link" href="{{ url_for('main.search', page=companies.prev_num, **request.args) }}">前へ</a>
+            </li>
+            {% endif %}
+            
+            {% for page in companies.iter_pages() %}
+                {% if page %}
+                    <li class="page-item {{ 'active' if page == companies.page else '' }}">
+                        <a class="page-link" href="{{ url_for('main.search', page=page, **request.args) }}">{{ page }}</a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">...</span>
+                    </li>
+                {% endif %}
+            {% endfor %}
+            
+            {% if companies.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="{{ url_for('main.search', page=companies.next_num, **request.args) }}">次へ</a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const favoriteButtons = document.querySelectorAll('.favorite-btn');
+    
+    favoriteButtons.forEach(function(button) {
+        button.addEventListener('click', async function(e) {
+            e.preventDefault();
+            const companyId = this.dataset.companyId;
+            const icon = this.querySelector('i');
+            
+            try {
+                console.log('Sending favorite request for company:', companyId);
+                const response = await fetch(`/api/companies/${companyId}/favorite`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    credentials: 'same-origin'
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                console.log('Received response:', data);
+                
+                if (data.status === 'success') {
+                    if (data.action === 'added') {
+                        icon.classList.add('favorite-active');
+                        console.log('Added favorite-active class');
+                    } else {
+                        icon.classList.remove('favorite-active');
+                        console.log('Removed favorite-active class');
+                    }
+                } else {
+                    console.error('Error:', data.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        });
+    });
+});
+</script>
+{% endblock %} 

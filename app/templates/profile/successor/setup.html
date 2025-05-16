@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="事業承継マッチングプラットフォーム - 後継者プロフィール設定">
+    <title>{% if is_edit %}後継者プロフィール編集{% else %}後継者プロフィール設定{% endif %} - M&Aサクシード</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #4A90E2;
+            --secondary: #2C3E50;
+            --accent: #E74C3C;
+            --text-primary: #2C3E50;
+            --text-secondary: #7F8C8D;
+            --background: #F5F6FA;
+            --white: #FFFFFF;
+            --gray-100: #F5F6FA;
+            --gray-200: #E9ECEF;
+            --gray-300: #DEE2E6;
+            --gray-400: #CED4DA;
+            --gray-500: #ADB5BD;
+            --gray-600: #6C757D;
+            --gray-700: #495057;
+            --gray-800: #343A40;
+            --gray-900: #212529;
+            --dark: #1A1A1A;
+            
+            --spacing-xs: 0.25rem;
+            --spacing-sm: 0.5rem;
+            --spacing-md: 1rem;
+            --spacing-lg: 1.5rem;
+            --spacing-xl: 2rem;
+            
+            --font-family: 'Noto Sans JP', sans-serif;
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family);
+            line-height: 1.6;
+            color: var(--text-primary);
+            background-color: var(--background);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-md);
+        }
+
+        /* Header */
+        .site-header {
+            background-color: var(--white);
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: var(--spacing-md) 0;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: var(--spacing-md);
+        }
+
+        .nav-link {
+            color: var(--text-primary);
+            text-decoration: none;
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+
+        .nav-link:hover {
+            background-color: var(--gray-100);
+        }
+
+        /* Form Styles */
+        .card {
+            background: var(--white);
+            border-radius: 8px;
+            box-shadow: var(--shadow-sm);
+            margin: var(--spacing-xl) 0;
+        }
+
+        .card-header {
+            padding: var(--spacing-lg);
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .card-header h2 {
+            margin: 0;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+        }
+
+        .card-body {
+            padding: var(--spacing-lg);
+        }
+
+        /* Alert Styles */
+        .alert {
+            padding: var(--spacing-md);
+            margin-bottom: var(--spacing-md);
+            border: 1px solid transparent;
+            border-radius: 4px;
+            white-space: pre-line;
+        }
+
+        .alert-success {
+            color: #155724;
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+        }
+
+        .alert-danger {
+            color: #721c24;
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+        }
+
+        .alert-warning {
+            color: #856404;
+            background-color: #fff3cd;
+            border-color: #ffeeba;
+        }
+
+        .alert-info {
+            color: #0c5460;
+            background-color: #d1ecf1;
+            border-color: #bee5eb;
+        }
+
+        .form-group {
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .form-group h3 {
+            margin-bottom: var(--spacing-md);
+            color: var(--text-primary);
+            font-size: 1.2rem;
+        }
+
+        .row {
+            display: flex;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .col-md-6 {
+            flex: 1;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: var(--spacing-sm);
+            border: 1px solid var(--gray-300);
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .invalid-feedback {
+            display: block;
+            color: var(--accent);
+            font-size: 0.875rem;
+            margin-top: var(--spacing-xs);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: var(--spacing-sm) var(--spacing-lg);
+            background-color: var(--primary);
+            color: var(--white);
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.2s;
+        }
+
+        .btn:hover {
+            background-color: #357ABD;
+        }
+
+        .mt-4 {
+            margin-top: 1.5rem;
+        }
+
+        /* Footer */
+        .site-footer {
+            background-color: var(--dark);
+            color: var(--white);
+            padding: var(--spacing-xl) 0;
+            margin-top: var(--spacing-xl);
+        }
+
+        .footer-content {
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .row {
+                flex-direction: column;
+            }
+            
+            .col-md-6 {
+                width: 100%;
+            }
+        }
+
+        .form-check-input {
+            width: 1.2em;
+            height: 1.2em;
+            margin-top: 0.25em;
+            vertical-align: top;
+            background-color: var(--white);
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+            border: 1px solid var(--gray-400);
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            transition: background-color 0.2s, border-color 0.2s;
+        }
+
+        .form-check-input:checked {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .form-check-input:focus {
+            border-color: var(--primary);
+            outline: 0;
+            box-shadow: 0 0 0 0.2rem rgba(74, 144, 226, 0.25);
+        }
+
+        .privacy-notice {
+            margin-top: var(--spacing-md);
+            padding: var(--spacing-md);
+            background-color: var(--gray-100);
+            border-radius: 4px;
+            display: none;
+        }
+
+        .privacy-notice.show {
+            display: block;
+        }
+
+        .privacy-notice h4 {
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-sm);
+            font-size: 1rem;
+        }
+
+        .privacy-notice ul {
+            margin: 0;
+            padding-left: var(--spacing-lg);
+        }
+
+        .privacy-notice li {
+            margin-bottom: var(--spacing-xs);
+            color: var(--text-secondary);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="site-header">
+        <div class="container header-container">
+            <a href="{{ url_for('main.index') }}" class="logo">
+                <i class="fas fa-handshake"></i>
+                <span>M&Aサクシード</span>
+            </a>
+            <nav class="nav-menu">
+                <a href="{{ url_for('main.index') }}" class="nav-link">ホーム</a>
+                <a href="{{ url_for('main.search') }}" class="nav-link">検索</a>
+                <a href="{{ url_for('main.mypage') }}" class="nav-link">マイページ</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <h2>{% if is_edit %}後継者プロフィール編集{% else %}後継者プロフィール設定{% endif %}</h2>
+            </div>
+            <div class="card-body">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                <form method="POST" enctype="multipart/form-data">
+                    {{ form.csrf_token }}
+                    
+                    <div class="form-group">
+                        <h3>基本情報</h3>
+                        <div class="row">
+                            <div class="col-md-6">
+                                {{ form.name.label }}
+                                {{ form.name(class="form-control") }}
+                                {% if form.name.errors %}
+                                <div class="invalid-feedback">
+                                    {% for error in form.name.errors %}
+                                    <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form.age.label }}
+                                {{ form.age(class="form-control") }}
+                                {% if form.age.errors %}
+                                <div class="invalid-feedback">
+                                    {% for error in form.age.errors %}
+                                    <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <h3>自己紹介</h3>
+                        {{ form.description.label }}
+                        {{ form.description(class="form-control", rows="5") }}
+                        {% if form.description.errors %}
+                        <div class="invalid-feedback">
+                            {% for error in form.description.errors %}
+                            <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-6">
+                                {{ form.gender.label }}
+                                {{ form.gender(class="form-control") }}
+                                {% if form.gender.errors %}
+                                <div class="invalid-feedback">
+                                    {% for error in form.gender.errors %}
+                                    <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form.location.label }}
+                                {{ form.location(class="form-control") }}
+                                {% if form.location.errors %}
+                                <div class="invalid-feedback">
+                                    {% for error in form.location.errors %}
+                                    <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <h3>希望条件</h3>
+                        <div class="row">
+                            <div class="col-md-6">
+                                {{ form.desired_industry.label }}
+                                {{ form.desired_industry(class="form-control") }}
+                                {% if form.desired_industry.errors %}
+                                <div class="invalid-feedback">
+                                    {% for error in form.desired_industry.errors %}
+                                    <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form.desired_location.label }}
+                                {{ form.desired_location(class="form-control") }}
+                                {% if form.desired_location.errors %}
+                                <div class="invalid-feedback">
+                                    {% for error in form.desired_location.errors %}
+                                    <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-6">
+                                {{ form.investment_capacity.label }}
+                                {{ form.investment_capacity(class="form-control") }}
+                                {% if form.investment_capacity.errors %}
+                                <div class="invalid-feedback">
+                                    {% for error in form.investment_capacity.errors %}
+                                    <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <h3>経験・スキル</h3>
+                        <div class="row">
+                            <div class="col-md-6">
+                                {{ form.management_experience.label }}
+                                {{ form.management_experience(class="form-control", rows="5") }}
+                                {% if form.management_experience.errors %}
+                                <div class="invalid-feedback">
+                                    {% for error in form.management_experience.errors %}
+                                    <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form.industry_experience.label }}
+                                {{ form.industry_experience(class="form-control", rows="5") }}
+                                {% if form.industry_experience.errors %}
+                                <div class="invalid-feedback">
+                                    {% for error in form.industry_experience.errors %}
+                                    <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <h3>プロフィール画像</h3>
+                        {{ form.images.label }}
+                        {{ form.images(class="form-control") }}
+                        {% if form.images.errors %}
+                        <div class="invalid-feedback">
+                            {% for error in form.images.errors %}
+                            <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-check">
+                            {{ form.is_public.label(class="form-check-label") }}
+                            {{ form.is_public(class="form-check-input", id="is_public") }}
+                            {% if form.is_public.errors %}
+                            <div class="invalid-feedback">
+                                {% for error in form.is_public.errors %}
+                                <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="privacy-notice" id="privacy_notice">
+                            <h4>非公開設定時の注意事項</h4>
+                            <ul>
+                                <li>プロフィールが検索結果に表示されません</li>
+                                <li>企業からのメッセージを受け取ることができません</li>
+                                <li>お気に入り登録が制限されます</li>
+                                <li>マッチングの機会が減少する可能性があります</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="mt-4">
+                        {{ form.submit(class="btn") }}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2024 M&Aサクシード. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const isPublicCheckbox = document.getElementById('is_public');
+            const privacyNotice = document.getElementById('privacy_notice');
+
+            function updatePrivacyNotice() {
+                if (!isPublicCheckbox.checked) {
+                    privacyNotice.classList.add('show');
+                } else {
+                    privacyNotice.classList.remove('show');
+                }
+            }
+
+            isPublicCheckbox.addEventListener('change', updatePrivacyNotice);
+            updatePrivacyNotice(); // 初期表示時の状態を設定
+        });
+    </script>
+</body>
+</html> 

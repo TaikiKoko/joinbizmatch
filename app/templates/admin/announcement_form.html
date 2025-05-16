@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}お知らせ{{ '新規作成' if mode == 'new' else '編集' }}{% endblock %}
+{% block content %}
+<div class="container mt-4">
+  <h1>お知らせ{{ '新規作成' if mode == 'new' else '編集' }}</h1>
+  <form method="post">
+    <div class="mb-3">
+      <label class="form-label">タイトル</label>
+      <input type="text" name="title" class="form-control" value="{{ announcement.title if announcement else '' }}" required>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">内容</label>
+      <textarea name="content" class="form-control" rows="5" required>{{ announcement.content if announcement else '' }}</textarea>
+    </div>
+    <div class="form-check mb-3">
+      <input type="checkbox" name="is_public" class="form-check-input" id="is_public" {% if announcement and announcement.is_public %}checked{% endif %}>
+      <label class="form-check-label" for="is_public">公開</label>
+    </div>
+    <button type="submit" class="btn btn-primary">保存</button>
+    <a href="{{ url_for('main.admin_announcements') }}" class="btn btn-secondary">戻る</a>
+  </form>
+</div>
+{% endblock %} 

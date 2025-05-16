@@ -1,0 +1,167 @@
+{% extends "base.html" %}
+
+{% block title %}退会手続き{% endblock %}
+
+{% block extra_css %}
+<style>
+    .form-container {
+        max-width: 600px;
+        margin: 2rem auto;
+        padding: 2rem;
+        background-color: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 4px rgba(0,0,0,.05);
+    }
+
+    .form-title {
+        font-size: 1.5rem;
+        font-weight: 500;
+        margin-bottom: 1.5rem;
+        color: var(--danger-color);
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+        display: block;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 0.75rem;
+        border: 2px solid var(--border-color);
+        border-radius: 6px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+        border-color: var(--danger-color);
+        box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.25);
+        outline: none;
+    }
+
+    .form-text {
+        font-size: 0.875rem;
+        color: var(--text-secondary);
+        margin-top: 0.25rem;
+    }
+
+    .btn-submit {
+        width: 100%;
+        padding: 0.75rem;
+        background-color: #e9ecef;
+        color: #6c757d;
+        border: none;
+        border-radius: 6px;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .btn-submit:hover {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    .warning-box {
+        background-color: #fff3f3;
+        border: 1px solid #ffcdd2;
+        padding: 1.5rem;
+        border-radius: 6px;
+        margin-bottom: 2rem;
+    }
+
+    .warning-box h2 {
+        color: var(--danger-color);
+        font-size: 1.1rem;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+    }
+
+    .warning-box h2::before {
+        content: "⚠️";
+        margin-right: 0.5rem;
+    }
+
+    .warning-box ul {
+        margin: 0;
+        padding-left: 1.5rem;
+        color: var(--text-secondary);
+    }
+
+    .warning-box li {
+        margin-bottom: 0.5rem;
+    }
+
+    .confirmation-guide {
+        background-color: #f8f9fa;
+        border: 1px solid #e9ecef;
+        border-radius: 4px;
+        padding: 0.5rem;
+        margin-top: 0.5rem;
+        font-size: 0.9rem;
+        color: #6c757d;
+    }
+
+    .confirmation-guide code {
+        background-color: #e9ecef;
+        padding: 0.2rem 0.4rem;
+        border-radius: 3px;
+        color: #dc3545;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="form-container">
+        <h1 class="form-title">退会手続き</h1>
+
+        <div class="warning-box">
+            <h2>退会時のご注意</h2>
+            <ul>
+                <li>アカウントに関連する全ての情報が非表示となります</li>
+                <li>メッセージのやり取りができなくなります</li>
+                <li>お気に入り情報が非表示となります</li>
+                <li>プロフィール情報が非表示となります</li>
+            </ul>
+        </div>
+
+        <form method="POST">
+            {{ form.hidden_tag() }}
+            
+            <div class="form-group">
+                {{ form.current_password.label(class="form-label") }}
+                {{ form.current_password(class="form-control") }}
+                {% if form.current_password.errors %}
+                    {% for error in form.current_password.errors %}
+                        <p class="form-text text-danger">{{ error }}</p>
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                {{ form.confirmation.label(class="form-label") }}
+                {{ form.confirmation(class="form-control", placeholder="退会します") }}
+                <div class="confirmation-guide">
+                    ※上記の入力欄に表示されている「退会します」は入力ガイドです。実際にキーボードで入力してください。
+                </div>
+                {% if form.confirmation.errors %}
+                    {% for error in form.confirmation.errors %}
+                        <p class="form-text text-danger">{{ error }}</p>
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+            {{ form.submit(class="btn-submit") }}
+        </form>
+    </div>
+</div>
+{% endblock %} 

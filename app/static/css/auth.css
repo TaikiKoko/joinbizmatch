@@ -1,0 +1,214 @@
+/* 認証コンテナ */
+.auth-container {
+  min-height: calc(100vh - 4rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-4);
+  background-color: var(--gray-100);
+  max-width: 480px;
+  margin: 60px auto;
+  padding: 30px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 認証カード */
+.auth-card {
+  width: 100%;
+  max-width: 400px;
+  background-color: var(--white);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--box-shadow);
+  padding: var(--spacing-4);
+}
+
+.auth-header {
+  text-align: center;
+  margin-bottom: var(--spacing-4);
+}
+
+.auth-title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--gray-900);
+  margin-bottom: var(--spacing-2);
+}
+
+.auth-subtitle {
+  color: var(--gray-600);
+  font-size: var(--font-size-sm);
+}
+
+/* 認証フォーム */
+.auth-form {
+  margin-bottom: var(--spacing-4);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  margin-bottom: var(--spacing-3);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: var(--spacing-1);
+  color: var(--gray-700);
+  font-weight: var(--font-weight-bold);
+}
+
+.form-control {
+  width: 100%;
+  padding: var(--spacing-2) var(--spacing-3);
+  border: var(--border-width) solid var(--border-color);
+  border-radius: var(--border-radius);
+  transition: var(--transition-base);
+}
+
+.form-control:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.form-group label {
+  font-weight: 500;
+  color: #333;
+}
+
+.form-group input {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+  width: 100%;
+}
+
+.form-group .help-text {
+  font-size: 14px;
+  color: #666;
+  margin-top: 4px;
+}
+
+/* 認証ボタン */
+.auth-button {
+  width: 100%;
+  padding: var(--spacing-2);
+  background-color: var(--primary);
+  color: var(--white);
+  border: none;
+  border-radius: var(--border-radius);
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+  transition: var(--transition-base);
+}
+
+.auth-button:hover {
+  background-color: var(--primary-dark);
+}
+
+.auth-button:disabled {
+  background-color: var(--gray-400);
+  cursor: not-allowed;
+}
+
+/* ソーシャルログイン */
+.social-login {
+  margin: var(--spacing-4) 0;
+  text-align: center;
+}
+
+.social-divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: var(--spacing-3) 0;
+  color: var(--gray-600);
+}
+
+.social-divider::before,
+.social-divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: var(--border-width) solid var(--border-color);
+}
+
+.social-divider span {
+  padding: 0 var(--spacing-2);
+}
+
+.social-buttons {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: var(--spacing-2);
+}
+
+.social-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-2);
+  border: var(--border-width) solid var(--border-color);
+  border-radius: var(--border-radius);
+  background-color: var(--white);
+  color: var(--gray-700);
+  text-decoration: none;
+  transition: var(--transition-base);
+}
+
+.social-button:hover {
+  background-color: var(--gray-100);
+  border-color: var(--gray-400);
+}
+
+.social-button img {
+  width: 20px;
+  height: 20px;
+  margin-right: var(--spacing-2);
+}
+
+/* 認証リンク */
+.auth-links {
+  text-align: center;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.auth-link {
+  color: var(--primary);
+  text-decoration: none;
+  font-size: var(--font-size-sm);
+}
+
+.auth-link:hover {
+  text-decoration: underline;
+}
+
+/* エラーメッセージ */
+.error-message {
+  color: var(--danger);
+  font-size: var(--font-size-sm);
+  margin-top: var(--spacing-1);
+}
+
+/* レスポンシブデザイン */
+@media (max-width: 576px) {
+  .auth-container {
+    padding: var(--spacing-2);
+  }
+
+  .auth-card {
+    padding: var(--spacing-3);
+  }
+
+  .social-buttons {
+    grid-template-columns: 1fr;
+  }
+} 

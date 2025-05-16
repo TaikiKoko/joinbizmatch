@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="事業承継マッチングプラットフォーム - 利用規約">
+    <title>利用規約 - M&Aサクシード</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #4A90E2;
+            --secondary: #2C3E50;
+            --accent: #E74C3C;
+            --text-primary: #2C3E50;
+            --text-secondary: #7F8C8D;
+            --background: #F5F6FA;
+            --white: #FFFFFF;
+            --gray-100: #F5F6FA;
+            --gray-200: #E9ECEF;
+            --gray-300: #DEE2E6;
+            --gray-400: #CED4DA;
+            --gray-500: #ADB5BD;
+            --gray-600: #6C757D;
+            --gray-700: #495057;
+            --gray-800: #343A40;
+            --gray-900: #212529;
+            --dark: #1A1A1A;
+            
+            --spacing-xs: 0.25rem;
+            --spacing-sm: 0.5rem;
+            --spacing-md: 1rem;
+            --spacing-lg: 1.5rem;
+            --spacing-xl: 2rem;
+            
+            --font-family: 'Noto Sans JP', sans-serif;
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family);
+            line-height: 1.6;
+            color: var(--text-primary);
+            background-color: var(--background);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-md);
+        }
+
+        /* Header */
+        .site-header {
+            background-color: var(--white);
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: var(--spacing-md) 0;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+
+        .logo-icon {
+            font-size: 28px;
+            color: var(--primary);
+            margin-right: 8px;
+        }
+        
+        .logo-text {
+            font-weight: 700;
+            font-size: 22px;
+            color: var(--primary);
+        }
+        
+        .logo-tagline {
+            font-size: 12px;
+            color: var(--text-light);
+            display: block;
+            margin-top: -2px;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: var(--spacing-md);
+        }
+
+        .nav-link {
+            color: var(--text-primary);
+            text-decoration: none;
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+
+        .nav-link:hover {
+            background-color: var(--gray-100);
+        }
+
+        /* Terms Content */
+        .terms-header {
+            background: var(--white);
+            padding: var(--spacing-xl) 0;
+            margin-bottom: var(--spacing-xl);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .terms-header h1 {
+            font-size: 2rem;
+            margin-bottom: var(--spacing-md);
+            color: var(--text-primary);
+        }
+
+        .terms-content {
+            background: var(--white);
+            padding: var(--spacing-xl);
+            border-radius: 8px;
+            box-shadow: var(--shadow-sm);
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .terms-section {
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .terms-section h2 {
+            font-size: 1.5rem;
+            margin-bottom: var(--spacing-md);
+            color: var(--text-primary);
+            border-bottom: 2px solid var(--gray-200);
+            padding-bottom: var(--spacing-sm);
+        }
+
+        .terms-section h3 {
+            font-size: 1.25rem;
+            margin: var(--spacing-lg) 0 var(--spacing-sm);
+            color: var(--text-primary);
+        }
+
+        .terms-section p {
+            margin-bottom: var(--spacing-md);
+            color: var(--text-secondary);
+        }
+
+        .terms-section ul {
+            list-style-type: disc;
+            margin-left: var(--spacing-xl);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .terms-section li {
+            margin-bottom: var(--spacing-sm);
+            color: var(--text-secondary);
+        }
+
+        /* Footer */
+        .site-footer {
+            background-color: var(--dark);
+            color: var(--white);
+            padding: var(--spacing-xl) 0;
+            margin-top: var(--spacing-xl);
+        }
+
+        .footer-content {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="site-header">
+        <div class="container header-container">
+            <a href="{{ url_for('main.index') }}" class="logo">
+                <i class="fas fa-handshake logo-icon"></i>
+                <div>
+                    <span class="logo-text">Succeed</span>
+                    <span class="logo-tagline">事業承継マッチング</span>
+                </div>
+            </a>
+            <nav class="nav-menu">
+                <a href="{{ url_for('main.index') }}" class="nav-link">ホーム</a>
+                <a href="{{ url_for('main.mypage') }}" class="nav-link">マイページ</a>
+                <a href="{{ url_for('main.search') }}" class="nav-link">検索</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Terms Content -->
+    <div class="terms-header">
+        <div class="container">
+            <h1>利用規約</h1>
+            <p>本サービスをご利用いただく前に、以下の利用規約をよくお読みください。</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="terms-content">
+            <div class="terms-section">
+                <h2>1. はじめに</h2>
+                <p>この利用規約（以下「本規約」）は、M&Aサクシード（以下「当社」）が提供する事業承継マッチングサービス（以下「本サービス」）の利用条件を定めるものです。</p>
+            </div>
+
+            <div class="terms-section">
+                <h2>2. 定義</h2>
+                <p>本規約において使用する用語の定義は以下の通りです：</p>
+                <ul>
+                    <li>「ユーザー」とは、本サービスを利用する全ての個人または法人を指します。</li>
+                    <li>「企業ユーザー」とは、事業承継を希望する企業として登録したユーザーを指します。</li>
+                    <li>「後継者ユーザー」とは、事業承継の候補者として登録したユーザーを指します。</li>
+                </ul>
+            </div>
+
+            <div class="terms-section">
+                <h2>3. 利用登録</h2>
+                <h3>3.1 登録資格</h3>
+                <p>本サービスの利用を希望する者は、以下の条件を満たす必要があります：</p>
+                <ul>
+                    <li>満20歳以上であること</li>
+                    <li>本規約に同意していること</li>
+                    <li>過去に本サービスの利用を停止されていないこと</li>
+                </ul>
+
+                <h3>3.2 登録手続き</h3>
+                <p>利用登録は、当社が定める方法により、必要な情報を提供して行うものとします。</p>
+            </div>
+
+            <div class="terms-section">
+                <h2>4. 禁止事項</h2>
+                <p>ユーザーは、本サービスの利用にあたり、以下の行為を行ってはなりません：</p>
+                <ul>
+                    <li>法令または公序良俗に違反する行為</li>
+                    <li>犯罪行為に関連する行為</li>
+                    <li>当社のサーバーまたはネットワークの機能を破壊したり、妨害したりする行為</li>
+                    <li>他のユーザーの情報を不正に収集する行為</li>
+                    <li>他のユーザーに成りすます行為</li>
+                    <li>当社のサービスの運営を妨害するおそれのある行為</li>
+                </ul>
+            </div>
+
+            <div class="terms-section">
+                <h2>5. 免責事項</h2>
+                <p>当社は、本サービスに関して、以下の事項について一切の責任を負いません：</p>
+                <ul>
+                    <li>ユーザー間で行われる取引や交渉の結果</li>
+                    <li>本サービスで提供される情報の正確性、完全性、有用性</li>
+                    <li>本サービスの中断、停止、終了、利用不能</li>
+                    <li>ユーザーが本サービスを通じて得た情報の利用により生じた損害</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2024 M&Aサクシード. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html> 

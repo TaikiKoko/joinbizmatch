@@ -1,0 +1,23 @@
+/* 企業プロフィールのスタイル */
+.company-profile {
+    padding: 2rem;
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+}
+
+.company-header {
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.company-title {
+    font-size: 2rem;
+    color: var(--primary);
+    margin-bottom: 1rem;
+}
+
+.company-description {
+    color: var(--text-light);
+    line-height: 1.6;
+} 

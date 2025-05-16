@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}企業一覧{% endblock %}
+
+{% block content %}
+<div class="seller-list">
+    <h1>企業一覧</h1>
+    
+    <div class="seller-grid">
+        {% for seller in sellers %}
+            <div class="seller-card">
+                <div class="card-header">
+                    <h2>{{ seller.company_name }}</h2>
+                    <div class="status-badges">
+                        {% if seller.is_verified %}
+                            <span class="badge bg-success">認証済み</span>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="card-body">
+                    <div class="info-item">
+                        <label>代表者名</label>
+                        <span>{{ seller.representative_name }}</span>
+                    </div>
+                    <div class="info-item">
+                        <label>設立年</label>
+                        <span>{{ seller.establishment_year }}年</span>
+                    </div>
+                    <div class="info-item">
+                        <label>資本金</label>
+                        <span>{{ seller.capital }}万円</span>
+                    </div>
+                    <div class="info-item">
+                        <label>従業員数</label>
+                        <span>{{ seller.employees }}名</span>
+                    </div>
+                    <div class="info-item">
+                        <label>年間売上</label>
+                        <span>{{ seller.annual_sales }}万円</span>
+                    </div>
+                    <div class="info-item">
+                        <label>希望価格</label>
+                        <span>{{ seller.asking_price }}万円</span>
+                    </div>
+                </div>
+                
+                <div class="card-footer">
+                    <a href="{{ url_for('seller.profile', id=seller.id) }}" class="btn btn-primary">詳細を見る</a>
+                </div>
+            </div>
+        {% else %}
+            <p class="no-sellers">表示できる企業がありません。</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %} 

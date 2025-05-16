@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="事業承継マッチングプラットフォーム - プライバシーポリシー">
+    <title>プライバシーポリシー - M&Aサクシード</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #4A90E2;
+            --secondary: #2C3E50;
+            --accent: #E74C3C;
+            --text-primary: #2C3E50;
+            --text-secondary: #7F8C8D;
+            --background: #F5F6FA;
+            --white: #FFFFFF;
+            --gray-100: #F5F6FA;
+            --gray-200: #E9ECEF;
+            --gray-300: #DEE2E6;
+            --gray-400: #CED4DA;
+            --gray-500: #ADB5BD;
+            --gray-600: #6C757D;
+            --gray-700: #495057;
+            --gray-800: #343A40;
+            --gray-900: #212529;
+            --dark: #1A1A1A;
+            
+            --spacing-xs: 0.25rem;
+            --spacing-sm: 0.5rem;
+            --spacing-md: 1rem;
+            --spacing-lg: 1.5rem;
+            --spacing-xl: 2rem;
+            
+            --font-family: 'Noto Sans JP', sans-serif;
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family);
+            line-height: 1.6;
+            color: var(--text-primary);
+            background-color: var(--background);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-md);
+        }
+
+        /* Header */
+        .site-header {
+            background-color: var(--white);
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: var(--spacing-md) 0;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: var(--spacing-md);
+        }
+
+        .nav-link {
+            color: var(--text-primary);
+            text-decoration: none;
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+
+        .nav-link:hover {
+            background-color: var(--gray-100);
+        }
+
+        /* Privacy Content */
+        .privacy-header {
+            background: var(--white);
+            padding: var(--spacing-xl) 0;
+            margin-bottom: var(--spacing-xl);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .privacy-header h1 {
+            font-size: 2rem;
+            margin-bottom: var(--spacing-md);
+            color: var(--text-primary);
+        }
+
+        .privacy-content {
+            background: var(--white);
+            padding: var(--spacing-xl);
+            border-radius: 8px;
+            box-shadow: var(--shadow-sm);
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .privacy-section {
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .privacy-section h2 {
+            font-size: 1.5rem;
+            margin-bottom: var(--spacing-md);
+            color: var(--text-primary);
+            border-bottom: 2px solid var(--gray-200);
+            padding-bottom: var(--spacing-sm);
+        }
+
+        .privacy-section h3 {
+            font-size: 1.25rem;
+            margin: var(--spacing-lg) 0 var(--spacing-sm);
+            color: var(--text-primary);
+        }
+
+        .privacy-section p {
+            margin-bottom: var(--spacing-md);
+            color: var(--text-secondary);
+        }
+
+        .privacy-section ul {
+            list-style-type: disc;
+            margin-left: var(--spacing-xl);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .privacy-section li {
+            margin-bottom: var(--spacing-sm);
+            color: var(--text-secondary);
+        }
+
+        /* Footer */
+        .site-footer {
+            background-color: var(--dark);
+            color: var(--white);
+            padding: var(--spacing-xl) 0;
+            margin-top: var(--spacing-xl);
+        }
+
+        .footer-content {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="site-header">
+        <div class="container header-container">
+            <a href="{{ url_for('main.index') }}" class="logo">
+                <i class="fas fa-handshake"></i>
+                <span>M&Aサクシード</span>
+            </a>
+            <nav class="nav-menu">
+                <a href="{{ url_for('main.index') }}" class="nav-link">ホーム</a>
+                <a href="{{ url_for('main.mypage') }}" class="nav-link">マイページ</a>
+                <a href="{{ url_for('main.search') }}" class="nav-link">検索</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Privacy Content -->
+    <div class="privacy-header">
+        <div class="container">
+            <h1>プライバシーポリシー</h1>
+            <p>当社のプライバシーポリシーについてご説明いたします。</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="privacy-content">
+            <div class="privacy-section">
+                <h2>1. 個人情報の取り扱いについて</h2>
+                <p>当社は、ユーザーの個人情報を適切に取り扱い、保護することが社会的責務であると考え、以下の方針に基づき個人情報の保護に努めます。</p>
+            </div>
+
+            <div class="privacy-section">
+                <h2>2. 収集する情報</h2>
+                <p>当社が収集する情報には以下のものが含まれます：</p>
+                <ul>
+                    <li>氏名、メールアドレス等の登録情報</li>
+                    <li>企業情報（企業ユーザーの場合）</li>
+                    <li>職歴、経験等の情報（後継者ユーザーの場合）</li>
+                    <li>サービス利用履歴</li>
+                    <li>当社ウェブサイトの閲覧履歴</li>
+                </ul>
+            </div>
+
+            <div class="privacy-section">
+                <h2>3. 利用目的</h2>
+                <p>収集した個人情報は、以下の目的で利用いたします：</p>
+                <ul>
+                    <li>サービスの提供・運営</li>
+                    <li>ユーザー認証、本人確認</li>
+                    <li>カスタマーサポート</li>
+                    <li>サービスの改善、新機能の開発</li>
+                    <li>お知らせやメールマガジンの配信</li>
+                </ul>
+            </div>
+
+            <div class="privacy-section">
+                <h2>4. 情報の管理</h2>
+                <p>当社は、個人情報の管理について以下の対策を実施しています：</p>
+                <ul>
+                    <li>適切なセキュリティ対策の実施</li>
+                    <li>アクセス制限の設定</li>
+                    <li>従業員の教育・監督</li>
+                    <li>定期的な安全管理体制の見直し</li>
+                </ul>
+            </div>
+
+            <div class="privacy-section">
+                <h2>5. 第三者提供</h2>
+                <p>当社は、以下の場合を除き、個人情報を第三者に提供いたしません：</p>
+                <ul>
+                    <li>ユーザーの同意がある場合</li>
+                    <li>法令に基づく場合</li>
+                    <li>人の生命、身体または財産の保護のために必要な場合</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2024 M&Aサクシード. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html> 

@@ -1,0 +1,287 @@
+/* チャットコンテナ */
+.chat-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  height: calc(100vh - 100px);
+  display: flex;
+  flex-direction: column;
+}
+
+/* チャットヘッダー */
+.chat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  border-bottom: 1px solid #e0e0e0;
+  background-color: #fff;
+}
+
+.chat-header-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.chat-header-user img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.chat-header-user .username {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.chat-header-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-outline-secondary {
+  color: #6c757d;
+  border-color: #6c757d;
+  background-color: transparent;
+  padding: 8px 16px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.btn-outline-secondary:hover {
+  color: #fff;
+  background-color: #6c757d;
+  border-color: #6c757d;
+}
+
+.chat-item {
+  padding: 1rem;
+  border-bottom: 1px solid #dee2e6;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: background-color 0.2s;
+}
+
+.chat-item:hover {
+  background-color: #f8f9fa;
+  text-decoration: none;
+}
+
+.chat-item:last-child {
+  border-bottom: none;
+}
+
+/* チャットメッセージエリア */
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  background-color: #f8f9fa;
+}
+
+/* メッセージ */
+.message {
+  margin-bottom: 20px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.message.sent {
+  flex-direction: row-reverse;
+}
+
+.message-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.message-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.message-content {
+  max-width: 70%;
+  padding: 10px 15px;
+  border-radius: 15px;
+  background-color: #fff;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.message.sent .message-content {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.message-time {
+  font-size: 0.8rem;
+  color: #6c757d;
+  margin-top: 5px;
+}
+
+.message.sent .message-time {
+  text-align: right;
+}
+
+.message-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+}
+
+.message.sent .message-info {
+  justify-content: flex-end;
+}
+
+.message-status {
+  display: flex;
+  align-items: center;
+}
+
+.message-status.read {
+  color: #007bff;
+}
+
+.message-status.unread {
+  color: #6c757d;
+}
+
+/* チャット入力エリア */
+.chat-input {
+  padding: 20px;
+  background-color: #fff;
+  border-top: 1px solid #e0e0e0;
+}
+
+.chat-input form {
+  display: flex;
+  gap: 10px;
+}
+
+.chat-input input {
+  flex: 1;
+  padding: 10px 15px;
+  border: 1px solid #ced4da;
+  border-radius: 20px;
+  outline: none;
+}
+
+.chat-input input:focus {
+  border-color: #80bdff;
+  box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+}
+
+.chat-input button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.chat-input button:hover {
+  background-color: #0056b3;
+}
+
+.chat-input button:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
+/* レスポンシブデザイン */
+@media (max-width: 576px) {
+  .chat-message {
+    max-width: 85%;
+  }
+
+  .chat-input-container {
+    flex-direction: column;
+  }
+
+  .chat-send-button {
+    width: 100%;
+  }
+}
+
+/* チャットルーム一覧 */
+.chat-rooms {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.chat-room-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    border-bottom: 1px solid #e0e0e0;
+    text-decoration: none;
+    color: inherit;
+    transition: background-color 0.2s;
+}
+
+.chat-room-item:hover {
+    background-color: #f8f9fa;
+    text-decoration: none;
+    color: inherit;
+}
+
+.chat-room-user {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.chat-room-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.chat-room-name {
+    font-weight: 500;
+    color: #333;
+}
+
+.chat-room-message {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.chat-room-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.5rem;
+}
+
+.chat-room-time {
+    color: #999;
+    font-size: 0.8rem;
+}
+
+.chat-room-badge {
+    background-color: #00B900;
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 1rem;
+    font-size: 0.8rem;
+    min-width: 1.5rem;
+    text-align: center;
+} 

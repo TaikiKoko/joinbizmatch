@@ -1,0 +1,296 @@
+{% extends "base.html" %}
+
+{% block title %}メモ一覧{% endblock %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --primary-color: #2c3e50;
+        --secondary-color: #34495e;
+        --accent-color: #3498db;
+        --success-color: #28a745;
+        --danger-color: #dc3545;
+        --background-color: #f8f9fa;
+        --card-background: #ffffff;
+        --text-primary: #2c3e50;
+        --text-secondary: #7f8c8d;
+        --border-color: #ecf0f1;
+        --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+        --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+        --transition-base: all 0.2s ease;
+        --spacing-xs: 0.5rem;
+        --spacing-sm: 1rem;
+        --spacing-md: 1.5rem;
+        --spacing-lg: 2rem;
+        --border-radius: 0.5rem;
+    }
+
+    .notes-header {
+        background: var(--card-background);
+        padding: var(--spacing-lg) 0;
+        margin-bottom: var(--spacing-lg);
+        box-shadow: var(--shadow-sm);
+    }
+
+    .notes-header h1 {
+        color: var(--text-primary);
+        font-weight: 600;
+        margin: 0;
+        font-size: 1.75rem;
+    }
+
+    .btn-create-note {
+        background-color: var(--accent-color);
+        color: white;
+        padding: var(--spacing-xs) var(--spacing-md);
+        border-radius: var(--border-radius);
+        transition: var(--transition-base);
+        border: none;
+        display: inline-flex;
+        align-items: center;
+        gap: var(--spacing-xs);
+    }
+
+    .btn-create-note:hover {
+        background-color: var(--primary-color);
+        transform: translateY(-1px);
+        color: white;
+    }
+
+    .note-card {
+        height: 100%;
+        border: 1px solid var(--border-color);
+        border-radius: var(--border-radius);
+        transition: var(--transition-base);
+        background: var(--card-background);
+        display: flex;
+        flex-direction: column;
+    }
+
+    .note-card:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-md);
+    }
+
+    .note-card .card-body {
+        padding: var(--spacing-md);
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .note-card .card-title {
+        color: var(--text-primary);
+        font-weight: 600;
+        margin-bottom: var(--spacing-sm);
+        font-size: 1.25rem;
+    }
+
+    .note-card .card-text {
+        color: var(--text-secondary);
+        line-height: 1.6;
+        margin-bottom: var(--spacing-md);
+        flex-grow: 1;
+    }
+
+    .note-meta {
+        color: var(--text-secondary);
+        font-size: 0.875rem;
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xs);
+    }
+
+    .note-actions {
+        display: flex;
+        gap: var(--spacing-xs);
+    }
+
+    .btn-edit, .btn-delete {
+        padding: var(--spacing-xs) var(--spacing-sm);
+        border-radius: var(--border-radius);
+        transition: var(--transition-base);
+        display: inline-flex;
+        align-items: center;
+        gap: var(--spacing-xs);
+    }
+
+    .btn-edit {
+        color: var(--accent-color);
+        border-color: var(--accent-color);
+    }
+
+    .btn-edit:hover {
+        background-color: var(--accent-color);
+        color: white;
+        transform: translateY(-1px);
+    }
+
+    .btn-delete {
+        color: var(--danger-color);
+        border-color: var(--danger-color);
+    }
+
+    .btn-delete:hover {
+        background-color: var(--danger-color);
+        color: white;
+        transform: translateY(-1px);
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: var(--spacing-lg);
+        background: var(--card-background);
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow-sm);
+    }
+
+    .empty-state i {
+        font-size: 3rem;
+        color: var(--text-secondary);
+        margin-bottom: var(--spacing-sm);
+    }
+
+    .empty-state h3 {
+        color: var(--text-primary);
+        margin-bottom: var(--spacing-xs);
+        font-weight: 600;
+    }
+
+    .empty-state p {
+        color: var(--text-secondary);
+        margin-bottom: var(--spacing-md);
+    }
+
+    .modal-content {
+        border-radius: var(--border-radius);
+        border: none;
+        box-shadow: var(--shadow-md);
+    }
+
+    .modal-header {
+        border-bottom: 1px solid var(--border-color);
+        padding: var(--spacing-md);
+    }
+
+    .modal-body {
+        padding: var(--spacing-md);
+    }
+
+    .modal-footer {
+        border-top: 1px solid var(--border-color);
+        padding: var(--spacing-md);
+    }
+
+    @media (max-width: 768px) {
+        .notes-header {
+            padding: var(--spacing-md) 0;
+        }
+
+        .notes-header h1 {
+            font-size: 1.5rem;
+        }
+
+        .btn-create-note {
+            width: 100%;
+            margin-top: var(--spacing-sm);
+            justify-content: center;
+        }
+
+        .note-card .card-body {
+            padding: var(--spacing-sm);
+        }
+
+        .note-actions {
+            flex-direction: column;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="notes-header">
+    <div class="container">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center">
+            <h1>メモ一覧</h1>
+            <a href="{{ url_for('main.create_note') }}" class="btn btn-create-note">
+                <i class="fas fa-plus"></i>
+                <span>新規メモ</span>
+            </a>
+        </div>
+    </div>
+</section>
+
+<div class="container">
+    {% if notes %}
+    <div class="row g-4">
+        {% for note in notes %}
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="note-card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ note.title }}</h5>
+                    <p class="card-text">
+                        {{ note.content[:100] }}{% if note.content|length > 100 %}...{% endif %}
+                    </p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="note-meta">
+                            <i class="fas fa-clock"></i>
+                            <span>{{ note.updated_at.strftime('%Y-%m-%d %H:%M') }}</span>
+                        </span>
+                        <div class="note-actions">
+                            <a href="{{ url_for('main.edit_note', id=note.id) }}" class="btn btn-edit" title="編集">
+                                <i class="fas fa-edit"></i>
+                                <span class="visually-hidden">編集</span>
+                            </a>
+                            <button type="button" class="btn btn-delete" data-bs-toggle="modal" data-bs-target="#deleteModal{{ note.id }}" title="削除">
+                                <i class="fas fa-trash"></i>
+                                <span class="visually-hidden">削除</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 削除確認モーダル -->
+        <div class="modal fade" id="deleteModal{{ note.id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ note.id }}" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteModalLabel{{ note.id }}">メモの削除</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="閉じる"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>「{{ note.title }}」を削除してもよろしいですか？</p>
+                        <p class="text-muted small">この操作は取り消せません。</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            <i class="fas fa-times"></i>
+                            <span>キャンセル</span>
+                        </button>
+                        <form action="{{ url_for('main.delete_note', id=note.id) }}" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-danger">
+                                <i class="fas fa-trash"></i>
+                                <span>削除</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <i class="fas fa-sticky-note"></i>
+        <h3>メモがありません</h3>
+        <p>新規メモを作成して、アイデアや情報を記録しましょう。</p>
+        <a href="{{ url_for('main.create_note') }}" class="btn btn-create-note">
+            新規メモを作成
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+ 

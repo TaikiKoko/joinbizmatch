@@ -1,0 +1,91 @@
+【Socket.IOリアルタイム未読バッジ不具合時の調査・対応フロー】
+
+---
+
+1. 現象の整理
+- どのページで、どのバッジやイベントが「動かない」のかを明確にする
+- 例：「マイページの未読バッジが自動で変化しない」「リロードすれば反映される」など
+
+---
+
+2. クライアント側（ブラウザ）の確認
+
+a. Consoleタブのログ確認
+- `[Debug] update_unread_count event received:` など、イベント受信ログが出ているか
+- JSエラーが出ていないか
+
+b. NetworkタブのWebSocket通信確認
+1. Networkタブで「WS」フィルタを選択
+2. `socket.io/?EIO=4...` の行をクリックし、「Messages」タブを開く
+3. サーバーから `update_unread_count` や `new_message` などのイベントが届いているか確認
+
+---
+
+3. サーバー側の確認
+
+a. サーバーログの確認
+- `emitting event "update_unread_count" to user_...` など、emitが発生しているか
+- エラーや例外が出ていないか
+
+b. emitデータ形式の確認
+- サーバー側の `emit('update_unread_count', ...)` の第2引数が  
+  `{'total_count': ..., 'room_counts': {...}}` 形式になっているか
+
+---
+
+4. よくある原因と対策
+
+| 症状 | 主な原因 | 対策 |
+|------|----------|------|
+| イベントがNetworkタブに来ていない | サーバーのemit先room名ミス、join漏れ、認証切れ | emit先・join処理・認証状態を再確認 |
+| イベントがNetworkタブに来ているがJSで反応しない | JSのリスナー未登録、データ形式不一致 | JSのリスナー登録タイミング・データ形式を再確認 |
+| バッジが表示されない | バッジ要素がHTMLに存在しない、JSでdisplay:noneのまま | バッジ要素を常に出力、JSで表示切替 |
+| 他のイベントは動くが特定イベントだけ動かない | イベント名のスペルミス、バージョン不一致 | イベント名・Socket.IOバージョンを統一 |
+
+---
+
+5. デバッグのコツ
+- console.logやalertでイベント受信を強制的に可視化
+- サーバーとクライアントのデータ形式を紙に書いて比較
+- Socket.IOのバージョンをサーバー・クライアントで揃える
+
+---
+
+6. 修正例（サーバー側emit）
+
+```
+# サーバー側
+emit('update_unread_count', {
+    'total_count': unread_count,
+    'room_counts': {room_id1: count1, room_id2: count2, ...}
+}, room=f'user_{user_id}')
+```
+
+---
+
+7. 修正例（クライアント側リスナー）
+
+```
+socket.on('update_unread_count', function(data) {
+  console.log('[Debug] update_unread_count event received:', data);
+  if (data && typeof data.total_count === 'number') {
+    updateCompanyMypageUnreadBadge(data.total_count);
+  }
+  if (data && data.room_counts) {
+    for (const [roomId, count] of Object.entries(data.room_counts)) {
+      updateUnreadCount(roomId, count);
+    }
+  }
+});
+```
+
+---
+
+8. 困ったときは…
+- Networkタブの「Messages」タブでイベントが届いているかを最優先で確認
+- サーバーのemitデータ形式とクライアントの受信ロジックを見比べる
+- 「イベントは届いているのに動かない」場合は、データ形式の不一致を疑う
+
+---
+
+このチェックリストを使えば、次回以降も迅速に原因特定・修正ができます。 

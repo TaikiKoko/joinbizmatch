@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+
+{% block title %}企業プロフィール - {{ seller.company_name }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/seller.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="seller-profile">
+    <div class="profile-header">
+        <div class="company-info">
+            <h1>{{ seller.company_name }}</h1>
+            <div class="status-badges">
+                {% if seller.is_verified %}
+                    <span class="badge bg-success">認証済み</span>
+                {% endif %}
+                {% if seller.is_active %}
+                    <span class="badge bg-primary">アクティブ</span>
+                {% else %}
+                    <span class="badge bg-secondary">非アクティブ</span>
+                {% endif %}
+            </div>
+        </div>
+        <div class="profile-actions">
+            <a href="{{ url_for('seller.edit') }}" class="btn btn-primary">
+                <i class="fas fa-edit"></i> 編集
+            </a>
+            <a href="{{ url_for('main.successor_create') }}" class="btn btn-success">
+                <i class="fas fa-plus"></i> 後継者情報を登録
+            </a>
+        </div>
+    </div>
+
+    <div class="profile-content">
+        <div class="info-section">
+            <h2>基本情報</h2>
+            <div class="info-grid">
+                <div class="info-item">
+                    <label>代表者名</label>
+                    <span>{{ seller.representative_name }}</span>
+                </div>
+                <div class="info-item">
+                    <label>設立年</label>
+                    <span>{{ seller.establishment_year }}年</span>
+                </div>
+                <div class="info-item">
+                    <label>資本金</label>
+                    <span>{{ seller.capital }}万円</span>
+                </div>
+                <div class="info-item">
+                    <label>従業員数</label>
+                    <span>{{ seller.employees }}名</span>
+                </div>
+                <div class="info-item">
+                    <label>年間売上</label>
+                    <span>{{ seller.annual_sales }}万円</span>
+                </div>
+                <div class="info-item">
+                    <label>希望価格</label>
+                    <span>{{ seller.asking_price }}万円</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <h2>事業内容</h2>
+            <div class="content-box">
+                {{ seller.business_description | nl2br }}
+            </div>
+        </div>
+
+        <div class="info-section">
+            <h2>売却理由</h2>
+            <div class="content-box">
+                {{ seller.reason_for_sale | nl2br }}
+            </div>
+        </div>
+
+        <div class="info-section">
+            <h2>希望する後継者像</h2>
+            <div class="content-box">
+                {{ seller.desired_successor | nl2br }}
+            </div>
+        </div>
+
+        <div class="info-section">
+            <h2>登録した後継者情報</h2>
+            <div class="successor-list">
+                {% for successor in seller.successors %}
+                    <div class="successor-card">
+                        <h3>{{ successor.name }}</h3>
+                        <p class="description">{{ successor.description }}</p>
+                        <div class="successor-meta">
+                            <span class="category">{{ successor.category }}</span>
+                            <span class="region">{{ successor.region }}</span>
+                        </div>
+                        <div class="successor-actions">
+                            <a href="{{ url_for('main.successor_detail', id=successor.id) }}" class="btn btn-sm btn-outline-primary">詳細</a>
+                            <a href="{{ url_for('main.successor_edit', id=successor.id) }}" class="btn btn-sm btn-outline-secondary">編集</a>
+                            <button class="btn btn-sm btn-outline-danger delete-successor" data-id="{{ successor.id }}">削除</button>
+                        </div>
+                    </div>
+                {% else %}
+                    <p class="no-successors">後継者情報が登録されていません。</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 削除確認モーダル -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">後継者情報の削除</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>この後継者情報を削除してもよろしいですか？</p>
+                <p class="text-danger">この操作は取り消せません。</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
+                <form id="deleteForm" method="POST" style="display: inline;">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button type="submit" class="btn btn-danger">削除</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // 削除ボタンのクリックイベント
+    document.querySelectorAll('.delete-successor').forEach(button => {
+        button.addEventListener('click', function() {
+            const successorId = this.dataset.id;
+            const modal = new bootstrap.Modal(document.getElementById('deleteModal'));
+            const form = document.getElementById('deleteForm');
+            form.action = `/successor/${successorId}/delete`;
+            modal.show();
+        });
+    });
+});
+</script>
+{% endblock %} 

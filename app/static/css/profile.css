@@ -1,0 +1,265 @@
+/* プロフィールコンテナ */
+.profile-container {
+  padding: var(--spacing-4) 0;
+}
+
+/* プロフィールヘッダー */
+.profile-header {
+  background-color: var(--white);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--box-shadow);
+  padding: var(--spacing-4);
+  margin-bottom: var(--spacing-4);
+}
+
+.profile-header-content {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-4);
+}
+
+.profile-avatar-container {
+  position: relative;
+  width: 150px;
+  height: 150px;
+}
+
+.profile-avatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid var(--white);
+  box-shadow: var(--box-shadow);
+}
+
+.avatar-upload {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background-color: var(--white);
+  border-radius: 50%;
+  padding: var(--spacing-2);
+  box-shadow: var(--box-shadow);
+  cursor: pointer;
+  transition: var(--transition-base);
+}
+
+.avatar-upload:hover {
+  transform: scale(1.1);
+}
+
+.profile-info {
+  flex: 1;
+}
+
+.profile-name {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--gray-900);
+  margin-bottom: var(--spacing-2);
+}
+
+.profile-title {
+  color: var(--gray-600);
+  font-size: var(--font-size-lg);
+  margin-bottom: var(--spacing-3);
+}
+
+.profile-stats {
+  display: flex;
+  gap: var(--spacing-4);
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-value {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--primary);
+}
+
+.stat-label {
+  color: var(--gray-600);
+  font-size: var(--font-size-sm);
+}
+
+/* プロフィールタブ */
+.profile-tabs {
+  background-color: var(--white);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--box-shadow);
+  margin-bottom: var(--spacing-4);
+}
+
+.tab-nav {
+  display: flex;
+  border-bottom: var(--border-width) solid var(--border-color);
+  padding: 0 var(--spacing-4);
+}
+
+.tab-item {
+  padding: var(--spacing-3) var(--spacing-4);
+  color: var(--gray-600);
+  cursor: pointer;
+  position: relative;
+  transition: var(--transition-base);
+}
+
+.tab-item:hover {
+  color: var(--primary);
+}
+
+.tab-item.active {
+  color: var(--primary);
+  font-weight: var(--font-weight-bold);
+}
+
+.tab-item.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: var(--primary);
+}
+
+.tab-content {
+  padding: var(--spacing-4);
+}
+
+/* プロフィール編集フォーム */
+.profile-form {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.form-section {
+  margin-bottom: var(--spacing-4);
+}
+
+.section-title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--gray-900);
+  margin-bottom: var(--spacing-3);
+  padding-bottom: var(--spacing-2);
+  border-bottom: var(--border-width) solid var(--border-color);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--spacing-3);
+  margin-bottom: var(--spacing-3);
+}
+
+/* プロフィールカード */
+.profile-card {
+  background-color: var(--white);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  padding: var(--spacing-3);
+  margin-bottom: var(--spacing-3);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  margin-bottom: var(--spacing-3);
+}
+
+.card-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.card-info {
+  flex: 1;
+}
+
+.card-name {
+  font-weight: var(--font-weight-bold);
+  color: var(--gray-900);
+  margin-bottom: var(--spacing-1);
+}
+
+.card-title {
+  color: var(--gray-600);
+  font-size: var(--font-size-sm);
+}
+
+.card-content {
+  color: var(--gray-700);
+  font-size: var(--font-size-sm);
+  line-height: 1.5;
+}
+
+/* プロフィールアクション */
+.profile-actions {
+  display: flex;
+  gap: var(--spacing-2);
+  margin-top: var(--spacing-3);
+}
+
+.action-button {
+  padding: var(--spacing-2) var(--spacing-3);
+  border-radius: var(--border-radius);
+  font-size: var(--font-size-sm);
+  transition: var(--transition-base);
+}
+
+.action-button.primary {
+  background-color: var(--primary);
+  color: var(--white);
+}
+
+.action-button.secondary {
+  background-color: var(--gray-100);
+  color: var(--gray-700);
+}
+
+.action-button:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--box-shadow-sm);
+}
+
+/* レスポンシブデザイン */
+@media (max-width: 768px) {
+  .profile-header-content {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .profile-stats {
+    justify-content: center;
+  }
+
+  .tab-nav {
+    overflow-x: auto;
+    padding: 0;
+  }
+
+  .tab-item {
+    white-space: nowrap;
+    padding: var(--spacing-2) var(--spacing-3);
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-actions {
+    flex-direction: column;
+  }
+
+  .action-button {
+    width: 100%;
+  }
+} 

@@ -1,0 +1,172 @@
+{% extends "base.html" %}
+
+{% block title %}メモの編集{% endblock %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --primary-color: #2c3e50;
+        --secondary-color: #34495e;
+        --accent-color: #3498db;
+        --success-color: #28a745;
+        --danger-color: #dc3545;
+        --background-color: #f8f9fa;
+        --card-background: #ffffff;
+        --text-primary: #2c3e50;
+        --text-secondary: #7f8c8d;
+        --border-color: #ecf0f1;
+        --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+        --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+        --transition-base: all 0.2s ease;
+        --spacing-xs: 0.5rem;
+        --spacing-sm: 1rem;
+        --spacing-md: 1.5rem;
+        --spacing-lg: 2rem;
+        --border-radius: 0.5rem;
+    }
+
+    .edit-note-header {
+        background: var(--card-background);
+        padding: var(--spacing-lg) 0;
+        margin-bottom: var(--spacing-lg);
+        box-shadow: var(--shadow-sm);
+    }
+
+    .edit-note-header h1 {
+        color: var(--text-primary);
+        font-weight: 600;
+        margin: 0;
+        font-size: 1.75rem;
+    }
+
+    .note-form {
+        background: var(--card-background);
+        padding: var(--spacing-lg);
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow-sm);
+    }
+
+    .form-label {
+        color: var(--text-primary);
+        font-weight: 600;
+        margin-bottom: var(--spacing-xs);
+    }
+
+    .form-control {
+        border: 1px solid var(--border-color);
+        border-radius: var(--border-radius);
+        padding: var(--spacing-sm);
+        transition: var(--transition-base);
+    }
+
+    .form-control:focus {
+        border-color: var(--accent-color);
+        box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+    }
+
+    .form-text {
+        color: var(--text-secondary);
+        font-size: 0.875rem;
+        margin-top: var(--spacing-xs);
+    }
+
+    .btn-submit {
+        background-color: var(--accent-color);
+        color: white;
+        padding: var(--spacing-sm) var(--spacing-lg);
+        border-radius: var(--border-radius);
+        transition: var(--transition-base);
+        border: none;
+        display: inline-flex;
+        align-items: center;
+        gap: var(--spacing-xs);
+    }
+
+    .btn-submit:hover {
+        background-color: var(--primary-color);
+        transform: translateY(-1px);
+        color: white;
+    }
+
+    .btn-cancel {
+        color: var(--text-secondary);
+        padding: var(--spacing-sm) var(--spacing-lg);
+        border-radius: var(--border-radius);
+        transition: var(--transition-base);
+        border: 1px solid var(--border-color);
+        display: inline-flex;
+        align-items: center;
+        gap: var(--spacing-xs);
+    }
+
+    .btn-cancel:hover {
+        background-color: var(--background-color);
+        color: var(--text-primary);
+    }
+
+    @media (max-width: 768px) {
+        .edit-note-header {
+            padding: var(--spacing-md) 0;
+        }
+
+        .edit-note-header h1 {
+            font-size: 1.5rem;
+        }
+
+        .note-form {
+            padding: var(--spacing-md);
+        }
+
+        .btn-submit, .btn-cancel {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="edit-note-header">
+    <div class="container">
+        <h1>メモの編集</h1>
+    </div>
+</section>
+
+<div class="container">
+    <form method="post" class="note-form">
+        {{ form.hidden_tag() }}
+        <div class="mb-4">
+            <label for="title" class="form-label">タイトル</label>
+            {{ form.title(class="form-control", id="title", placeholder="メモのタイトルを入力") }}
+            {% if form.title.errors %}
+            <div class="text-danger mt-2">
+                {% for error in form.title.errors %}
+                <p class="mb-0">{{ error }}</p>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+        <div class="mb-4">
+            <label for="content" class="form-label">内容</label>
+            {{ form.content(class="form-control", id="content", rows="10", placeholder="メモの内容を入力") }}
+            {% if form.content.errors %}
+            <div class="text-danger mt-2">
+                {% for error in form.content.errors %}
+                <p class="mb-0">{{ error }}</p>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+        <div class="d-flex flex-column flex-md-row gap-3">
+            <button type="submit" class="btn btn-submit">
+                <i class="fas fa-save"></i>
+                <span>保存</span>
+            </button>
+            <a href="{{ url_for('main.notes') }}" class="btn btn-cancel">
+                <i class="fas fa-times"></i>
+                <span>キャンセル</span>
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %} 

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>後継者プロフィール確認</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f5f5f5;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+        .navbar {
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,.1);
+            margin-bottom: 2rem;
+        }
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333;
+        }
+        .card {
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        }
+        .profile-section {
+            margin-bottom: 2rem;
+        }
+        .profile-section h3 {
+            font-size: 1.25rem;
+            color: #333;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #eee;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+        .profile-item {
+            margin-bottom: 0.5rem;
+        }
+        .profile-label {
+            font-weight: bold;
+            color: #555;
+        }
+        .alert-info {
+            background-color: #d1ecf1;
+            border-color: #bee5eb;
+            color: #0c5460;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('main.index') }}">M&Aサクシード</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('main.search') }}">企業を探す</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('main.message_list') }}">メッセージ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('auth.logout') }}">ログアウト</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="mb-0">プロフィール確認</h2>
+                    </div>
+                    {% if successor.image_filename %}
+                    <div class="text-center mt-4">
+                        <img src="{{ url_for('static', filename='uploads/' + successor.image_filename) }}"
+                             alt="プロフィール画像"
+                             class="img-fluid rounded"
+                             style="max-width: 220px;">
+                    </div>
+                    {% endif %}
+                    <div class="card-body">
+                        {% with messages = get_flashed_messages(with_categories=true) %}
+                            {% if messages %}
+                                {% for category, message in messages %}
+                                    <div class="alert alert-{{ category }}">
+                                        {{ message }}
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        {% endwith %}
+
+                        <div class="alert alert-info">
+                            <h4 class="alert-heading">プロフィールの確認</h4>
+                            <p>以下の内容でプロフィールを公開します。内容に問題がなければ「プロフィールを公開する」ボタンをクリックしてください。</p>
+                        </div>
+
+                        <div class="profile-section">
+                            <h3>基本情報</h3>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p><strong>氏名：</strong>{{ successor.name }}</p>
+                                    <p><strong>年齢：</strong>{{ successor.age }}歳</p>
+                                    <p><strong>性別：</strong>
+                                    {% if successor.gender == 'male' %}男性
+                                    {% elif successor.gender == 'female' %}女性
+                                    {% else %}その他
+                                    {% endif %}</p>
+                                    <p><strong>現在の居住地：</strong>{{ successor.location }}</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p><strong>希望業種：</strong>{{ successor.desired_industry|industry_name }}</p>
+                                    <p><strong>希望地域：</strong>{{ successor.desired_location }}</p>
+                                    <p><strong>投資能力：</strong>{{ successor.investment_capacity }}万円</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="profile-section">
+                            <h3>経営経験</h3>
+                            <div class="profile-item">
+                                {{ successor.management_experience | nl2br }}
+                            </div>
+                        </div>
+
+                        <div class="profile-section">
+                            <h3>業界経験</h3>
+                            <div class="profile-item">
+                                {{ successor.industry_experience | nl2br }}
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <form method="POST" action="{{ url_for('profile.confirm_successor_profile', id=successor.id) }}">
+                                <button type="submit" class="btn btn-primary">プロフィールを公開する</button>
+                                <a href="{{ url_for('profile.setup_successor') }}" class="btn btn-secondary ms-2">編集に戻る</a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html> 

@@ -1,0 +1,222 @@
+/* 通知コンテナ */
+.notification-container {
+  padding: var(--spacing-4) 0;
+}
+
+/* 通知ヘッダー */
+.notification-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-4);
+}
+
+.notification-title {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--gray-900);
+}
+
+.notification-actions {
+  display: flex;
+  gap: var(--spacing-2);
+}
+
+/* 通知リスト */
+.notification-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+}
+
+.notification-item {
+  background-color: var(--white);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  padding: var(--spacing-3);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-3);
+  transition: var(--transition-base);
+  cursor: pointer;
+}
+
+.notification-item:hover {
+  transform: translateX(4px);
+  box-shadow: var(--box-shadow-md);
+}
+
+.notification-item.unread {
+  background-color: var(--gray-50);
+  border-left: 4px solid var(--primary);
+}
+
+.notification-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.notification-icon.message {
+  background-color: var(--primary-light);
+  color: var(--primary);
+}
+
+.notification-icon.follow {
+  background-color: var(--success-light);
+  color: var(--success);
+}
+
+.notification-icon.like {
+  background-color: var(--danger-light);
+  color: var(--danger);
+}
+
+.notification-icon.system {
+  background-color: var(--info-light);
+  color: var(--info);
+}
+
+.notification-content {
+  flex: 1;
+}
+
+.notification-text {
+  color: var(--gray-700);
+  margin-bottom: var(--spacing-1);
+  line-height: 1.5;
+}
+
+.notification-time {
+  color: var(--gray-500);
+  font-size: var(--font-size-sm);
+}
+
+.notification-actions {
+  display: flex;
+  gap: var(--spacing-2);
+  margin-top: var(--spacing-2);
+}
+
+/* 通知フィルター */
+.notification-filter {
+  display: flex;
+  gap: var(--spacing-2);
+  margin-bottom: var(--spacing-4);
+  flex-wrap: wrap;
+}
+
+.filter-button {
+  padding: var(--spacing-2) var(--spacing-3);
+  border: var(--border-width) solid var(--border-color);
+  border-radius: var(--border-radius);
+  background-color: var(--white);
+  color: var(--gray-600);
+  cursor: pointer;
+  transition: var(--transition-base);
+}
+
+.filter-button:hover {
+  background-color: var(--gray-100);
+  border-color: var(--gray-400);
+}
+
+.filter-button.active {
+  background-color: var(--primary);
+  border-color: var(--primary);
+  color: var(--white);
+}
+
+/* 空の状態 */
+.notification-empty {
+  text-align: center;
+  padding: var(--spacing-6) var(--spacing-4);
+  background-color: var(--white);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+}
+
+.empty-icon {
+  font-size: 48px;
+  color: var(--gray-400);
+  margin-bottom: var(--spacing-3);
+}
+
+.empty-text {
+  color: var(--gray-600);
+  font-size: var(--font-size-lg);
+  margin-bottom: var(--spacing-3);
+}
+
+.empty-action {
+  display: inline-block;
+  padding: var(--spacing-2) var(--spacing-4);
+  background-color: var(--primary);
+  color: var(--white);
+  border-radius: var(--border-radius);
+  text-decoration: none;
+  transition: var(--transition-base);
+}
+
+.empty-action:hover {
+  background-color: var(--primary-dark);
+  transform: translateY(-1px);
+}
+
+/* 通知バッジ */
+.notification-badge {
+  position: relative;
+  display: inline-flex;
+}
+
+.badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background-color: var(--danger);
+  color: var(--white);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  padding: 2px 6px;
+  border-radius: 10px;
+  min-width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* レスポンシブデザイン */
+@media (max-width: 768px) {
+  .notification-header {
+    flex-direction: column;
+    gap: var(--spacing-2);
+    align-items: flex-start;
+  }
+
+  .notification-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .notification-filter {
+    justify-content: center;
+  }
+
+  .notification-item {
+    padding: var(--spacing-2);
+  }
+
+  .notification-icon {
+    width: 32px;
+    height: 32px;
+  }
+
+  .notification-text {
+    font-size: var(--font-size-sm);
+  }
+} 

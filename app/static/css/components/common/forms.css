@@ -1,0 +1,105 @@
+/* Form Styles */
+.form-group {
+    margin-bottom: var(--spacing-unit);
+}
+
+.form-label {
+    display: block;
+    margin-bottom: calc(var(--spacing-unit) / 2);
+    font-weight: 500;
+    color: var(--dark-color);
+}
+
+.form-control {
+    display: block;
+    width: 100%;
+    padding: calc(var(--spacing-unit) * 0.75) var(--spacing-unit);
+    font-size: var(--font-size-base);
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--dark-color);
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+.form-control:focus {
+    color: var(--dark-color);
+    background-color: #fff;
+    border-color: var(--primary-color);
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.form-control::placeholder {
+    color: var(--secondary-color);
+    opacity: 1;
+}
+
+.form-control:disabled,
+.form-control[readonly] {
+    background-color: var(--light-color);
+    opacity: 1;
+}
+
+.form-text {
+    margin-top: 0.25rem;
+    font-size: var(--font-size-sm);
+    color: var(--secondary-color);
+}
+
+.form-check {
+    display: block;
+    min-height: 1.5rem;
+    padding-left: 1.5em;
+    margin-bottom: 0.125rem;
+}
+
+.form-check-input {
+    float: left;
+    margin-left: -1.5em;
+}
+
+.form-check-label {
+    margin-bottom: 0;
+}
+
+.invalid-feedback {
+    display: none;
+    width: 100%;
+    margin-top: 0.25rem;
+    font-size: var(--font-size-sm);
+    color: var(--danger-color);
+}
+
+.is-invalid ~ .invalid-feedback {
+    display: block;
+}
+
+.form-control.is-invalid {
+    border-color: var(--danger-color);
+}
+
+.form-control.is-invalid:focus {
+    border-color: var(--danger-color);
+    box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+}
+
+/* Form Layout */
+.form-row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: calc(var(--spacing-unit) * -0.5);
+    margin-left: calc(var(--spacing-unit) * -0.5);
+}
+
+.form-row > * {
+    flex-shrink: 0;
+    width: 100%;
+    max-width: 100%;
+    padding-right: calc(var(--spacing-unit) * 0.5);
+    padding-left: calc(var(--spacing-unit) * 0.5);
+    margin-top: 0;
+} 

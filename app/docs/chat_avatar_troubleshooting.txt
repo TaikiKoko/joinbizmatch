@@ -1,0 +1,51 @@
+【Flask チャットアバター画像表示トラブルシューティングまとめ】
+
+---
+
+■ 問題概要
+- チャット画面等でアバター画像が表示されない。
+- imgタグのsrcが相対パス（例: /chat/room/static/uploads/...）となり、画像が見つからない。
+
+■ 原因
+- User.avatar_urlをそのままimgタグのsrcに使っていた。
+- Flaskの静的ファイルは /static/ 直下で提供されるが、相対パスだと現在のURLパスに連結されてしまう。
+
+■ 解決策
+1. Userモデルにget_avatar_url()メソッドを実装し、Flaskのurl_for('static', filename=...)で絶対パスを返すようにする。
+   - static/が重複しないように注意。
+2. すべてのテンプレートでアバター画像表示はget_avatar_url()を使う形に統一。
+   - 例: <img src="{{ user.get_avatar_url() }}">
+3. avatar_urlの保存形式はuploads/profile_images/...のようにstatic/を含めない形がベスト。
+
+■ 具体例（Userモデル）
+from flask import url_for
+
+def get_avatar_url(self):
+    if self.avatar_url:
+        avatar_path = self.avatar_url
+        if avatar_path.startswith('static/'):
+            avatar_path = avatar_path[len('static/'):]
+        return url_for('static', filename=avatar_path)
+    return url_for('static', filename='images/default_avatar.png')
+
+■ テンプレート例
+<img src="{{ user.get_avatar_url() }}" alt="{{ user.username }}">
+
+■ 再発防止ポイント
+- 静的ファイルのパスは必ずurl_for('static', ...)で生成する。
+- テンプレートでパスを組み立てず、モデルのメソッドで絶対パスを返す設計にする。
+- avatar_urlの保存形式に一貫性を持たせる。
+
+■ トラブル時のチェックリスト
+1. avatar_urlの値が正しいか（static/の重複や不要なパスがないか）
+2. サーバー上に画像ファイルが存在するか
+3. ブラウザで/static/から始まるURLで画像が表示されるか
+4. テンプレートでget_avatar_url()を使っているか
+
+■ 学び
+- Flaskの静的ファイルの扱いはurl_for('static', ...)が鉄則。
+- 問題が起きたら「現象→原因→解決策」を段階的に整理することが大切。
+
+---
+
+（作成日: 2025-05-07） 

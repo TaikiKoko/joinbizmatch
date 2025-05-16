@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}チャットルーム一覧{% endblock %}
+
+{% block styles %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/chat.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <h1 class="mb-4">チャットルーム一覧</h1>
+    
+    <div class="chat-rooms">
+        {% if chat_rooms %}
+            {% for room in chat_rooms %}
+                {% set other_user = room.get_other_user(current_user.id) %}
+                <a href="{{ url_for('chat.room', room_id=room.id) }}" class="chat-room-item">
+                    <div class="chat-room-user">
+                        {% if other_user.avatar_url %}
+                        <img src="{{ other_user.get_avatar_url() }}" alt="{{ other_user.username }}" class="rounded-circle" style="width:40px; height:40px; object-fit:cover;">
+                        {% else %}
+                        <i class="fas fa-user" style="font-size:40px; color:#ccc;"></i>
+                        {% endif %}
+                        <div>avatar_url: {{ other_user.avatar_url }}</div>
+                        <div class="chat-room-info">
+                            <div class="chat-room-name">{{ other_user.username }}</div>
+                            {% set last_message = room.messages.order_by(Message.created_at.desc()).first() %}
+                            {% if last_message %}
+                                <div class="chat-room-message">
+                                    {{ last_message.content[:50] }}{% if last_message.content|length > 50 %}...{% endif %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="chat-room-meta">
+                        {% if last_message %}
+                            <div class="chat-room-time">{{ last_message.created_at|format_datetime }}</div>
+                            {% set unread_count = room.messages.filter_by(is_read=False).filter(Message.sender_id != current_user.id).count() %}
+                            {% if unread_count > 0 %}
+                                <div class="chat-room-badge">{{ unread_count }}</div>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </a>
+            {% endfor %}
+        {% else %}
+            <div class="text-center text-muted py-5">
+                <p>チャットルームがありません</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script src="{{ url_for('static', filename='js/chat_rooms.js') }}"></script>
+{% endblock %} 

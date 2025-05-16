@@ -1,0 +1,248 @@
+{% extends "base.html" %}
+
+{% block title %}{{ successor.name }} - プロフィール{% endblock %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --primary-color: #2c3e50;
+        --secondary-color: #34495e;
+        --accent-color: #3498db;
+        --success-color: #28a745;
+        --danger-color: #dc3545;
+        --background-color: #f8f9fa;
+        --card-background: #ffffff;
+        --text-primary: #2c3e50;
+        --text-secondary: #7f8c8d;
+        --border-color: #ecf0f1;
+        --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+        --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+        --transition-base: all 0.2s ease;
+        --spacing-xs: 0.5rem;
+        --spacing-sm: 1rem;
+        --spacing-md: 1.5rem;
+        --spacing-lg: 2rem;
+        --border-radius: 0.5rem;
+    }
+
+    .successor-header {
+        background: var(--card-background);
+        padding: var(--spacing-lg) 0;
+        margin-bottom: var(--spacing-lg);
+        box-shadow: var(--shadow-sm);
+    }
+
+    .successor-header h1 {
+        color: var(--text-primary);
+        font-weight: 600;
+        margin: 0;
+        font-size: 1.75rem;
+    }
+
+    .info-card {
+        background: var(--card-background);
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow-sm);
+        margin-bottom: var(--spacing-lg);
+        transition: var(--transition-base);
+    }
+
+    .info-card:hover {
+        box-shadow: var(--shadow-md);
+        transform: translateY(-2px);
+    }
+
+    .info-card .card-body {
+        padding: var(--spacing-md);
+    }
+
+    .info-card .card-title {
+        color: var(--text-primary);
+        font-weight: 600;
+        margin-bottom: var(--spacing-md);
+        font-size: 1.25rem;
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xs);
+    }
+
+    .info-card .card-title i {
+        color: var(--accent-color);
+    }
+
+    .info-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: var(--spacing-md);
+    }
+
+    .info-item {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-xs);
+    }
+
+    .info-label {
+        color: var(--text-secondary);
+        font-size: 0.875rem;
+    }
+
+    .info-value {
+        color: var(--text-primary);
+        font-weight: 500;
+    }
+
+    .btn-contact {
+        background-color: var(--accent-color);
+        color: white;
+        padding: var(--spacing-xs) var(--spacing-sm);
+        border-radius: var(--border-radius);
+        transition: var(--transition-base);
+        border: none;
+        display: inline-flex;
+        align-items: center;
+        gap: var(--spacing-xs);
+        font-weight: 500;
+    }
+
+    .btn-contact:hover {
+        background-color: var(--primary-color);
+        color: white;
+    }
+
+    .skill-tag {
+        background-color: var(--background-color);
+        color: var(--text-primary);
+        padding: var(--spacing-xs) var(--spacing-sm);
+        border-radius: var(--border-radius);
+        font-size: 0.875rem;
+        display: inline-flex;
+        align-items: center;
+        gap: var(--spacing-xs);
+    }
+
+    .skill-tag i {
+        color: var(--accent-color);
+    }
+
+    @media (max-width: 768px) {
+        .successor-header {
+            padding: var(--spacing-md) 0;
+        }
+
+        .successor-header h1 {
+            font-size: 1.5rem;
+        }
+
+        .info-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .info-card .card-body {
+            padding: var(--spacing-sm);
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="successor-header">
+    <div class="container">
+        <h1>{{ successor.name }}</h1>
+        {% if successor.user %}
+        <div class="text-center mt-3">
+            <img src="{{ successor.user.get_avatar_url() }}"
+                 alt="プロフィール画像"
+                 class="img-fluid rounded"
+                 style="max-width: 220px;">
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<div class="container">
+    <div class="info-card">
+        <div class="card-body">
+            <h5 class="card-title">
+                <i class="fas fa-user" aria-hidden="true"></i>
+                <span>基本情報</span>
+            </h5>
+            <div class="info-grid">
+                <div class="info-item">
+                    <span class="info-label">年齢</span>
+                    <span class="info-value">{{ successor.age or '未設定' }}歳</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">性別</span>
+                    <span class="info-value">{{ successor.gender or '未設定' }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">所在地</span>
+                    <span class="info-value">{{ successor.location or '未設定' }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="info-card">
+        <div class="card-body">
+            <h5 class="card-title">
+                <i class="fas fa-briefcase" aria-hidden="true"></i>
+                <span>希望条件</span>
+            </h5>
+            <div class="info-grid">
+                <div class="info-item">
+                    <span class="info-label">希望業種</span>
+                    <span class="info-value">{{ successor.desired_industry or '未設定' }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">希望地域</span>
+                    <span class="info-value">{{ successor.desired_location or '未設定' }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">投資可能額</span>
+                    <span class="info-value">{{ successor.investment_capacity or '未設定' }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="info-card">
+        <div class="card-body">
+            <h5 class="card-title">
+                <i class="fas fa-chart-line" aria-hidden="true"></i>
+                <span>経歴</span>
+            </h5>
+            <div class="info-grid">
+                <div class="info-item">
+                    <span class="info-label">経営経験</span>
+                    <span class="info-value">{{ successor.management_experience or '未設定' }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">業界経験</span>
+                    <span class="info-value">{{ successor.industry_experience or '未設定' }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="info-card">
+        <div class="card-body">
+            <h5 class="card-title">
+                <i class="fas fa-comment" aria-hidden="true"></i>
+                <span>自己PR</span>
+            </h5>
+            <p class="mb-0">{{ successor.description or '未設定' }}</p>
+        </div>
+    </div>
+
+    {% if current_user.is_authenticated and current_user.user_type == 'company' %}
+    <div class="text-center mt-4">
+        <a href="{{ url_for('chat.start', user_id=successor.id) }}" class="btn btn-contact" aria-label="コンタクトを取る">
+            <i class="fas fa-envelope" aria-hidden="true"></i>
+            <span>コンタクトを取る</span>
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %} 

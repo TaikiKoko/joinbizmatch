@@ -1,0 +1,70 @@
+/* Login Page Styles */
+.login-container {
+    max-width: 480px;
+    margin: calc(var(--spacing-unit) * 4) auto;
+    padding: 0 var(--container-padding);
+}
+
+.login-header {
+    text-align: center;
+    margin-bottom: calc(var(--spacing-unit) * 3);
+}
+
+.login-title {
+    font-size: calc(var(--font-size-base) * 2);
+    color: var(--dark-color);
+    margin-bottom: var(--spacing-unit);
+}
+
+.login-subtitle {
+    color: var(--secondary-color);
+    font-size: var(--font-size-base);
+}
+
+.login-card {
+    background: #fff;
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow);
+    padding: calc(var(--spacing-unit) * 3);
+}
+
+.login-form {
+    margin-bottom: calc(var(--spacing-unit) * 2);
+}
+
+.login-remember-me {
+    margin-bottom: var(--spacing-unit);
+}
+
+.login-submit {
+    margin-top: calc(var(--spacing-unit) * 2);
+}
+
+.login-footer {
+    text-align: center;
+    margin-top: calc(var(--spacing-unit) * 2);
+}
+
+.login-footer p {
+    margin-bottom: calc(var(--spacing-unit) * 0.5);
+}
+
+.login-footer a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.login-footer a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive Design */
+@media (max-width: var(--breakpoint-sm)) {
+    .login-container {
+        margin: var(--spacing-unit) auto;
+    }
+
+    .login-card {
+        padding: calc(var(--spacing-unit) * 2);
+    }
+} 

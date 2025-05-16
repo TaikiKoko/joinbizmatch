@@ -1,0 +1,48 @@
+{% macro render_message(message) %}
+<div class="message {% if message.sender_id == current_user.id %}sent{% else %}received{% endif %}">
+    <div class="message-content">
+        <div class="message-sender-avatar" style="float:left; margin-right:8px;">
+            <img src="{{ message.sender.avatar_url }}" alt="{{ message.sender.username }}" class="rounded-circle" style="width:32px; height:32px; object-fit:cover;">
+        </div>
+        {% if message.content %}
+        <div class="message-text">
+            {{ message.content }}
+        </div>
+        {% endif %}
+        
+        {% if message.attachments %}
+        <div class="message-attachments">
+            {% for attachment in message.attachments %}
+            <div class="attachment">
+                {% if attachment.is_image %}
+                <div class="attachment-image">
+                    <img src="{{ url_for('static', filename=attachment.file_path) }}" 
+                         alt="{{ attachment.original_filename }}"
+                         class="img-fluid rounded"
+                         loading="lazy">
+                </div>
+                {% else %}
+                <div class="attachment-file">
+                    <i class="bi {{ attachment.icon_class }}"></i>
+                    <div class="attachment-info">
+                        <div class="attachment-name">{{ attachment.original_filename }}</div>
+                        <div class="attachment-size">{{ format_file_size(attachment.file_size) }}</div>
+                    </div>
+                    <a href="{{ url_for('static', filename=attachment.file_path) }}" 
+                       class="btn btn-sm btn-outline-primary"
+                       download>
+                        <i class="bi bi-download"></i>
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        <div class="message-time">
+            {{ message.created_at.strftime('%H:%M') }}
+        </div>
+    </div>
+</div>
+{% endmacro %} 

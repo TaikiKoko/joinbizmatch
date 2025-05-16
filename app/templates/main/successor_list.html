@@ -1,0 +1,579 @@
+{% extends "base.html" %}
+
+{% block title %}後継者一覧{% endblock %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --primary-color: #2c3e50;
+        --secondary-color: #34495e;
+        --accent-color: #3498db;
+        --success-color: #28a745;
+        --danger-color: #dc3545;
+        --background-color: #f8f9fa;
+        --card-background: #ffffff;
+        --text-primary: #2c3e50;
+        --text-secondary: #7f8c8d;
+        --border-color: #ecf0f1;
+        --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+        --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+        --transition-base: all 0.2s ease;
+        --spacing-xs: 0.5rem;
+        --spacing-sm: 1rem;
+        --spacing-md: 1.5rem;
+        --spacing-lg: 2rem;
+        --border-radius: 0.5rem;
+        --star-inactive: #9ca3af;
+        --star-active: #ffc107;
+    }
+
+    .successor-list-header {
+        background: var(--card-background);
+        padding: var(--spacing-lg) 0;
+        margin-bottom: var(--spacing-lg);
+        box-shadow: var(--shadow-sm);
+    }
+
+    .successor-list-header h1 {
+        color: var(--text-primary);
+        font-weight: 600;
+        margin: 0;
+        font-size: 1.75rem;
+    }
+
+    .search-section {
+        background: var(--card-background);
+        padding: var(--spacing-md);
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow-sm);
+        margin-bottom: var(--spacing-lg);
+    }
+
+    .search-form {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: var(--spacing-md);
+    }
+
+    .form-group {
+        margin-bottom: 0;
+    }
+
+    .form-control {
+        border: 1px solid var(--border-color);
+        border-radius: var(--border-radius);
+        padding: var(--spacing-sm);
+        transition: var(--transition-base);
+    }
+
+    .form-control:focus {
+        border-color: var(--accent-color);
+        box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+    }
+
+    .btn-search {
+        background-color: var(--accent-color);
+        color: white;
+        padding: var(--spacing-sm) var(--spacing-lg);
+        border-radius: var(--border-radius);
+        transition: var(--transition-base);
+        border: none;
+        display: inline-flex;
+        align-items: center;
+        gap: var(--spacing-xs);
+        font-weight: 500;
+    }
+
+    .btn-search:hover {
+        background-color: var(--primary-color);
+        transform: translateY(-1px);
+        color: white;
+    }
+
+    .successor-card {
+        background: var(--card-background);
+        border-radius: var(--border-radius);
+        margin-bottom: var(--spacing-md);
+        box-shadow: var(--shadow-sm);
+        transition: var(--transition-base);
+        position: relative;
+        padding: 0;
+        overflow: hidden;
+    }
+
+    .successor-card:hover {
+        box-shadow: var(--shadow-md);
+        transform: translateY(-2px);
+    }
+
+    .successor-info-section {
+        display: flex;
+        align-items: stretch;
+        padding: var(--spacing-md);
+        background: #eaf4fb;
+    }
+
+    .successor-image-container {
+        width: 100px;
+        height: 100px;
+        background: #fff;
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .successor-image-container i {
+        font-size: 2.5rem;
+        color: var(--accent-color);
+    }
+
+    .successor-details {
+        margin-left: var(--spacing-md);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        flex-grow: 1;
+    }
+
+    .successor-meta {
+        color: var(--text-secondary);
+        font-size: 0.875rem;
+        margin-bottom: var(--spacing-xs);
+    }
+
+    .investment-capacity {
+        font-weight: bold;
+        font-size: 1.25rem;
+        text-align: right;
+        margin-top: var(--spacing-xs);
+    }
+
+    .successor-content {
+        background: white;
+        padding: var(--spacing-md);
+    }
+
+    .successor-name {
+        font-size: 1.25rem;
+        font-weight: bold;
+        margin-bottom: var(--spacing-sm);
+        color: var(--text-primary);
+    }
+
+    .info-row {
+        display: flex;
+        align-items: center;
+        margin-bottom: var(--spacing-xs);
+    }
+
+    .info-icon {
+        width: 20px;
+        margin-right: var(--spacing-xs);
+        color: var(--text-secondary);
+        text-align: center;
+    }
+
+    .info-label {
+        width: 80px;
+        color: var(--text-secondary);
+        margin-right: var(--spacing-xs);
+    }
+
+    .info-value {
+        flex: 1;
+        color: var(--text-primary);
+    }
+
+    .favorite-btn {
+        position: absolute;
+        top: var(--spacing-md);
+        right: var(--spacing-md);
+        background: transparent;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        z-index: 2;
+        transition: transform 0.2s ease;
+    }
+
+    .favorite-btn:hover {
+        transform: scale(1.1);
+    }
+
+    .favorite-btn i {
+        font-size: 1.2rem;
+        color: var(--star-inactive);
+    }
+
+    .favorite-btn i.favorite-active {
+        color: var(--star-active);
+    }
+
+    .action-buttons {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: var(--spacing-md);
+    }
+
+    .btn-detail {
+        color: var(--accent-color);
+        text-decoration: none;
+        background: none;
+        border: none;
+        padding: 0;
+        font-size: 0.875rem;
+        display: inline-flex;
+        align-items: center;
+        gap: var(--spacing-xs);
+    }
+
+    .btn-detail:hover {
+        color: var(--primary-color);
+        text-decoration: none;
+    }
+
+    .action-group {
+        display: flex;
+        gap: var(--spacing-xs);
+    }
+
+    .simple-btn {
+        background: #fff;
+        border: none;
+        width: 40px;
+        height: 40px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        transition: var(--transition-base);
+        font-size: 1.2rem;
+        padding: 0;
+        border-radius: 8px;
+    }
+
+    .simple-btn.block-btn {
+        color: var(--danger-color);
+    }
+
+    .simple-btn.chat-btn {
+        color: var(--success-color);
+    }
+
+    .simple-btn:hover {
+        background: var(--background-color);
+        transform: translateY(-1px);
+    }
+
+    .simple-btn.blocked {
+        background-color: #95a5a6;
+        color: white;
+    }
+
+    @media (max-width: 768px) {
+        .successor-list-header {
+            padding: var(--spacing-md) 0;
+        }
+
+        .successor-list-header h1 {
+            font-size: 1.5rem;
+        }
+
+        .search-form {
+            grid-template-columns: 1fr;
+        }
+
+        .successor-info-section {
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .successor-details {
+            margin-left: 0;
+            margin-top: var(--spacing-sm);
+        }
+
+        .investment-capacity {
+            text-align: center;
+        }
+    }
+
+    .nowrap {
+        white-space: nowrap;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="successor-list-header">
+    <div class="container">
+        <h1>後継者一覧</h1>
+    </div>
+</div>
+
+<div class="container">
+    <!-- CSRFトークンをhidden inputとして追加 -->
+    <input type="hidden" id="csrf-token" value="{{ csrf_token() }}">
+    
+    <div class="search-section">
+        <form method="GET" class="search-form">
+            <div class="form-group">
+                <label for="industry">業種</label>
+                <select class="form-control" id="industry" name="industry">
+                    <option value="">選択してください</option>
+                    {% for code, name in industries %}
+                    <option value="{{ code }}" {% if request.args.get('industry') == code %}selected{% endif %}>{{ name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="location">地域</label>
+                <select class="form-control" id="location" name="location">
+                    <option value="">選択してください</option>
+                    {% for code, name in locations %}
+                    <option value="{{ code }}" {% if request.args.get('location') == code %}selected{% endif %}>{{ name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="search">フリーワード</label>
+                <input type="text" class="form-control" id="search" name="search" value="{{ request.args.get('search', '') }}" placeholder="キーワードを入力">
+            </div>
+            <div class="form-group d-flex align-items-end">
+                <button type="submit" class="btn btn-search w-100">
+                    <i class="fas fa-search"></i> 検索
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <div class="row">
+        {% for successor in successors.items %}
+        <div class="col-md-4">
+            <div class="successor-card">
+                {% if current_user.is_authenticated and current_user.user_type == 'company' %}
+                <button class="favorite-btn" data-successor-id="{{ successor.id }}">
+                    <i class="fas fa-star {% if successor.id in favorite_successors %}favorite-active{% endif %}"></i>
+                </button>
+                {% endif %}
+                <!-- 上部：写真＋登録日・更新日・投資可能額 -->
+                <div class="successor-info-section">
+                    <div class="successor-image-container">
+                        {% if successor.image_filename %}
+                            <img src="{{ url_for('static', filename='uploads/' + successor.image_filename) }}" alt="{{ successor.name }}" style="width:100%; height:100%; object-fit:cover;">
+                        {% else %}
+                            <i class="fas fa-user"></i>
+                        {% endif %}
+                    </div>
+                    <div class="successor-details">
+                        <div class="successor-meta">登録：{{ successor.created_at.strftime('%Y/%m/%d') if successor.created_at else '未設定' }}</div>
+                        <div class="successor-meta">更新：{{ successor.updated_at.strftime('%Y/%m/%d') if successor.updated_at else '未設定' }}</div>
+                        <div class="investment-capacity">
+                            投資可能額：
+                            {% if '万円' in successor.investment_capacity %}
+                              <span class="nowrap">{{ successor.investment_capacity or '未設定' }}</span>
+                            {% else %}
+                              <span class="nowrap">{{ successor.investment_capacity or '未設定' }}万円</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <!-- 下部：後継者名＋詳細情報＋ボタン -->
+                <div class="successor-content">
+                    <h3 class="successor-name">{{ successor.name }}</h3>
+                    <div class="info-row">
+                        <div class="info-icon">
+                            <i class="fas fa-industry"></i>
+                        </div>
+                        <div class="info-label">希望業界</div>
+                        <div class="info-value">{{ successor.desired_industry|industry_name }}</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="info-label">希望地域</div>
+                        <div class="info-value">{{ successor.desired_location or '未設定' }}</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-icon">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="info-label">年齢</div>
+                        <div class="info-value">{{ successor.age or '未設定' }}歳</div>
+                    </div>
+                    <div class="action-buttons">
+                        <a href="{{ url_for('main.successor_detail', id=successor.id) }}" class="btn-detail">
+                            <i class="fas fa-search me-1"></i>詳細を見る
+                        </a>
+                        <div class="action-group">
+                            {% if current_user.is_authenticated and current_user.id != successor.user_id %}
+                            <button class="simple-btn block-btn {% if current_user.is_blocking(successor.user) %}blocked{% endif %}"
+                                    data-user-id="{{ successor.user_id }}"
+                                    title="{% if current_user.is_blocking(successor.user) %}ブロック解除{% else %}ブロック{% endif %}">
+                                <i class="fas fa-ban"></i>
+                            </button>
+                            {% endif %}
+                            {% if current_user.is_authenticated and current_user.user_type == 'company' %}
+                            <a href="{{ url_for('chat.start', user_id=successor.user_id) }}" class="simple-btn chat-btn" title="チャットを開始">
+                                <i class="fas fa-comments"></i>
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% if successors.pages > 1 %}
+    <nav aria-label="Page navigation" class="mt-4">
+        <ul class="pagination justify-content-center">
+            {% for page in successors.iter_pages() %}
+                {% if page %}
+                    <li class="page-item {% if page == successors.page %}active{% endif %}">
+                        <a class="page-link" href="{{ url_for('main.successor_list', page=page, **request.args) }}">{{ page }}</a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">...</span>
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </nav>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM loaded, initializing favorite buttons...');
+    const favoriteButtons = document.querySelectorAll('.favorite-btn');
+    console.log('Found favorite buttons:', favoriteButtons.length);
+    
+    favoriteButtons.forEach(function(button) {
+        console.log('Setting up button:', button);
+        button.addEventListener('click', async function(e) {
+            e.preventDefault();
+            console.log('Button clicked');
+            const successorId = this.dataset.successorId;
+            console.log('Successor ID:', successorId);
+            const icon = this.querySelector('i');
+            console.log('Icon element:', icon);
+            
+            try {
+                console.log('Sending request to /api/favorites/successors/' + successorId);
+                const response = await fetch(`/api/favorites/successors/${successorId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRFToken': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    },
+                    credentials: 'same-origin'
+                });
+
+                console.log('Response status:', response.status);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                console.log('Response data:', data);
+                
+                if (data.status === 'success') {
+                    if (data.action === 'added') {
+                        icon.classList.add('favorite-active');
+                        console.log('Added favorite-active class to icon');
+                    } else {
+                        icon.classList.remove('favorite-active');
+                        console.log('Removed favorite-active class from icon');
+                    }
+                } else {
+                    console.error('Error in response:', data.message);
+                    alert('エラーが発生しました: ' + data.message);
+                }
+            } catch (error) {
+                console.error('Error in fetch:', error);
+                alert('エラーが発生しました: ' + error.message);
+            }
+        });
+    });
+
+    // ブロックボタンの初期化
+    const blockButtons = document.querySelectorAll('.simple-btn.block-btn');
+    blockButtons.forEach(button => {
+        button.addEventListener('click', async function() {
+            const userId = this.dataset.userId;
+            const isBlocked = this.classList.contains('blocked');
+            const method = isBlocked ? 'DELETE' : 'POST';
+            
+            try {
+                const response = await fetch(`/api/block/${userId}`, {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': document.querySelector('#csrf-token').value,
+                        'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    credentials: 'include',
+                    mode: 'same-origin'
+                });
+
+                if (!response.ok) {
+                    const contentType = response.headers.get('content-type');
+                    if (contentType && contentType.includes('application/json')) {
+                        const data = await response.json();
+                        throw new Error(data.message || 'エラーが発生しました');
+                    } else {
+                        throw new Error('サーバーエラーが発生しました');
+                    }
+                }
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // ボタンの状態を更新
+                    this.classList.toggle('blocked');
+                    this.title = isBlocked ? 'ブロック' : 'ブロック解除';
+
+                    // 成功メッセージを表示
+                    const messageDiv = document.createElement('div');
+                    messageDiv.className = 'alert alert-success position-fixed top-0 start-50 translate-middle-x mt-3';
+                    messageDiv.style.zIndex = '1050';
+                    messageDiv.textContent = data.message || (isBlocked ? 'ブロックを解除しました' : 'ユーザーをブロックしました');
+                    document.body.appendChild(messageDiv);
+
+                    // 3秒後にメッセージを消す
+                    setTimeout(() => {
+                        messageDiv.remove();
+                    }, 3000);
+                } else {
+                    throw new Error(data.message || 'エラーが発生しました');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                // エラーメッセージを表示
+                const errorDiv = document.createElement('div');
+                errorDiv.className = 'alert alert-danger position-fixed top-0 start-50 translate-middle-x mt-3';
+                errorDiv.style.zIndex = '1050';
+                errorDiv.textContent = error.message || 'ブロック処理中にエラーが発生しました';
+                document.body.appendChild(errorDiv);
+
+                // 3秒後にエラーメッセージを消す
+                setTimeout(() => {
+                    errorDiv.remove();
+                }, 3000);
+            }
+        });
+    });
+});
+</script>
+{% endblock %} 

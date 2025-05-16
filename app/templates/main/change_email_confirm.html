@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}メールアドレス変更の確認{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="form-container" style="max-width:600px;margin:2rem auto;padding:2rem;background:white;border-radius:12px;box-shadow:0 2px 4px rgba(0,0,0,.05);">
+    <h1 class="form-title">メールアドレス変更の確認</h1>
+    <form method="POST">
+      <div class="mb-4">
+        <div class="mb-2">新しいメールアドレス</div>
+        <div class="p-2 bg-light border rounded">{{ data.new_email }}</div>
+      </div>
+      <div class="d-flex justify-content-between">
+        <a href="{{ url_for('main.change_email') }}" class="btn btn-secondary">キャンセル</a>
+        <button type="submit" class="btn btn-primary">この内容で変更する</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %} 
