@@ -521,6 +521,20 @@
     
     /* レスポンシブ対応 */
     @media (max-width: 768px) {
+        body, html {
+            width: 100vw;
+            overflow-x: hidden;
+        }
+        .hero-title,
+        .hero-description {
+            max-width: calc(100vw - 16px);
+            overflow-wrap: break-word;
+            word-break: break-word;
+        }
+        .hero-content {
+            padding-left: 8px;
+            padding-right: 8px;
+        }
         .hero-title {
             font-size: 6vw;
             line-height: 1.22;
