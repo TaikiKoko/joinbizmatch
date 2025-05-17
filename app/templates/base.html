@@ -84,6 +84,7 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            overflow-x: hidden;
         }
 
         .container {
@@ -192,19 +193,76 @@
         }
 
         @media (max-width: 768px) {
+            .container {
+                width: 100%;
+                max-width: 100%;
+                box-sizing: border-box;
+                padding-left: 8px;
+                padding-right: 8px;
+            }
+            .hero-title, .section-title, h1 {
+                font-size: 5vw;
+                word-break: break-word;
+                overflow-wrap: anywhere;
+                padding: 0 5vw;
+                text-align: center;
+            }
+            .hero-description, .section-description {
+                font-size: 4vw;
+                padding: 0 2vw;
+                word-break: break-word;
+                overflow-wrap: break-word;
+                text-align: center;
+            }
+            .nav-buttons {
+                flex-direction: column;
+                gap: 8px;
+                width: 100%;
+                margin-bottom: 8px;
+            }
+            .nav-button {
+                width: 100%;
+                margin-bottom: 8px;
+                box-sizing: border-box;
+                font-size: 1rem;
+            }
+            .btn-hero {
+                width: 100%;
+                font-size: 1rem;
+                margin-bottom: 10px;
+            }
             .header-container {
-                gap: var(--spacing-md);
-                padding: 0 var(--spacing-md);
-                justify-content: space-between;
+                flex-direction: column !important;
+                align-items: stretch !important;
+                text-align: center !important;
             }
             
             .nav-menu {
-                gap: var(--spacing-md);
+                flex-direction: column !important;
+                width: 100% !important;
+                align-items: stretch !important;
+                gap: 0 !important;
             }
             
-            .nav-link {
-                padding: var(--spacing-sm) var(--spacing-sm);
-                font-size: 0.9rem;
+            .nav-group {
+                width: 100% !important;
+                margin-bottom: 8px !important;
+            }
+            
+            .nav-buttons {
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 8px !important;
+                width: 100% !important;
+                margin-bottom: 8px !important;
+                align-items: stretch !important;
+            }
+            
+            .nav-button {
+                width: 100% !important;
+                margin-bottom: 8px !important;
+                box-sizing: border-box !important;
+                font-size: 1rem !important;
             }
         }
     </style>
@@ -236,9 +294,9 @@
                     </a>
                     <a href="{{ url_for('auth.logout') }}" class="nav-link">ログアウト</a>
                 {% else %}
-                    <a href="{{ url_for('main.index') }}" class="nav-link">ホーム</a>
-                    <a href="{{ url_for('auth.login_successor') }}" class="nav-link">ログイン</a>
-                    <a href="{{ url_for('auth.register_successor') }}" class="btn btn-primary">会員登録</a>
+                    <a href="{{ url_for('main.index') }}" class="nav-link nav-button">ホーム</a>
+                    <a href="{{ url_for('auth.login_successor') }}" class="nav-link nav-button">ログイン</a>
+                    <a href="{{ url_for('auth.register_successor') }}" class="btn btn-primary nav-button">会員登録</a>
                 {% endif %}
             </nav>
         </div>
