@@ -76,6 +76,15 @@
             --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
         }
 
+        html, body, .container, .row, .col, .card, .header-container, .site-footer, .footer-content {
+            width: 100% !important;
+            max-width: 100% !important;
+            box-sizing: border-box !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            overflow-x: visible !important;
+        }
+
         body {
             font-family: var(--font-family);
             line-height: 1.6;
@@ -84,7 +93,6 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            overflow-x: hidden;
         }
 
         .container {
@@ -193,12 +201,16 @@
         }
 
         @media (max-width: 768px) {
-            .container {
-                width: 100%;
-                max-width: 100%;
-                box-sizing: border-box;
-                padding-left: 8px;
-                padding-right: 8px;
+            .container,
+            .header-container,
+            .site-footer,
+            .footer-content {
+                width: 100% !important;
+                max-width: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                box-sizing: border-box !important;
+                overflow-x: hidden !important;
             }
             .hero-title, .section-title, h1 {
                 font-size: 5vw;
@@ -231,13 +243,10 @@
                 font-size: 1rem;
                 margin-bottom: 10px;
             }
-            .header-container {
-                flex-direction: column !important;
-                align-items: stretch !important;
-                text-align: center !important;
-                gap: 16px !important;
-                padding-left: 12px !important;
-                padding-right: 12px !important;
+            .header-container > *,
+            .footer-content > * {
+                width: 100% !important;
+                box-sizing: border-box !important;
             }
             
             .nav-menu {
@@ -273,6 +282,19 @@
                 display: block;
                 width: 100%;
                 text-align: center;
+            }
+            .card-group, .card-grid, .row, .col, .card {
+                width: 100% !important;
+                padding: 0 !important;
+                box-sizing: border-box !important;
+            }
+            .row {
+                margin-left: 0 !important;
+                margin-right: 0 !important;
+            }
+            .container, body {
+                padding-left: 0 !important;
+                padding-right: 0 !important;
             }
         }
     </style>
