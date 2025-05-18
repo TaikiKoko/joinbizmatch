@@ -16,7 +16,7 @@
         --danger-color: #e74c3c;
     }
 
-    .container {
+    .settings-container {
         max-width: 800px !important;
         padding: 0 1.5rem;
     }
@@ -101,11 +101,18 @@
         color: var(--primary-color);
         text-decoration: underline;
     }
+
+    .settings-container {
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+        padding: 0 1.5rem;
+    }
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="container py-4">
+<div class="settings-container py-4">
     <!-- アカウント設定 -->
     <div class="settings-section">
         <h2>アカウント設定</h2>

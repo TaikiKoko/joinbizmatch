@@ -216,78 +216,79 @@
         </div>
     </div>
     
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    <div class="row align-items-stretch">
         {% for company in companies.items %}
-        <div class="col">
-            <div class="company-card">
-                <button class="favorite-btn" data-company-id="{{ company.id }}">
-                    <i class="fas fa-star favorite-active"></i>
-                </button>
-                <!-- 上部：写真＋公開日・更新日・譲渡希望額 -->
-                <div class="company-info-section">
-                    <div class="company-image-container">
-                        {% if company.image_path %}
-                            <img src="{{ url_for('static', filename='uploads/' + company.image_path) }}" alt="{{ company.name }}" style="width:100%; height:100%; object-fit:cover;">
-                        {% else %}
-                            <i class="fas fa-building"></i>
-                        {% endif %}
-                    </div>
-                    <div class="company-details">
-                        <div class="company-meta">公開：{{ company.created_at.strftime('%Y/%m/%d') if company.created_at else '未設定' }}</div>
-                        <div class="company-meta">更新：{{ company.updated_at.strftime('%Y/%m/%d') if company.updated_at else '未設定' }}</div>
-                        <div class="company-price">
-                            譲渡希望額<br>{{ company.capital }}万円
-                        </div>
-                    </div>
+        <div class="col-md-4 d-flex flex-column">
+          <div class="company-card new-company-card mb-4 p-0 position-relative h-100 w-100">
+            <!-- お気に入りボタン（右上） -->
+            <button class="favorite-btn position-absolute" style="top:12px; right:12px; z-index:2;" data-company-id="{{ company.id }}">
+              <i class="fas fa-star favorite-active"></i>
+            </button>
+            <!-- 上部：写真＋公開日・更新日・譲渡希望額 -->
+            <div class="d-flex align-items-stretch p-3" style="background:#eaf4fb;">
+              <div class="company-image-container">
+                {% if company.image_path %}
+                    <img src="{{ url_for('static', filename='uploads/' + company.image_path) }}" alt="{{ company.name }}" style="width:100%; height:100%; object-fit:cover;">
+                {% else %}
+                    <i class="fas fa-building"></i>
+                {% endif %}
+              </div>
+              <div class="ms-3 d-flex flex-column justify-content-center flex-grow-1">
+                <div class="small text-secondary mb-1">公開：{{ company.created_at.strftime('%Y/%m/%d') if company.created_at else '未設定' }}</div>
+                <div class="small text-secondary mb-1">更新：{{ company.updated_at.strftime('%Y/%m/%d') if company.updated_at else '未設定' }}</div>
+                <div class="d-flex justify-content-end">
+                  <div class="fw-bold fs-4 mt-2 text-end">譲渡希望額<br>{{ company.capital|default('未設定') }}万円</div>
                 </div>
-                <!-- 下部：企業名＋詳細情報＋ボタン -->
-                <div class="company-content">
-                    <h3 class="company-name">{{ company.name }}</h3>
-                    <div class="text-muted small mb-2">
-                        {% if company.short_description %}
-                            {{ company.short_description|truncate(40) }}
-                        {% endif %}
-                    </div>
-                    <div class="info-row">
-                        <div class="info-icon">
-                            <i class="fas fa-industry"></i>
-                        </div>
-                        <div class="info-label">業種</div>
-                        <div class="info-value">{{ company.industry|industry_name }}</div>
-                    </div>
-                    <div class="info-row">
-                        <div class="info-icon">
-                            <i class="fas fa-map-marker-alt"></i>
-                        </div>
-                        <div class="info-label">所在地</div>
-                        <div class="info-value">{{ company.location or '未設定' }}</div>
-                    </div>
-                    <div class="info-row">
-                        <div class="info-icon">
-                            <i class="fas fa-yen-sign"></i>
-                        </div>
-                        <div class="info-label">売上高</div>
-                        <div class="info-value">{{ company.revenue }}万円</div>
-                    </div>
-                    <div class="action-buttons">
-                        <a href="{{ url_for('profile.view_company_profile', id=company.id) }}" class="btn-detail">
-                            <i class="fas fa-search me-1"></i>詳細を見る
-                        </a>
-                        <div class="action-group">
-                            {% if current_user.is_authenticated and current_user.id != company.user_id %}
-                            <button class="simple-btn block-btn {% if current_user.is_blocking(company.user) %}blocked{% endif %}"
-                                    data-user-id="{{ company.user_id }}"
-                                    title="{% if current_user.is_blocking(company.user) %}ブロック解除{% else %}ブロック{% endif %}">
-                                <i class="fas fa-ban"></i>
-                            </button>
-                            {% endif %}
-                            <button class="simple-btn chat-btn" onclick="location.href='{{ url_for('chat.start', user_id=company.user_id) }}'" title="チャットを開始">
-                                <i class="fas fa-comments"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
+              </div>
             </div>
+            <!-- 下部：企業名＋詳細情報＋ボタン -->
+            <div class="bg-white p-3 card-body">
+              <h3 class="fw-bold mb-2">{{ company.name|default('未設定') }}</h3>
+              <div class="text-muted small mb-2 company-intro">
+                {% if company.short_description %}
+                  {{ company.short_description|truncate(40) }}
+                {% endif %}
+              </div>
+              <div class="mb-3">
+                <div class="info-row">
+                  <div class="info-icon">
+                    <i class="fas fa-map-marker-alt"></i>
+                  </div>
+                  <div class="info-label">地域</div>
+                  <div class="info-value">{{ company.location|default('未設定') }}</div>
+                </div>
+                <div class="info-row">
+                  <div class="info-icon">
+                    <i class="fas fa-industry"></i>
+                  </div>
+                  <div class="info-label">業種</div>
+                  <div class="info-value">{{ company.industry|industry_name }}</div>
+                </div>
+                <div class="info-row">
+                  <div class="info-icon">
+                    <i class="fas fa-yen-sign"></i>
+                  </div>
+                  <div class="info-label">売上高</div>
+                  <div class="info-value">{{ company.revenue|default('未設定') }}万円</div>
+                </div>
+              </div>
+              <div class="d-flex gap-2 align-items-center">
+                <a href="{{ url_for('profile.view_company_profile', id=company.id) }}" class="btn btn-sm text-primary" style="background: none; border: none;">
+                  <i class="fas fa-search me-1"></i>詳細を見る
+                </a>
+                <div class="ms-auto">
+                {% if current_user.is_authenticated and current_user.id != company.user_id %}
+                <button class="icon-btn btn-block simple-btn me-2" data-user-id="{{ company.user_id }}" title="{% if current_user.is_blocking(company.user) %}ブロック解除{% else %}ブロック{% endif %}">
+                  <i class="fas fa-ban text-danger"></i>
+                </button>
+                <button class="icon-btn simple-btn chat-btn start-chat-btn" data-user-id="{{ company.user_id }}" data-chat-url="{{ url_for('chat.start', user_id=company.user_id) }}" title="チャットを開始">
+                  <i class="fas fa-comments"></i>
+                </button>
+                {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         {% else %}
         <div class="col-12">
@@ -322,7 +323,7 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const favoriteButtons = document.querySelectorAll('.favorite-btn');
-    const blockButtons = document.querySelectorAll('.simple-btn.block-btn');
+    const blockButtons = document.querySelectorAll('.icon-btn.btn-block');
     const csrfToken = document.querySelector('#csrf-token').value;
 
     // ブロックボタンの処理
@@ -334,14 +335,17 @@ document.addEventListener('DOMContentLoaded', function() {
     favoriteButtons.forEach(button => {
         button.addEventListener('click', async function() {
             const companyId = this.dataset.companyId;
+            const icon = this.querySelector('i');
             
             try {
                 const response = await fetch(`/api/favorites/companies/${companyId}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'X-CSRFToken': csrfToken
-                    }
+                        'X-CSRFToken': csrfToken,
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    credentials: 'same-origin'
                 });
 
                 const data = await response.json();
@@ -351,22 +355,22 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
 
                 if (data.status === 'success') {
-                    const icon = this.querySelector('i');
                     if (data.action === 'removed') {
                         icon.classList.remove('favorite-active');
                         // カードを非表示にするアニメーション
-                        const card = this.closest('.col');
+                        const card = this.closest('.col-md-4');
                         card.style.transition = 'opacity 0.3s ease-out';
                         card.style.opacity = '0';
                         setTimeout(() => {
                             card.remove();
                             // カードが全てなくなった場合
-                            if (document.querySelectorAll('.col').length === 0) {
+                            const remainingCards = document.querySelectorAll('.col-md-4');
+                            if (remainingCards.length === 0) {
                                 const container = document.querySelector('.row');
                                 container.innerHTML = `
                                     <div class="col-12">
                                         <div class="alert alert-info">
-                                            お気に入りに登録された企業はありません。
+                                            <i class="fas fa-info-circle me-2"></i>お気に入りに登録された企業はありません。
                                         </div>
                                     </div>
                                 `;
@@ -380,11 +384,18 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
-});
 
-function openChat(companyId) {
-    window.location.href = "{{ url_for('chat.start', user_id=0) }}".replace('0', companyId);
-}
+    // チャット開始ボタンのイベントリスナー
+    document.querySelectorAll('.start-chat-btn').forEach(function(btn) {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const url = btn.getAttribute('data-chat-url');
+            if (url) {
+                window.location.assign(url);
+            }
+        });
+    });
+});
 
 function handleBlockButtonClick(event) {
     event.preventDefault();
@@ -392,7 +403,7 @@ function handleBlockButtonClick(event) {
     const userId = button.dataset.userId;
     const isBlocked = button.classList.contains('blocked');
     const method = isBlocked ? 'DELETE' : 'POST';
-    const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+    const csrfToken = document.querySelector('#csrf-token').value;
 
     fetch(`/api/block/${userId}`, {
         method: method,
@@ -414,7 +425,38 @@ function handleBlockButtonClick(event) {
     })
     .then(data => {
         if (data.success) {
+            // ボタンの見た目を更新
             button.classList.toggle('blocked');
+            const icon = button.querySelector('i');
+            if (icon) {
+                icon.style.color = button.classList.contains('blocked') ? 'white' : '#dc3545';
+            }
+            
+            // ブロックした場合、カードを非表示にする
+            if (!isBlocked) {
+                const card = button.closest('.col-md-4');
+                if (card) {
+                    // カードを非表示にする
+                    card.style.transition = 'opacity 0.3s ease-out';
+                    card.style.opacity = '0';
+                    setTimeout(() => {
+                        card.remove();
+                        // カードが全てなくなった場合
+                        const remainingCards = document.querySelectorAll('.col-md-4');
+                        if (remainingCards.length === 0) {
+                            const container = document.querySelector('.row');
+                            container.innerHTML = `
+                                <div class="col-12">
+                                    <div class="alert alert-info">
+                                        <i class="fas fa-info-circle me-2"></i>お気に入りに登録された企業はありません。
+                                    </div>
+                                </div>
+                            `;
+                        }
+                    }, 300);
+                }
+            }
+            
             showMessage(data.message, 'success');
         } else {
             showMessage(data.message || 'ブロック操作に失敗しました', 'error');

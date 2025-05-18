@@ -8,155 +8,223 @@
         --primary-color: #2c3e50;
         --secondary-color: #34495e;
         --accent-color: #3498db;
+        --success-color: #28a745;
+        --danger-color: #dc3545;
         --background-color: #f8f9fa;
         --card-background: #ffffff;
         --text-primary: #2c3e50;
         --text-secondary: #7f8c8d;
         --border-color: #ecf0f1;
+        --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+        --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+        --transition-base: all 0.2s ease;
+        --spacing-xs: 0.5rem;
+        --spacing-sm: 1rem;
+        --spacing-md: 1.5rem;
+        --spacing-lg: 2rem;
+        --border-radius: 0.5rem;
+        --card-width: 180px;
+        --grid-gap: var(--spacing-sm);
+        --grid-width: calc(var(--card-width) * 3 + var(--grid-gap) * 2);
     }
 
-    .container {
-        max-width: 800px !important;
-        padding: 0 1.5rem;
+    .profile-header {
+        background: var(--card-background);
+        padding: var(--spacing-lg);
+        margin-bottom: var(--spacing-lg);
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow-sm);
+        width: var(--grid-width);
+        margin-left: auto;
+        margin-right: auto;
     }
 
-    .company-header {
-        background-color: var(--card-background);
-        padding: 1.5rem;
-        margin-bottom: 2rem;
-        border-radius: 12px;
-        box-shadow: 0 2px 4px rgba(0,0,0,.05);
-    }
-
-    .company-name {
+    .profile-header h1 {
+        color: var(--text-primary);
         font-size: 1.5rem;
-        font-weight: 500;
-        margin-bottom: 0.5rem;
+        margin-bottom: var(--spacing-xs);
+        font-weight: 600;
     }
 
-    .company-description {
+    .profile-header p {
         color: var(--text-secondary);
-        margin-bottom: 1rem;
-    }
-
-    .edit-button {
-        padding: 0.25rem 1rem;
-        font-size: 0.9rem;
-    }
-
-    .tile-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 1.5rem;
-        margin: 2rem auto;
-        max-width: 800px;
-    }
-
-    .tile {
-        background: white;
-        border-radius: 10px;
-        padding: 1.5rem;
-        text-align: center;
-        text-decoration: none;
-        color: var(--text-primary);
-        transition: transform 0.2s, box-shadow 0.2s;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 0.8rem;
-        position: relative;
-        overflow: visible;
-    }
-
-    .tile:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-        text-decoration: none;
-        color: var(--text-primary);
-    }
-
-    .tile-icon {
-        font-size: 2rem;
-        color: var(--primary-color);
-    }
-
-    .tile-title {
-        font-size: 1.1rem;
-        font-weight: 500;
         margin: 0;
     }
 
-    .notification-badge {
-        position: absolute;
-        top: -10px;
-        right: -10px;
-        background-color: #e74c3c;
-        color: white;
-        border-radius: 50%;
-        padding: 0.25rem 0.5rem;
-        font-size: 0.8rem;
-        font-weight: 500;
-        min-width: 20px;
-        height: 20px;
-        display: flex;
-        align-items: center;
+    .menu-grid {
+        display: grid;
+        grid-template-columns: repeat(3, var(--card-width));
+        gap: var(--grid-gap);
+        padding: var(--spacing-md) 0;
         justify-content: center;
-        z-index: 10;
+        margin: 0 auto;
+        width: var(--grid-width);
+    }
+
+    .menu-card {
+        background: var(--card-background);
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow-sm);
+        padding: var(--spacing-md);
+        text-align: center;
+        transition: var(--transition-base);
+        text-decoration: none;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: var(--spacing-xs);
+        width: 100%;
+    }
+
+    .menu-card:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-md);
+        text-decoration: none;
+    }
+
+    .menu-card i {
+        font-size: 1.75rem;
+        color: var(--accent-color);
+        margin-bottom: var(--spacing-xs);
+    }
+
+    .menu-card span {
+        color: var(--text-primary);
+        font-weight: 500;
+        font-size: 0.95rem;
+    }
+
+    .edit-button {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--spacing-xs);
+        background-color: var(--accent-color);
+        color: white;
+        padding: var(--spacing-xs) var(--spacing-sm);
+        border-radius: var(--border-radius);
+        text-decoration: none;
+        font-size: 0.875rem;
+        transition: var(--transition-base);
+    }
+
+    .edit-button:hover {
+        background-color: var(--primary-color);
+        color: white;
+        text-decoration: none;
+    }
+
+    @media (max-width: 768px) {
+        :root {
+            --card-width: 160px;
+        }
+
+        .profile-header {
+            padding: var(--spacing-md);
+            margin: 0 auto var(--spacing-lg);
+        }
+
+        .menu-card {
+            padding: var(--spacing-sm);
+        }
+
+        .menu-card i {
+            font-size: 1.5rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        :root {
+            --card-width: 140px;
+            --grid-gap: var(--spacing-xs);
+        }
+
+        .menu-card span {
+            font-size: 0.875rem;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .menu-grid {
+            display: grid !important;
+            grid-template-columns: repeat(2, 1fr) !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            gap: 12px !important;
+        }
+        .menu-card {
+            width: 100% !important;
+            max-width: 100% !important;
+        }
+        .d-flex.gap-2 {
+            flex-direction: column !important;
+            align-items: stretch !important;
+            gap: 8px !important;
+            transform: translateX(-3cm);
+        }
+        .d-flex.gap-2 .edit-button {
+            width: 100%;
+        }
     }
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="company-header">
-    <h1 class="company-name">{{ current_user.company.name }}</h1>
-    <p class="company-description">{{ current_user.company.business_description }}</p>
-    <a href="{{ url_for('profile.edit_company_profile') }}" class="btn btn-outline-primary edit-button">
-        <i class="fas fa-edit"></i> プロフィールを編集
-    </a>
-</div>
+<div class="container py-4">
+    <div class="profile-header">
+        <div class="d-flex justify-content-between align-items-start">
+            <div>
+                <h1>{{ current_user.company.name }}</h1>
+            </div>
+            <div class="d-flex gap-2">
+                <a href="{{ url_for('profile.edit_company_profile') }}" class="edit-button">
+                    <i class="fas fa-edit"></i>
+                    <span>編集</span>
+                </a>
+                <!-- 詳細ページが無い場合は下記をコメントアウトまたは削除 -->
+                <!-- <a href="{{ url_for('main.company_list') }}" class="edit-button">
+                    <i class="fas fa-eye"></i>
+                    <span>表示</span>
+                </a> -->
+            </div>
+        </div>
+    </div>
 
-<div class="tile-grid">
-    <a href="{{ url_for('main.successor_list') }}" class="tile">
-        <i class="fas fa-search tile-icon"></i>
-        <h3 class="tile-title">後継者を探す</h3>
-    </a>
-    
-    <a href="{{ url_for('main.company_favorites') }}" class="tile">
-        <i class="fas fa-star tile-icon"></i>
-        <h3 class="tile-title">お気に入り</h3>
-    </a>
-    
-    <a href="{{ url_for('main.message_list') }}" class="tile" id="message-tile">
-        <i class="fas fa-envelope tile-icon"></i>
-        <h3 class="tile-title">メッセージ</h3>
-        <span id="unread-message-badge" class="notification-badge" {% if unread_messages_count == 0 %}style="display:none;"{% endif %}>
-            {{ unread_messages_count }}
-        </span>
-    </a>
-    
-    <a href="{{ url_for('main.notifications') }}" class="tile">
-        <i class="fas fa-bell tile-icon"></i>
-        <h3 class="tile-title">お知らせ</h3>
-        {% if unread_notifications_count > 0 %}
-        <span class="notification-badge">{{ unread_notifications_count }}</span>
-        {% endif %}
-    </a>
-    
-    <a href="{{ url_for('main.notes') }}" class="tile">
-        <i class="fas fa-sticky-note tile-icon"></i>
-        <h3 class="tile-title">メモ</h3>
-    </a>
-    
-    <a href="{{ url_for('main.blocked_users') }}" class="tile">
-        <i class="fas fa-ban tile-icon"></i>
-        <h3 class="tile-title">ブロックリスト</h3>
-    </a>
-    
-    <a href="{{ url_for('main.settings') }}" class="tile">
-        <i class="fas fa-cog tile-icon"></i>
-        <h3 class="tile-title">設定</h3>
-    </a>
+    <div class="menu-grid">
+        <a href="{{ url_for('main.successor_list') }}" class="menu-card">
+            <i class="fas fa-search"></i>
+            <span>後継者を探す</span>
+        </a>
+        <a href="{{ url_for('main.company_favorites') }}" class="menu-card">
+            <i class="fas fa-star"></i>
+            <span>お気に入り</span>
+        </a>
+        <a href="{{ url_for('main.message_list') }}" class="menu-card" id="message-tile">
+            <i class="fas fa-envelope"></i>
+            <span>メッセージ</span>
+            <span id="unread-message-badge" class="notification-badge" {% if unread_messages_count == 0 %}style="display:none;"{% endif %}>
+                {{ unread_messages_count }}
+            </span>
+        </a>
+        <a href="{{ url_for('main.notifications') }}" class="menu-card">
+            <i class="fas fa-bell"></i>
+            <span>お知らせ</span>
+            {% if unread_notifications_count > 0 %}
+            <span class="notification-badge">{{ unread_notifications_count }}</span>
+            {% endif %}
+        </a>
+        <a href="{{ url_for('main.notes') }}" class="menu-card">
+            <i class="fas fa-sticky-note"></i>
+            <span>メモ</span>
+        </a>
+        <a href="{{ url_for('main.blocked_users') }}" class="menu-card">
+            <i class="fas fa-ban"></i>
+            <span>ブロックリスト</span>
+        </a>
+        <a href="{{ url_for('main.settings') }}" class="menu-card">
+            <i class="fas fa-cog"></i>
+            <span>設定</span>
+        </a>
+    </div>
 </div>
 {% endblock %}
 

@@ -122,51 +122,67 @@
             justify-content: center;
         }
     }
+
+    .note-form-wrapper {
+        width: 66%;
+        margin: 0 auto;
+    }
+    @media (max-width: 900px) {
+        .note-form-wrapper {
+            width: 95%;
+        }
+    }
+
+    .note-form-wrapper h1 {
+        text-align: center;
+    }
 </style>
 {% endblock %}
 
 {% block content %}
 <section class="create-note-header">
-    <div class="container">
+    <div class="note-form-wrapper">
         <h1>新規メモ作成</h1>
     </div>
 </section>
 
-<div class="container">
-    <form method="post" class="note-form">
-        {{ form.hidden_tag() }}
-        <div class="mb-4">
-            <label for="title" class="form-label">タイトル</label>
-            {{ form.title(class="form-control", id="title", placeholder="メモのタイトルを入力") }}
-            {% if form.title.errors %}
-            <div class="text-danger mt-2">
-                {% for error in form.title.errors %}
-                <p class="mb-0">{{ error }}</p>
-                {% endfor %}
+<div>
+    <div class="note-form-wrapper">
+        <form method="post" class="note-form">
+            {{ form.hidden_tag() }}
+            <div class="mb-4">
+                <label for="title" class="form-label">タイトル</label>
+                {{ form.title(class="form-control", id="title", placeholder="メモのタイトルを入力") }}
+                {% if form.title.errors %}
+                <div class="text-danger mt-2">
+                    {% for error in form.title.errors %}
+                    <p class="mb-0">{{ error }}</p>
+                    {% endfor %}
+                </div>
+                {% endif %}
             </div>
-            {% endif %}
-        </div>
-        <div class="mb-4">
-            <label for="content" class="form-label">内容</label>
-            {{ form.content(class="form-control", id="content", rows="10", placeholder="メモの内容を入力") }}
-            {% if form.content.errors %}
-            <div class="text-danger mt-2">
-                {% for error in form.content.errors %}
-                <p class="mb-0">{{ error }}</p>
-                {% endfor %}
+            <div class="mb-4">
+                <label for="content" class="form-label">内容</label>
+                {{ form.content(class="form-control", id="content", rows="10", placeholder="メモの内容を入力") }}
+                {% if form.content.errors %}
+                <div class="text-danger mt-2">
+                    {% for error in form.content.errors %}
+                    <p class="mb-0">{{ error }}</p>
+                    {% endfor %}
+                </div>
+                {% endif %}
             </div>
-            {% endif %}
-        </div>
-        <div class="d-flex flex-column flex-md-row gap-3">
-            <button type="submit" class="btn btn-submit">
-                <i class="fas fa-save"></i>
-                <span>保存</span>
-            </button>
-            <a href="{{ url_for('main.notes') }}" class="btn btn-cancel">
-                <i class="fas fa-times"></i>
-                <span>キャンセル</span>
-            </a>
-        </div>
-    </form>
+            <div class="d-flex flex-column flex-md-row gap-3">
+                <button type="submit" class="btn btn-submit">
+                    <i class="fas fa-save"></i>
+                    <span>保存</span>
+                </button>
+                <a href="{{ url_for('main.notes') }}" class="btn btn-cancel">
+                    <i class="fas fa-times"></i>
+                    <span>キャンセル</span>
+                </a>
+            </div>
+        </form>
+    </div>
 </div>
 {% endblock %} 

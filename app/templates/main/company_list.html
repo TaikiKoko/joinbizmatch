@@ -540,7 +540,7 @@
         const userId = button.dataset.userId;
         const isBlocked = button.classList.contains('blocked');
         const method = isBlocked ? 'DELETE' : 'POST';
-        const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+        const csrfToken = document.querySelector('#csrf-token').value;
 
         fetch(`/api/block/${userId}`, {
             method: method,
@@ -563,7 +563,10 @@
         .then(data => {
             if (data.success) {
                 button.classList.toggle('blocked');
-                button.textContent = data.blocked ? 'ブロック解除' : 'ブロック';
+                const icon = button.querySelector('i');
+                if (icon) {
+                    icon.style.color = button.classList.contains('blocked') ? 'white' : '#dc3545';
+                }
                 showMessage(data.message, 'success');
             } else {
                 showMessage(data.message || 'ブロック操作に失敗しました', 'error');

@@ -81,9 +81,28 @@
             display: flex;
             align-items: center;
             text-decoration: none;
-            color: var(--primary);
+            color: #3498db;
             font-weight: 700;
             font-size: 1.5rem;
+        }
+
+        .logo-icon {
+            font-size: 28px;
+            color: #3498db;
+            margin-right: 8px;
+        }
+
+        .logo-text {
+            font-weight: 700;
+            font-size: 22px;
+            color: #3498db;
+        }
+
+        .logo-tagline {
+            font-size: 12px;
+            color: #3498db;
+            display: block;
+            margin-top: -2px;
         }
 
         .nav-menu {
@@ -302,8 +321,11 @@
     <header class="site-header">
         <div class="container header-container">
             <a href="{{ url_for('main.index') }}" class="logo">
-                <i class="fas fa-handshake"></i>
-                <span>M&Aサクシード</span>
+                <i class="fas fa-handshake logo-icon"></i>
+                <div>
+                    <span class="logo-text">Succeed</span>
+                    <span class="logo-tagline">事業承継マッチング</span>
+                </div>
             </a>
             <nav class="nav-menu">
                 <a href="{{ url_for('main.index') }}" class="nav-link">ホーム</a>

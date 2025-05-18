@@ -280,9 +280,9 @@
         </button>
     </div>
 
-    {% if notifications %}
+    {% if notifications.items %}
     <div class="notifications-list">
-        {% for notification in notifications %}
+        {% for notification in notifications.items %}
         <div class="notification-item {% if not notification.read %}unread{% endif %}" data-type="{{ notification.type }}">
             <div class="notification-header">
                 <div class="notification-icon">

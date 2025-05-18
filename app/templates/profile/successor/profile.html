@@ -64,7 +64,13 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container">
-            <a class="navbar-brand" href="{{ url_for('main.index') }}">M&Aサクシード</a>
+            <a href="{{ url_for('main.index') }}" class="logo">
+                <i class="fas fa-handshake logo-icon"></i>
+                <div>
+                    <span class="logo-text">Succeed</span>
+                    <span class="logo-tagline">事業承継マッチング</span>
+                </div>
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>

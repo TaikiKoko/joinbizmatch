@@ -273,12 +273,12 @@
     
     <h1 class="mb-4" style="color: #28a745;">お気に入り後継者一覧</h1>
     
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    <div class="row">
         {% for successor in successors %}
-        <div class="col">
+        <div class="col-md-4">
             <div class="successor-card">
                 <button class="favorite-btn" data-successor-id="{{ successor.id }}">
-                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star{% if successor.id in favorite_successors %} favorite-active{% endif %}"></i>
                 </button>
                 <!-- 上部：写真＋登録日・更新日・投資可能額 -->
                 <div class="successor-info-section">
@@ -293,14 +293,12 @@
                         <div class="successor-meta">登録：{{ successor.created_at.strftime('%Y/%m/%d') if successor.created_at else '未設定' }}</div>
                         <div class="successor-meta">更新：{{ successor.updated_at.strftime('%Y/%m/%d') if successor.updated_at else '未設定' }}</div>
                         <div class="investment-capacity">
-                            投資可能額<br>
-                            <span class="nowrap">
-                              {% if '万円' in successor.investment_capacity %}
-                                {{ successor.investment_capacity or '未設定' }}
-                              {% else %}
-                                {{ successor.investment_capacity or '未設定' }}万円
-                              {% endif %}
-                            </span>
+                            投資可能額：
+                            {% if '万円' in successor.investment_capacity %}
+                              <span class="nowrap">{{ successor.investment_capacity or '未設定' }}</span>
+                            {% else %}
+                              <span class="nowrap">{{ successor.investment_capacity or '未設定' }}万円</span>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -308,23 +306,17 @@
                 <div class="successor-content">
                     <h3 class="successor-name">{{ successor.name }}</h3>
                     <div class="info-row">
-                        <div class="info-icon">
-                            <i class="fas fa-industry"></i>
-                        </div>
+                        <div class="info-icon"><i class="fas fa-industry"></i></div>
                         <div class="info-label">希望業界</div>
                         <div class="info-value">{{ successor.desired_industry|industry_name }}</div>
                     </div>
                     <div class="info-row">
-                        <div class="info-icon">
-                            <i class="fas fa-map-marker-alt"></i>
-                        </div>
+                        <div class="info-icon"><i class="fas fa-map-marker-alt"></i></div>
                         <div class="info-label">希望地域</div>
                         <div class="info-value">{{ successor.desired_location or '未設定' }}</div>
                     </div>
                     <div class="info-row">
-                        <div class="info-icon">
-                            <i class="fas fa-user"></i>
-                        </div>
+                        <div class="info-icon"><i class="fas fa-user"></i></div>
                         <div class="info-label">年齢</div>
                         <div class="info-value">{{ successor.age or '未設定' }}歳</div>
                     </div>
@@ -396,13 +388,13 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (data.action === 'removed') {
                         icon.classList.remove('favorite-active');
                         // カードを非表示にするアニメーション
-                        const card = this.closest('.col');
+                        const card = this.closest('.col-md-4');
                         card.style.transition = 'opacity 0.3s ease-out';
                         card.style.opacity = '0';
                         setTimeout(() => {
                             card.remove();
                             // カードが全てなくなった場合
-                            if (document.querySelectorAll('.col').length === 0) {
+                            if (document.querySelectorAll('.col-md-4').length === 0) {
                                 const container = document.querySelector('.row');
                                 container.innerHTML = `
                                     <div class="col-12">
@@ -429,7 +421,7 @@ function handleBlockButtonClick(event) {
     const userId = button.dataset.userId;
     const isBlocked = button.classList.contains('blocked');
     const method = isBlocked ? 'DELETE' : 'POST';
-    const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+    const csrfToken = document.querySelector('#csrf-token').value;
 
     fetch(`/api/block/${userId}`, {
         method: method,
@@ -452,6 +444,29 @@ function handleBlockButtonClick(event) {
     .then(data => {
         if (data.success) {
             button.classList.toggle('blocked');
+            // ブロックした場合のみカードを非表示にする
+            if (!isBlocked) {
+                const card = button.closest('.col-md-4');
+                if (card) {
+                    card.style.transition = 'opacity 0.3s ease-out';
+                    card.style.opacity = '0';
+                    setTimeout(() => {
+                        card.remove();
+                        // カードが全てなくなった場合
+                        const remainingCards = document.querySelectorAll('.col-md-4');
+                        if (remainingCards.length === 0) {
+                            const container = document.querySelector('.row');
+                            container.innerHTML = `
+                                <div class="col-12">
+                                    <div class="alert alert-info">
+                                        <i class="fas fa-info-circle me-2"></i>お気に入りに登録された後継者はありません。
+                                    </div>
+                                </div>
+                            `;
+                        }
+                    }, 300);
+                }
+            }
             showMessage(data.message, 'success');
         } else {
             showMessage(data.message || 'ブロック操作に失敗しました', 'error');

@@ -56,12 +56,42 @@
             border-color: #bee5eb;
             color: #0c5460;
         }
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: #3498db;
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+        .logo-icon {
+            font-size: 28px;
+            color: #3498db;
+            margin-right: 8px;
+        }
+        .logo-text {
+            font-weight: 700;
+            font-size: 22px;
+            color: #3498db;
+        }
+        .logo-tagline {
+            font-size: 12px;
+            color: #3498db;
+            display: block;
+            margin-top: -2px;
+        }
     </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container">
-            <a class="navbar-brand" href="{{ url_for('main.index') }}">M&Aサクシード</a>
+            <a href="{{ url_for('main.index') }}" class="logo">
+                <i class="fas fa-handshake logo-icon"></i>
+                <div>
+                    <span class="logo-text">Succeed</span>
+                    <span class="logo-tagline">事業承継マッチング</span>
+                </div>
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
