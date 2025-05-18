@@ -36,4 +36,78 @@
     max-width: 100% !important;
     box-sizing: border-box !important;
   }
-</style> 
+  /* 横スクロール対応 */
+  .horizontal-scroll {
+    overflow-x: auto !important;
+    white-space: nowrap !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+  .horizontal-scroll > * {
+    display: inline-block !important;
+    vertical-align: top !important;
+    float: none !important;
+  }
+  /* 横スクロール対応: menu-grid, d-flex */
+  .menu-grid.horizontal-scroll {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    gap: 8px !important;
+  }
+  .menu-grid.horizontal-scroll > * {
+    flex: 0 0 auto !important;
+    width: 180px !important;
+    max-width: none !important;
+  }
+  .d-flex.horizontal-scroll {
+    overflow-x: auto !important;
+    flex-wrap: nowrap !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+  .d-flex.horizontal-scroll > * {
+    flex: 0 0 auto !important;
+  }
+  .container, .profile-header {
+    max-width: none !important;
+    overflow-x: visible !important;
+  }
+  /* 横スクロールのため親要素の幅制限・overflow解除 */
+  html, body, .container, .main-content, .profile-header {
+    max-width: none !important;
+    width: auto !important;
+    overflow-x: visible !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+</style>
+<style>
+@media (max-width: 600px) {
+  html, body {
+    width: 100% !important;
+    max-width: 400px !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    overflow-x: visible !important;
+  }
+  .container, .header-container, .site-footer, .footer-content, .row, .col, .card {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+  }
+  .row {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+  .col, .card {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+  img, table {
+    max-width: 100% !important;
+    height: auto !important;
+    box-sizing: border-box !important;
+  }
+} 
